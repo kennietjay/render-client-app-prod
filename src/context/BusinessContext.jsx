@@ -7,7 +7,7 @@ import React, { createContext, useCallback, useContext, useState } from "react";
 // const BASE_URL =
 //   "https://val-server-bcbfdrehb2agdygp.canadacentral-01.azurewebsites.net";
 
-const BASE_URL = "https://render-server-cawz.onrender.com";
+const BASE_URL = "https://render-server-app.onrender.com";
 
 const BusinessContext = createContext();
 

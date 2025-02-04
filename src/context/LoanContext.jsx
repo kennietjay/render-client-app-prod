@@ -3,7 +3,7 @@ import axios from "axios";
 
 const LoanContext = createContext();
 
-const BASE_URL = "https://render-server-cawz.onrender.com";
+const BASE_URL = "https://render-server-app.onrender.com";
 
 const getAuthToken = () => localStorage.getItem("accessToken");
 const getHeaders = () => ({

@@ -4,7 +4,7 @@ import axios from "axios";
 const TransactionContext = createContext();
 
 // const BASE_URL = "http://192.168.12.109:5000";
-const BASE_URL = "https://render-server-cawz.onrender.com";
+const BASE_URL = "https://render-server-app.onrender.com";
 
 const getAuthToken = () => localStorage.getItem("accessToken");
 const getHeaders = () => ({

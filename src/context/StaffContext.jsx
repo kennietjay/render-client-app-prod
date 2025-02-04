@@ -11,7 +11,7 @@ import { jwtDecode } from "jwt-decode";
 
 const StaffContext = createContext();
 
-const BASE_URL = "https://render-server-cawz.onrender.com";
+const BASE_URL = "https://render-server-app.onrender.com";
 
 // Check token validity based on expiration
 const checkTokenValidity = (token) => {
