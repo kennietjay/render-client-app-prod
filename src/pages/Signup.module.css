@@ -1,0 +1,366 @@
+/*  */
+/* Bubbles Background */
+.bubbleBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Behind other content */
+  overflow: hidden;
+  background: linear-gradient(
+    to bottom,
+    rgba(4, 44, 189, 0.1),
+    #ffffff
+  ); /* Subtle gradient */
+}
+
+.bubble {
+  position: absolute;
+  bottom: -5rem;
+  width: 2rem;
+  height: 2rem;
+  background-color: rgba(135, 206, 250, 0.7); /* Bubble color */
+  border-radius: 50%;
+  animation: float 8s ease-in infinite;
+  opacity: 0.6;
+}
+
+/* Randomize sizes and animations */
+.bubble:nth-child(1) {
+  left: 10%;
+  width: 3rem;
+  height: 3rem;
+  animation-duration: 9s;
+  animation-delay: 1s;
+}
+.bubble:nth-child(2) {
+  left: 30%;
+  width: 1.5rem;
+  height: 1.5rem;
+  animation-duration: 7s;
+  animation-delay: 2s;
+}
+.bubble:nth-child(3) {
+  left: 50%;
+  width: 2rem;
+  height: 2rem;
+  animation-duration: 6s;
+  animation-delay: 3s;
+}
+.bubble:nth-child(4) {
+  left: 70%;
+  width: 4rem;
+  height: 4rem;
+  animation-duration: 10s;
+  animation-delay: 0s;
+}
+.bubble:nth-child(5) {
+  left: 90%;
+  width: 1rem;
+  height: 1rem;
+  animation-duration: 5s;
+  animation-delay: 1.5s;
+}
+
+/* Floating Animation */
+@keyframes float {
+  0% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120vh); /* Move out of view */
+    opacity: 0;
+  }
+}
+
+/* From */
+.formContainer p {
+  margin-top: 1.4rem;
+  font-size: 1.6rem;
+}
+
+.formHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.formHeader {
+  line-height: 1.6;
+}
+
+.formSubHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.formSubHeader i {
+  font-size: 2.8rem;
+  color: var(--color-primary);
+}
+
+.formBtns {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formBtns .forgotPassword {
+  top: 50%;
+  left: 0%;
+  transform: translate(-0%, -50%);
+  position: absolute;
+}
+
+.warning {
+  width: 90%;
+}
+
+.signupInstructions {
+  border: 0.1rem solid var(--color-primary);
+  padding: 1.4rem;
+  border-radius: 2rem;
+  margin-top: 1.6rem;
+}
+
+.genderAndDob {
+  display: flex;
+}
+
+@media screen and (max-width: 40rem) {
+  .formContainer {
+    width: 95%;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .formHeader h1 {
+    font-size: 2rem;
+  }
+
+  .inputControl input {
+    font-size: 1.4rem;
+    padding: 0.7rem;
+  }
+
+  .formBtns button {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+  }
+
+  .bubble {
+    width: 1rem; /* Reduce size of bubbles */
+    height: 1rem;
+  }
+
+  .bubble:nth-child(1),
+  .bubble:nth-child(2),
+  .bubble:nth-child(3),
+  .bubble:nth-child(4),
+  .bubble:nth-child(5) {
+    animation-duration: 5s; /* Speed up animations for smaller screens */
+  }
+
+  .bubbleBackground {
+    background: linear-gradient(
+      to bottom,
+      #d4f1f9,
+      #ffffff
+    ); /* Adjust colors */
+  }
+
+  .formSubHeader i {
+    font-size: 2.8rem;
+    color: var(--color-primary);
+  }
+}
+
+/* Add Staff */
+.addStaffContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4.8rem;
+  padding: 0 2.4rem;
+}
+
+.addStaffHeader {
+  margin-top: 2.4rem;
+  position: relative;
+}
+.addStaffHeader .closeBtn {
+  position: absolute;
+  right: -2rem;
+  top: -2rem;
+}
+
+/*  */
+.profileItems {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style: none;
+  padding-left: 0;
+}
+
+.profileItems li {
+  background-color: #f7f7f7;
+  padding: 1.6rem 1rem;
+}
+
+.closeBtn {
+  display: flex;
+  align-self: flex-end;
+}
+
+.profilePasswordChange {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+/*  */
+
+/* Wrapper for forms */
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Full viewport height */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-size: 1.4rem;
+}
+
+/* Form Container */
+.formContainer {
+  width: 100%;
+  max-width: 45rem;
+  margin: auto;
+  padding: 2rem;
+  background: #fff;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  overflow-y: auto; /* Allow scrolling within the container */
+  max-height: calc(100vh - 4rem); /* Prevent overflow beyond viewport */
+  box-sizing: border-box;
+}
+
+/* Form Header */
+.formHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.formHeader h1 {
+  font-size: 2rem;
+  margin: 0;
+  color: #333;
+}
+
+.formHeader img {
+  width: 5rem;
+  height: auto;
+}
+
+/* Form Fields */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.inputControl {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputControl label {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.inputControl input {
+  padding: 0.8rem;
+  font-size: 1.6rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+}
+
+.inputControl input:focus {
+  border-color: #314db6;
+  outline: none;
+  box-shadow: 0 0 0.3rem rgba(49, 77, 182, 0.2);
+}
+
+/* Buttons */
+.formBtns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.formBtns button {
+  padding: 0.8rem 1.5rem;
+  font-size: 1.2rem;
+  background: #314db6;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.formBtns button:hover {
+  background: #263c8d;
+}
+
+.forgotPassword {
+  font-size: 1.2rem;
+  color: #666;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 40rem) {
+  .formContainer {
+    width: 90%;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .formHeader h1 {
+    font-size: 1.8rem;
+  }
+
+  .inputControl input {
+    font-size: 1.4rem;
+    padding: 0.7rem;
+  }
+
+  .formBtns button {
+    font-size: 1.2rem;
+    padding: 0.6rem 1.2rem;
+  }
+  .form p {
+    font-size: 1.2rem;
+  }
+}

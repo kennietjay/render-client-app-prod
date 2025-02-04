@@ -1,0 +1,42 @@
+/* Modal Overlay */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease; /* Increased duration */
+  z-index: 1100;
+}
+
+.modalOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Modal Content */
+.modalContent {
+  position: fixed;
+  top: 0;
+  right: -100%; /* Start off-screen */
+  max-width: 35rem;
+  height: 100%;
+  background: #fff;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  padding: 2rem;
+  z-index: 2200;
+  transition: transform 1s ease-in-out, right 1s ease-in-out; /* Increased duration */
+}
+
+.modalOpen .modalContent {
+  right: 0; /* Slide into view */
+}
+
+/* Sliding Animation */
+.slideIn {
+  transform: translateX(0);
+}

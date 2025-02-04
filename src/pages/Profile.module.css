@@ -1,0 +1,375 @@
+/* Sidebar.module.css */
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #ecf0f1;
+  font-weight: 300;
+  color: #676767;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.profileContainer div main {
+  margin-top: 6.4rem;
+}
+
+.topNavigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background-color: #fff;
+  padding: 1.6rem;
+  justify-content: flex-end;
+  z-index: 10;
+}
+
+.notificationContainer {
+  align-self: flex-end;
+  color: var(--color-primary);
+  width: 10%;
+  margin-right: 1rem;
+}
+
+.notificationIcons {
+  font-size: 1rem;
+  gap: 1rem;
+}
+
+.notificationIcons {
+  display: flex;
+  justify-content: end;
+  gap: 1.4rem;
+}
+
+.notificationIcons a:link,
+.notificationIcons a:visited {
+  border-radius: 1rem;
+  padding: 0.5rem;
+}
+
+.notificationIcons .userIcon {
+  border: 0.1rem solid var(--color-primary);
+}
+
+.sidebar {
+  position: fixed;
+  background-color: #fff;
+  box-shadow: 0;
+  height: 100%;
+  width: 22rem;
+  z-index: 5;
+  top: 6rem;
+  left: 0;
+  transition: 0.5s;
+  padding-top: 2.4rem;
+}
+
+.nav {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: 2.8rem;
+  list-style: none;
+}
+
+.navLink {
+  transition: 0.3s ease;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  color: var(--color-text);
+  border-right: 0.3rem solid var(--color-text-light);
+}
+
+.navLink:hover {
+  border-right: 0.3rem solid var(--color-primary-light);
+}
+
+.active .navLink {
+  color: var(--color-primary-light);
+  border-right: 0.3rem solid var(--color-primary-light);
+}
+
+.openbtn {
+  background-color: transparent;
+  font-size: 1.8rem;
+  transition: 0.5s;
+  cursor: pointer;
+  border: none;
+  position: absolute;
+  top: 1rem;
+  left: 0.5rem;
+  color: var(--color-primary-light);
+}
+
+.openbtn:hover {
+  color: var(--color-primary-dark);
+}
+
+.addEditBtn {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.addEditBtn button {
+  font-size: 1.4rem;
+  border: 0.1rem solid var(--color-primary);
+  color: var(--color-primary);
+  background-color: #fff;
+}
+
+.addEditBtn .add {
+  color: var(--color-text-white);
+  background-color: var(--color-primary);
+}
+
+.addEditBtn .edit:hover {
+  color: var(--color-text-white);
+  background-color: var(--color-primary);
+  transition: 0.3s ease;
+}
+
+.addEditBtn .add:hover {
+  transition: 0.3s ease;
+  background-color: var(--color-text-white);
+  color: var(--color-primary);
+}
+
+.shifted {
+  margin-left: 22rem;
+}
+
+.open {
+  width: 22rem;
+}
+
+.closed {
+  width: 0rem;
+}
+
+.header {
+  margin: 4.8rem 0 1.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.apply,
+.backBtn {
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+}
+
+.mainContent {
+  transition: margin-left 0.5s;
+  flex: 1;
+  padding: 2.4rem;
+  overflow-y: auto;
+  height: calc(100vh - 5rem);
+  box-sizing: border-box;
+}
+
+.userName {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.content {
+  background-color: var(--color-text-white);
+  border-radius: 0.8rem;
+  padding: 2rem;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin-bottom: 2.4rem;
+}
+
+/*  */
+.recentTransactions {
+  h3 {
+    margin-top: 0;
+  }
+}
+
+.recentTransactions ul {
+  list-style: none;
+  padding: 0;
+}
+
+.recentTransactions li {
+  padding: 0.8rem 0;
+  border-bottom: 0.1rem solid #ddd;
+}
+
+.recentTransactions li:last-child {
+  border-bottom: none;
+}
+
+@media screen and (max-height: 45rem) {
+  .profileContainer {
+    font-size: 1.4rem;
+  }
+  .sidebar {
+    top: 1.6;
+  }
+}
+
+@media screen and (max-width: 62rem) {
+  .openbtn {
+    top: 1rem;
+    left: 1rem;
+  }
+}
+
+@media screen and (max-width: 40rem) {
+  .shifted {
+    margin-left: 6rem;
+  }
+
+  .open {
+    width: 6rem;
+  }
+
+  .mainContent {
+    transition: margin-left 0.5s;
+    flex: 1;
+    padding: 2.4rem;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .nav ul {
+    gap: 3.6rem;
+  }
+
+  .navLink {
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .navLink span {
+    display: none;
+  }
+
+  .fa-solid {
+    font-weight: 300;
+  }
+
+  .notificationContainer {
+    align-self: flex-end;
+    color: var(--color-primary-light);
+    width: 40%;
+  }
+
+  .openbtn {
+    background-color: transparent;
+    font-size: 1.4rem;
+    transition: 0.5s;
+    cursor: pointer;
+    border: none;
+    position: absolute;
+    top: 1.5rem;
+  }
+}
+
+/* 
+Recent or Account
+*/
+.recentServiceUpdates {
+  height: 100%;
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  color: var(--color-text);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  gap: 1rem;
+  padding: 3.2rem 2.4rem;
+}
+
+.recentServiceUpdate {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2.4rem;
+  border-radius: 1rem;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px,
+    rgba(17, 17, 26, 0.05) 0px 8px 32px;
+}
+
+.recentUpdate {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  width: 100%;
+}
+
+.recentUpdate i {
+  color: var(--color-primary);
+  font-size: 3.6rem;
+  padding: 2rem;
+  background-color: #e6eaf8;
+  border-radius: 1rem;
+  font-weight: 300;
+}
+
+/*  */
+.btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.apply,
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  border: 0.1rem solid var(--color-primary);
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--color-primary);
+  transition: background-color 0.3s ease;
+}
+
+.apply:hover,
+.backBtn:hover {
+  background-color: var(--color-primary-darker);
+  color: var(--color-text-white);
+}
+
+.apply i,
+.backBtn i {
+  font-size: 1.2rem;
+}
+
+.applyText,
+.backText {
+  display: inline; /* Default is inline */
+}
+
+/* Media Query for Max Width of 40rem */
+@media (max-width: 40rem) {
+  .applyText {
+    display: none; /* Hide text for Apply button */
+  }
+
+  .backText {
+    display: none; /* Hide text for Back button */
+  }
+}

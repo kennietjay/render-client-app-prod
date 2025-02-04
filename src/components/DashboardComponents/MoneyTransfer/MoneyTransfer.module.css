@@ -1,0 +1,27 @@
+.overviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.userName {
+  font-size: 1.8rem;
+}
+
+.btns {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.btns button {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  padding: 1rem;
+  gap: 0.4rem;
+}
+.btns button:hover {
+  transition: ease 0.3s;
+}

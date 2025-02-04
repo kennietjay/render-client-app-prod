@@ -1,0 +1,288 @@
+.staff {
+  background-color: #fff;
+  padding: 2.4rem;
+  border-radius: 1rem;
+  position: relative;
+}
+
+.staff .closeBtn {
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+  top: 1rem;
+  right: 3rem;
+}
+
+.staff h3 {
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #333;
+}
+
+.staff h4 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.staff ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+}
+
+.staff ul li {
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  line-height: 1.5;
+}
+
+.staffDetails span {
+  display: inline-flex;
+  width: 15rem;
+  color: var(--color-primary);
+}
+
+.staff ul li strong {
+  font-weight: bold;
+  color: #333;
+}
+
+.staff button {
+  display: inline-block;
+  margin: 0.5rem 1rem;
+  padding: 0.6rem 1.6rem;
+  font-size: 1.4rem;
+  background-color: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.staff button:hover {
+  background-color: var(--color-primary-darker);
+  color: #fff;
+}
+
+.staff button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.staff .actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.staff .actions button {
+  margin: 0.5rem;
+}
+
+/*  */
+.permissionsContainer,
+.rolesContainer {
+  background-color: #fff;
+  position: relative;
+}
+
+.permissionsContainer .closeBtn {
+  top: -2rem;
+  right: -1rem;
+}
+
+.rolesContainer .closeBtn {
+  top: -2rem;
+  right: -1rem;
+}
+
+.permissionsInputBox {
+  display: flex;
+  gap: 1rem;
+}
+
+.form {
+  width: 100%;
+  max-width: 60rem;
+  margin: 0 auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  display: flex;
+  gap: 2rem;
+}
+
+.title {
+  font-size: 1.6em;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--color-primary);
+}
+
+.currentRole,
+.currentPermissions {
+  padding: 2rem 0;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputControl {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 2.4rem;
+}
+
+.inputControl label {
+  font-size: 1.4rem;
+  color: #555;
+}
+
+.inputControl input {
+  padding: 0.8rem;
+  font-size: 1.6rem;
+  border: 0.1rem solid #ddd;
+  border-radius: 0.5rem;
+}
+
+.inputControl input:focus {
+  outline: none;
+  border-color: #314db6;
+  box-shadow: 0 0 0.4rem rgba(49, 77, 182, 0.2);
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.searchButton {
+  padding: 1rem;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.searchButton:hover {
+  background: var(--color-primary-darker);
+  color: var(--color-text-white);
+}
+
+.loanDetails {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  background: #f9f9f9;
+  padding: 1rem;
+  border: 0.1rem solid #ddd;
+  border-radius: 0.5rem;
+}
+
+.errorText {
+  color: red;
+  font-size: 1.2rem;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.submitButton {
+  padding: 1rem 1.5rem;
+  font-size: 1.4rem;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background: var(--color-primary-darker);
+  color: var(--color-text-white);
+}
+
+.consentInput {
+  display: flex;
+  align-items: flex-start;
+}
+
+.consentInput input {
+  margin: 0;
+  padding: 0;
+  margin-top: 0.6rem;
+}
+
+.addNavBtnContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.searchCustomer {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.searchCustomer label input {
+  margin-left: 1rem;
+}
+
+.addStaffContainer {
+  position: relative;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+}
+
+.updateStaff {
+  position: relative;
+}
+
+.updateStaff .closeBtn {
+  position: absolute;
+  top: -2rem;
+  right: 0;
+}
+
+.activateStaff,
+.deactivateStaff {
+  position: relative;
+}
+
+.activateStaff .closeBtn,
+.deactivateStaff .closeBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.staffActionBtns {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: ) {
+}

@@ -1,0 +1,65 @@
+.carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.carouselContent {
+  display: flex; /* Align images horizontally */
+  transition: transform 0.5s ease-in-out; /* Smooth transition */
+}
+
+.carouselSlide {
+  flex: 0 0 100%; /* Each slide takes full width */
+  text-align: center;
+}
+
+.carouselSlide img {
+  width: 100%; /* Ensure the image width matches the slide */
+  height: 55rem; /* Restrict the height if needed */
+  object-fit: cover; /* Ensure proper fit */
+  border-radius: 1rem; /* Optional: Add rounded corners */
+}
+
+.carouselControl {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  z-index: 10;
+}
+
+.prev {
+  left: 10px;
+}
+
+.next {
+  right: 10px;
+}
+
+.carouselIndicators {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+}
+
+.active {
+  background-color: white;
+}

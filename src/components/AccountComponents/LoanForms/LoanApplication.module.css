@@ -1,0 +1,153 @@
+.modalStyle {
+  height: 40rem;
+}
+
+.formStyle {
+  position: relative;
+}
+
+.formStyle i {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.formContainer h4 {
+  margin-top: 2rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  padding: 2.4rem;
+  border-radius: 1rem;
+  position: relative;
+}
+
+/* Form */
+.contactDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inputLayout {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.4rem;
+  @media screen and (max-width: 40rem) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.inputLayout.twoColumns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr;
+
+  @media screen and (max-width: 48rem) {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+}
+
+.inputControl {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.inputControl label {
+  font-size: 1.4rem;
+}
+
+.inputControl input {
+  background-color: #f7f7f7;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+.sectionMargin {
+  margin-top: 2.4rem;
+}
+
+/*  */
+.formNavBtn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-top: 1.6rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.formNavBtn .firstNaBtn {
+  display: inline-flex;
+  align-self: flex-end;
+}
+
+.nextButton {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.formNavBtn:hover {
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
+}
+
+.addNavBtnContainer {
+  display: flex;
+  justify-content: space-between;
+  bottom: 6.4rem;
+}
+
+.requirement ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/* Summary Style */
+.summaryStyle {
+  padding: 1.2rem;
+}
+
+.summaryStyle ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.summaryStyle ul li span {
+  display: inline-block;
+  width: 25rem;
+}
+
+.consentInput {
+  display: flex;
+}
+
+.consentInput input {
+  height: 1.8rem;
+  margin-top: 0.5rem;
+  margin-left: -1.4rem;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #fff;
+  padding: 0.5rem;
+}
+
+.closeBtn:hover {
+  background-color: #ededed;
+}

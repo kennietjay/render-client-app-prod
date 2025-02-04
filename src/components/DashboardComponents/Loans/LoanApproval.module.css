@@ -1,0 +1,381 @@
+/* LoanApproval.module.css */
+.approvalContainer {
+  background-color: #fff;
+  padding: 2.4rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 4.8rem; */
+}
+
+.approval {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  width: 100%;
+  /* height: 100%; */
+  border-radius: 0.8rem;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+.reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.reviewItem,
+.finalAction {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1.2rem;
+  background-color: #fff;
+  border: 0.1rem solid #ddd;
+  border-radius: 0.6rem;
+}
+
+.reviewButton,
+.finalButton {
+  padding: 0.8rem 1.2rem;
+  background-color: #f1f1f1;
+  border: 0.1rem solid #ddd;
+  border-radius: 0.4rem;
+  font-size: 1.6rem;
+  color: #555;
+  cursor: not-allowed;
+  transition: all 0.3s ease;
+}
+
+.reviewButton:hover,
+.finalButton:hover {
+  background-color: #e1e1e1;
+}
+
+.activeButton {
+  background-color: var(--color-primary);
+  color: #fff;
+  cursor: pointer;
+  border: 1px solid var(--color-primary);
+}
+
+.activeButton:hover {
+  background-color: var(--color-primary-darker);
+  color: var(--color-text-white);
+}
+
+.disabledButton {
+  background-color: #ccc;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 0.1rem solid #ccc;
+  border-radius: 0.4rem;
+  font-size: 1.6rem;
+}
+
+.form textarea {
+  resize: vertical;
+}
+
+.form button {
+  align-self: flex-end;
+  padding: 0.8rem 1.2rem;
+  background-color: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.form button:hover {
+  background-color: var(--color-primary-darker);
+  color: var(--color-text-white);
+}
+
+.finalAction {
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .approval {
+    padding: 1rem;
+  }
+
+  .reviewItem,
+  .finalAction {
+    padding: 0.8rem;
+  }
+
+  .form input,
+  .form textarea {
+    width: 100%;
+    font-size: 1.4rem;
+  }
+
+  .form button {
+    font-size: 1.2rem;
+  }
+}
+
+.currentLoanData {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1.6rem;
+}
+
+.reviewNotes {
+  margin: 2.4rem 0;
+}
+
+/*  */
+.modalContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalContent {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  flex-shrink: 0;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+
+.modalBody {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.modalFooter {
+  flex-shrink: 0;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+  text-align: right;
+}
+
+/*  */
+.viewLoanDetails {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  gap: 2.4rem;
+}
+
+.loanPropertyDisplay {
+  display: flex;
+  flex-direction: column;
+  gap: 2.8rem;
+}
+
+.loanProperty {
+  width: 20rem;
+}
+
+.loanDepositionBtn {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 2rem;
+}
+
+.bottomForm {
+  margin-top: 2.4rem;
+}
+
+.btnsDeposition {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2.4rem;
+}
+
+.btnsDeposition button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========== */
+/* General container styles */
+.approvalContainer {
+  padding: 2.4rem;
+  border-radius: 0.8rem;
+  margin: 2.4rem auto;
+}
+
+/* Header styles */
+.approvalContainer h3 {
+  text-align: center;
+  margin-bottom: 2.4rem;
+}
+
+/* Loan details section */
+.viewLoanDetails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.4rem;
+  margin-bottom: 2.4rem;
+  padding: 2.4rem;
+  border: 0.01rem solid #ddd;
+  border-radius: 0.8rem;
+  background-color: #fff;
+}
+
+.viewLoanDetails strong {
+  color: #333;
+}
+
+/* Action buttons */
+.loanDepositionBtn {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 2.4rem;
+}
+
+.loanDepositionBtn button {
+  padding: 1.2rem 2rem;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  color: #fff;
+  background-color: var(--color-primary);
+  transition: background-color 0.3s;
+}
+
+.loanDepositionBtn button:hover {
+  background-color: var(--color-primary-darker);
+}
+
+.loanDepositionBtn button:nth-child(2) {
+  background-color: #dc3545;
+}
+
+.loanDepositionBtn button:nth-child(2):hover {
+  background-color: #a71d2a;
+}
+
+.loanDepositionBtn button:nth-child(3) {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.loanDepositionBtn button:nth-child(3):hover {
+  background-color: #e0a800;
+}
+
+.loanDepositionBtn button:nth-child(4) {
+  background-color: #28a745;
+}
+
+.loanDepositionBtn button:nth-child(4):hover {
+  background-color: #218838;
+}
+
+/* Dynamic form section */
+.bottomForm {
+  padding: 2.4rem;
+  margin-top: 2rem;
+  border: 0.01rem solid #ddd;
+  border-radius: 0.8rem;
+  background-color: #fff;
+  box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.bottomForm h3 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.bottomForm label {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.bottomForm textarea {
+  resize: vertical;
+}
+
+.bottomForm button {
+  padding: 1.2rem 2.4rem;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  color: #fff;
+  background-color: var(--color-primary);
+  transition: background-color 0.3s;
+}
+
+.bottomForm button:hover {
+  background-color: #0056b3;
+}
+
+.bottomForm button[type="button"] {
+  background-color: #6c757d;
+}
+
+.bottomForm button[type="button"]:hover {
+  background-color: #5a6268;
+}
+
+/* Responsive design */
+@media (max-width: 40rem) {
+  .viewLoanDetails {
+    flex-direction: column;
+  }
+
+  .loanDepositionBtn {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .loanDepositionBtn button {
+    width: 100%;
+  }
+}

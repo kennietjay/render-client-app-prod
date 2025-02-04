@@ -1,0 +1,7 @@
+.mapContainer {
+  width: 100%;
+  height: 40rem; /* Set the height of the map */
+  border-radius: 1rem;
+  overflow: hidden; /* Ensures rounded corners for the iframe */
+  box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.1);
+}

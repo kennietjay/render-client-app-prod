@@ -1,0 +1,29 @@
+/* Overlay for Modal */
+.overlay {
+  position: fixed;
+  inset: 0; /* Covers the entire screen */
+  z-index: 1500; /* Higher than sidebar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.2); /* Darker overlay */
+}
+
+/* Modal Box */
+.modal {
+  border-radius: 0.8rem;
+  box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
+  width: 98%;
+  max-width: 85rem;
+  height: auto;
+  max-height: 90rem;
+  position: relative;
+  padding: 2.4rem;
+  overflow: auto;
+}
+
+/* Scoped styles for edit-loan-modal */
+.modal.edit-loan-modal {
+  z-index: 1600;
+}

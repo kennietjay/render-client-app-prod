@@ -1,0 +1,133 @@
+.container {
+  color: #797979;
+  background: #f1f2f7;
+  font-family: "Open Sans", sans-serif;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: 13px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+}
+
+.row {
+  margin-top: 30px;
+}
+
+.profileNav,
+.profileInfo {
+  margin-top: 30px;
+}
+
+.userHeading {
+  background-color: var(--color-primary);
+  color: #fff;
+  border-radius: 4px 4px 0 0;
+  padding: 30px;
+  text-align: center;
+}
+
+.userHeading a {
+  border-radius: 50%;
+  border: 10px solid rgba(255, 255, 255, 0.3);
+  display: inline-block;
+}
+
+.userHeading img {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+}
+
+.userHeading h1 {
+  font-size: 22px;
+  font-weight: 300;
+  margin-bottom: 5px;
+}
+
+.userHeading p {
+  font-size: 12px;
+}
+
+.nav {
+  margin-top: 1px;
+  list-style: none;
+  padding: 0;
+}
+
+.nav > li {
+  border-bottom: 1px solid #ebeae6;
+  line-height: 30px;
+}
+
+.nav > li:last-child {
+  border-bottom: none;
+}
+
+.nav > li > a {
+  border-radius: 0;
+  color: #89817f;
+  border-left: 5px solid #fff;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus,
+.nav li.active a {
+  background: #f8f7f5 !important;
+  border-left: 5px solid #fbc02d;
+  color: #89817f !important;
+}
+
+.textArea,
+.textArea:focus {
+  border: none;
+  font-weight: 300;
+  box-shadow: none;
+  color: #c3c3c3;
+  font-size: 16px;
+}
+
+.panelFooter {
+  background-color: #f8f7f5;
+  border-top: 1px solid #e7ebee;
+}
+
+.btnWarning {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.bioGraphHeading {
+  background: var(--color-primary);
+  color: #fff;
+  text-align: center;
+  font-style: italic;
+  padding: 40px 110px;
+  border-radius: 4px 4px 0 0;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.bioGraphInfo {
+  color: #89817e;
+}
+
+.bioGraphInfo h1 {
+  font-size: 22px;
+  font-weight: 300;
+  margin: 0 0 20px;
+}
+
+.bioRow {
+  width: 50%;
+  float: left;
+  margin-bottom: 10px;
+  padding: 0 15px;
+}
+
+.bioRow p span {
+  width: 100px;
+  display: inline-block;
+}
+
+/* Additional styles can be added for projects and other elements */

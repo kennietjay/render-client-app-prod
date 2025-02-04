@@ -1,0 +1,318 @@
+.panel {
+  color: #797979;
+  font-size: 1.4rem;
+  font-weight: 300;
+}
+
+.bioGraphInfo {
+  padding: 1.6rem;
+}
+
+.bioGraphInfo h3 {
+  padding: 2.4rem 0;
+  color: var(--color-primary);
+}
+
+.loanOverview {
+  margin-bottom: 4.8rem;
+}
+
+.loanOverview h3,
+.loanOverview h4 {
+  color: var(--color-primary);
+}
+
+.loanList {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  list-style: none;
+  padding: 0;
+  gap: 2.4rem;
+  margin-bottom: 4.8rem;
+}
+
+.loanListItem {
+  background-color: #f6f8f8;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 1.6rem;
+  border-radius: 1rem;
+}
+
+.activeLoan {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media screen and (max-width: 50rem) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+}
+
+.activeLoan .details {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+}
+
+.activeLoan .details i:global(.fa-check) {
+  color: var(--color-primary);
+  font-size: 2rem;
+  padding: 3.4rem;
+  background-color: #ecf0f1;
+  border-radius: 1rem;
+}
+
+.status {
+  color: var(--color-primary);
+}
+
+.loanAmount {
+  font-size: 2.6rem;
+}
+
+/* Table */
+/* Table styles */
+.customerLoanTable {
+  border-spacing: 1rem;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.customerLoanTable td,
+.customerLoanTable th {
+  padding-left: 1rem;
+  text-align: left;
+}
+
+.customerLoanTable td.l {
+  text-align: right;
+}
+
+.customerLoanTable td.c,
+.customerLoanTable th.c {
+  text-align: center;
+}
+
+.customerLoanTable td.r,
+.customerLoanTable th.r {
+  text-align: center;
+}
+
+.customerLoanTable thead tr {
+  height: 6rem;
+  background: #c5cef0;
+  font-size: 1.6rem;
+}
+
+.customerLoanTable tbody tr {
+  height: 4.8rem;
+  border-bottom: 0.01rem solid #dedede;
+}
+
+.customerLoanTable tbody tr:last-child {
+  border: 0;
+}
+
+/* Responsive styling */
+@media screen and (max-width: 45rem) {
+  .customerLoanTable {
+    display: block;
+  }
+
+  .customerLoanTable > *,
+  .customerLoanTable tr,
+  .customerLoanTable td,
+  .customerLoanTable th {
+    display: block;
+  }
+
+  .customerLoanTable thead {
+    display: none;
+  }
+
+  .customerLoanTable tbody tr {
+    height: auto;
+    padding: 0.8rem 0;
+  }
+
+  .customerLoanTable tbody tr td {
+    padding-left: 45%;
+    margin-bottom: 1.2rem;
+    position: relative;
+  }
+
+  .customerLoanTable tbody tr td:last-child {
+    margin-top: 0;
+  }
+
+  .customerLoanTable tbody tr td:before {
+    position: absolute;
+    font-weight: 200;
+    width: 40%;
+    left: 1rem;
+    top: 0;
+  }
+
+  .customerLoanTable tbody tr td:nth-child(1):before {
+    content: "Customer";
+  }
+
+  .customerLoanTable tbody tr td:nth-child(2):before {
+    content: "Loan";
+  }
+
+  .customerLoanTable tbody tr td:nth-child(3):before {
+    content: "Type";
+  }
+
+  .customerLoanTable tbody tr td:nth-child(4):before {
+    content: "Status";
+  }
+
+  .customerLoanTable tbody tr td:nth-child(5):before {
+    content: "Payment";
+  }
+}
+
+.view {
+  display: flex;
+  justify-content: center;
+  color: var(--color-primary);
+  padding: 2rem;
+  transition: 0.3s ease-in;
+  background-color: rgba(245, 245, 245, 0.6);
+}
+
+.view.viewActions {
+  cursor: pointer;
+}
+.view.viewActions:hover {
+  background-color: #ecf0f1;
+}
+
+/*  */
+.modalContent {
+  background: white;
+  padding: 2.4rem;
+  border-radius: 1rem;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h2 {
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.saveButton,
+.cancelButton,
+.editButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.saveButton {
+  background: #4caf50;
+  color: white;
+}
+
+.cancelButton {
+  background: #f44336;
+  color: white;
+}
+
+.editButton {
+  background: #007bff;
+  color: white;
+}
+
+.contactInput {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3.6rem;
+  @media screen and (max-width: 40rem) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.inputControl {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputControl label {
+  font-size: 1.4rem;
+}
+
+.inputControl input {
+  background-color: #f7f7f7;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+@media screen and (max-width: 40rem) {
+  .loanList {
+    gap: 1.4rem;
+    margin-bottom: 2.8rem;
+  }
+
+  .loanListItem {
+    background-color: #f6f8f8;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-radius: 1rem;
+  }
+
+  .activeLoan .details {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  .activeLoan .details i:global(.fa-check) {
+    color: var(--color-primary);
+    font-size: 2rem;
+    padding: 3.4rem;
+    background-color: #ecf0f1;
+    border-radius: 1rem;
+  }
+
+  .status {
+    color: var(--color-primary);
+  }
+
+  .loanAmount {
+    font-size: 2.6rem;
+  }
+}

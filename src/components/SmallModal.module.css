@@ -1,0 +1,49 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.modal {
+  background-color: #fff;
+  border-radius: 0.8rem;
+  box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  max-width: 50rem; /* Adjusted for a different max-width */
+  overflow: scroll;
+  padding: 2.4rem;
+}
+
+/* @media screen and (max-width: 40rem) {
+  .overlay {
+    position: fixed;
+    inset: 0;
+    width: 90%;
+    margin: 0 auto;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .modal {
+    background-color: #fff;
+    border-radius: 0.8rem;
+    box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
+    width: 90%;
+    margin: 0 auto;
+    height: auto;
+    max-height: 100%;
+    overflow: scroll;
+    padding: 2.4rem;
+  }
+} */

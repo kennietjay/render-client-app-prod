@@ -1,0 +1,255 @@
+/* Main Container */
+.aboutUsContainer {
+  padding: 1rem 0 6.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6.4rem;
+}
+
+.aboutHeader {
+  height: 35rem;
+  background-image: url("/images/img_loan_tip.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+/* Hero Section */
+.heroSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.heroSection h3 {
+  color: var(--color-primary);
+}
+
+.heroSection p {
+  line-height: 1.6;
+  margin: 0 auto;
+}
+
+/* Content Section */
+.contentSection {
+  display: grid;
+  align-items: center;
+}
+
+.textSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.missionVision {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 2.4rem;
+  width: 100%;
+}
+
+.missionVision div {
+  background-color: #ebeefa;
+  gap: 2.4rem;
+  padding: 4.4rem 2.4rem;
+  border-radius: 1rem;
+}
+
+.coreValues {
+  padding: 2.4rem;
+  border-radius: 1rem;
+  background-color: var(--color-primary-darker);
+  color: var(--color-text-white);
+}
+
+.textSection h3 {
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.textSection p {
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.textSection ul {
+  list-style: none;
+  padding: 0;
+}
+
+.textSection li {
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.textSection li strong {
+  color: var(--color-text-white);
+}
+
+.coreValues h3 {
+  color: var(--color-text-white);
+  margin-bottom: 1.8rem;
+}
+
+/* Image Section */
+.aboutImage {
+  width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 76.8rem) {
+  .contentSection {
+    grid-template-columns: 1fr;
+  }
+
+  .imageSection {
+    margin-top: 2rem;
+  }
+}
+
+/*
+Meet the team
+*/
+.teamSection {
+  background-color: #f0f2fb;
+  padding: 2.4rem;
+  border-radius: 1rem;
+}
+
+.teamSection h3 {
+  color: var(--color-primary);
+}
+
+.teamContainer {
+  text-align: center;
+  border-radius: 1rem;
+}
+
+.heading {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+  width: 100%;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 0.8rem;
+  box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 30rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0.8rem 1.2rem rgba(0, 0, 0, 0.2);
+}
+
+.image {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.name {
+  margin-bottom: 0.5rem;
+  color: var(--color-primary);
+}
+
+.card .role {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.bio {
+  font-size: 1.4rem;
+}
+
+/*  
+Accreditation and affiliation
+*/
+.accredation {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.accredation h3 {
+  color: var(--color-primary);
+}
+
+.accredation ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.accredation ul li strong {
+  color: var(--color-primary);
+}
+
+/* Partnerships */
+.partnerships {
+  padding: 2rem;
+  margin: 2rem 0;
+  border-radius: 10px;
+}
+
+.partnerships h3 {
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.partnerships h4 {
+  margin: 1.5rem 0 1rem;
+}
+
+.partnerships ul {
+  margin-left: 1.5rem;
+  list-style-type: disc;
+}
+
+.partnerships ul li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.partnerships ul li strong {
+  color: var(--color-primary);
+}
+
+.partnerships p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.ctaButton {
+  border: 0.11rem solid var(--color-primary);
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+.ctaButton:hover {
+  background-color: #031a81;
+  color: var(--color-text-white);
+}

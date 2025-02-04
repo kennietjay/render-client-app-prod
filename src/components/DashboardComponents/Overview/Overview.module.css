@@ -1,0 +1,444 @@
+.overviewContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.userName {
+  font-size: 1.8rem;
+}
+
+.statOverview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
+  gap: 2.8rem;
+  @media screen and (max-width: 40rem) {
+    grid-template-columns: repeat(auto-fit, minmax(35rem, 1fr));
+  }
+}
+
+.statContainer {
+  padding: 1.6rem 2.4rem;
+  border-radius: 0.8rem;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statContent {
+  display: flex;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.statTitle {
+  font-weight: 200;
+}
+
+.stat {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stat p {
+  font-size: 2rem;
+  color: var(--color-primary);
+}
+
+.stat span {
+  background-color: #5e78d5;
+  font-size: 0.9rem;
+  margin: 0;
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+  color: var(--color-text-white);
+}
+
+.statContainer i:global(.fa-solid) {
+  font-size: 3.6rem;
+  opacity: 0.5;
+  color: #5e78d5;
+}
+
+/* 
+Charts Styles
+===================================================================
+*/
+/* Parent grid container */
+.gridContainer {
+  display: grid;
+  grid-template-columns: 3fr 2fr; /* 3:2 ratio */
+  gap: 2.4rem;
+  height: 100%; /* Full height of parent */
+  @media screen and (max-width: 68rem) {
+    grid-template-columns: 1fr; /* 3:2 ratio */
+  }
+}
+
+.gridContainerReversed {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 2.4rem;
+  height: 100%;
+  @media screen and (max-width: 68rem) {
+    grid-template-columns: 1fr; /* 3:2 ratio */
+  }
+}
+
+/* Grid items (Bar and Doughnut charts) */
+.gridItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 0.8rem;
+  padding: 1rem;
+  position: relative;
+}
+
+.chartContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2.4rem;
+  border-radius: 8rem;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 1.6rem;
+  padding-bottom: 1rem;
+  border-bottom: 0.1rem solid #ddd;
+}
+
+.chartContent {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.chartSvg {
+  width: 100%;
+  height: auto;
+  border-radius: 0.8rem;
+  overflow: visible;
+  margin-top: 2.4rem;
+}
+
+.doughnut,
+.barChart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 1rem;
+  position: relative;
+  margin-top: 4.4rem;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.barChart {
+  margin-bottom: -2rem;
+  color: #4f6bd1;
+  color: #263c8d;
+  color: #9babe5;
+  color: #3656ca;
+}
+
+.lineChartContainer {
+  margin-bottom: -2rem;
+}
+
+.stackChart {
+  width: 100%;
+}
+
+.subTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.legendStyle {
+  display: flex;
+  align-items: center;
+}
+
+.segmentStyle {
+  width: 2.4rem;
+  height: 1.4rem;
+  margin-right: 0.5rem;
+}
+
+.segmentLabels {
+  font-size: 1.4rem;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.legendContainer {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0.8rem;
+  padding: 1rem;
+}
+
+.legendContent {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.legend {
+  width: 2.4rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+}
+
+.legendLabel {
+  font-size: 1rem;
+}
+
+/* 
+Media queries
+*/
+
+@media screen and (max-width: 40rem) {
+  .overviewContainer {
+    gap: 1.2rem;
+  }
+
+  .userName {
+    margin-top: 1.2rem;
+    font-size: 1.4rem;
+  }
+
+  .statOverview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
+    gap: 1.4rem;
+    @media screen and (max-width: 40rem) {
+      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    }
+  }
+
+  .statContainer {
+    padding: 1.2rem 1.4rem;
+    border-radius: 0.6rem;
+    background-color: #fff;
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+  }
+
+  .statContent {
+    display: flex;
+    gap: 0.4rem;
+    position: relative;
+  }
+
+  .statTitle {
+    font-weight: 200;
+  }
+
+  .stat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .stat p {
+    font-size: 1.4rem;
+    color: var(--color-primary);
+  }
+
+  .stat span {
+    background-color: #5e78d5;
+    font-size: 0.7rem;
+    margin: 0;
+    padding: 0.4rem;
+    border-radius: 0.4rem;
+    color: var(--color-text-white);
+  }
+
+  .statContainer i:global(.fa-solid) {
+    font-size: 1.8rem;
+    opacity: 0.5;
+    color: #5e78d5;
+  }
+
+  /* 
+  Charts Styles
+  ===================================================================
+  */
+  /* Parent grid container */
+  .gridContainer {
+    display: grid;
+    grid-template-columns: 3fr 2fr; /* 3:2 ratio */
+    gap: 1.8rem;
+    height: 100%; /* Full height of parent */
+    @media screen and (max-width: 68rem) {
+      grid-template-columns: 1fr; /* 3:2 ratio */
+    }
+  }
+
+  .gridContainerReversed {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 1.4rem;
+    height: 100%;
+    @media screen and (max-width: 68rem) {
+      grid-template-columns: 1fr; /* 3:2 ratio */
+    }
+  }
+
+  /* Grid items (Bar and Doughnut charts) */
+  .gridItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 0.6rem;
+    padding: 0.5rem;
+    position: relative;
+  }
+
+  .chartContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.6rem;
+    border-radius: 8rem;
+    box-sizing: border-box;
+  }
+
+  .title {
+    font-size: 1.4rem;
+    padding-bottom: 1rem;
+    border-bottom: 0.1rem solid #ddd;
+  }
+
+  .chartContent {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .chartSvg {
+    width: 100%;
+    height: auto;
+    border-radius: 0.8rem;
+    overflow: visible;
+    margin-top: 2.4rem;
+  }
+
+  .doughnut,
+  .barChart {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 1rem;
+    position: relative;
+    margin-top: 4.4rem;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  .barChart {
+    margin-bottom: -2rem;
+    color: #4f6bd1;
+    color: #263c8d;
+    color: #9babe5;
+    color: #3656ca;
+  }
+
+  .lineChartContainer {
+    margin-bottom: -2rem;
+  }
+
+  .stackChart {
+    width: 100%;
+  }
+
+  .subTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .legendStyle {
+    display: flex;
+    align-items: center;
+  }
+
+  .segmentStyle {
+    width: 2.4rem;
+    height: 1.4rem;
+    margin-right: 0.5rem;
+  }
+
+  .segmentLabels {
+    font-size: 1rem;
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
+  .legendContainer {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0.8rem;
+    padding: 1.2rem;
+  }
+
+  .legendContent {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.3rem;
+  }
+
+  .legend {
+    width: 1.2rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+  }
+
+  .legendLabel {
+    font-size: 0.6rem;
+  }
+}

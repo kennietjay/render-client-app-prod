@@ -1,0 +1,867 @@
+.homeContainer {
+  /*  */
+  color: var(--color-text-muted);
+}
+
+/* 
+Hero Section
+*/
+.heroSection {
+  color: var(--color-text-white);
+  background: -webkit-linear-gradient(
+    180deg,
+    var(--color-primary-darker),
+    var(--color-primary) 40%,
+    #ffffff 40%
+  );
+  background: -o-linear-gradient(
+    180deg,
+    var(--color-primary-darker),
+    var(--color-primary) 40%,
+    #ffffff 40%
+  );
+  background: -moz-linear-gradient(
+    180deg,
+    var(--color-primary-darker),
+    var(--color-primary) 40%,
+    #ffffff 40%
+  );
+  background: linear-gradient(
+    180deg,
+    var(--color-primary-darker),
+    var(--color-primary) 40%,
+    #ffffff 40%
+  );
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 6.4rem;
+}
+
+.herosHeading {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 4.8rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.container::after {
+  border-bottom: 0.4rem solid var(--color-primary);
+  content: "";
+  position: absolute;
+  width: 20%;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.container .innerContainer {
+  margin: 0 auto;
+  background-color: var(--color-primary-dark);
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  @media screen and (max-width: 62rem) {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+}
+
+.innerPitchBubble span {
+  @media screen and (max-width: 40rem) {
+    font-size: 1.2rem;
+  }
+}
+
+.herosMain {
+  border-top-left-radius: 2rem;
+  background-size: contain;
+  background-position: center;
+  object-fit: cover;
+  background-image: linear-gradient(
+      90deg,
+      rgba(2, 22, 95, 1),
+      rgba(4, 44, 189, 0.4)
+    ),
+    url("/images/img_heros_bg.jpg");
+  display: grid;
+  grid-template-columns: 1.8fr 1.2fr;
+  height: 45rem;
+}
+
+@media screen and (max-width: 62rem) {
+  .herosMain {
+    border-top-right-radius: 2rem;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 40rem) {
+  .herosMain {
+    border-top-right-radius: 2rem;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+}
+
+.herosLinks {
+  display: inline-flex;
+  background-color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.herosDetails {
+  padding: 3.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.herosMain .herosImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.herosAside {
+  background-color: #02124c;
+  border-top-right-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.herosAside div button,
+.herosDetails div button {
+  margin: 2.4rem;
+}
+
+.herosAside div button:hover,
+.herosDetails div button:hover {
+  background-color: #cdd5f2;
+}
+
+.herosSubHeading {
+  color: #b4c0eb;
+}
+
+.herosServices {
+  height: 100%;
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  background-color: #f8f8f9;
+  color: var(--color-text);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1rem;
+  padding: 3.2rem 2.4rem;
+  width: 100%;
+}
+
+.heroServiceHeader {
+  color: var(--color-primary);
+}
+
+.herosDetails ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.herosDetails ul li::before {
+  content: "✓";
+  margin-right: 1rem;
+  padding: 0.4rem;
+  border-radius: 5rem;
+  background-color: var(--color-primary-dark);
+}
+
+.herosDetails ul li {
+  padding: 0.4rem;
+}
+
+.heroService {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2.4rem;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+.heroService i {
+  color: var(--color-primary);
+  font-size: 4.8rem;
+  margin-bottom: 2rem;
+}
+
+/* 
+Sub-Section
+*/
+.subContent {
+  padding: 4.8rem 0;
+  margin-top: 2.4rem;
+}
+
+.subContent h3 {
+  color: var(--color-primary);
+}
+
+/* 
+Affiliation 
+*/
+.affiliation h3 {
+  text-align: center;
+}
+
+.logos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  justify-content: center;
+  width: 100%;
+}
+
+.logos div {
+  display: flex;
+  justify-content: center;
+}
+
+.logos div img {
+  width: 15rem;
+  height: 12rem;
+  opacity: 50%;
+  filter: brightness(0);
+  filter: grayscale(100%);
+}
+
+/* 
+Why Easy Life Microfinance
+*/
+.whyEasyLifeContent {
+  padding: 6.4rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.whyEasyLifeHeading {
+  text-align: center;
+  color: var(--color-primary);
+}
+
+.whyEasyLifeSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  gap: 2.4rem;
+  width: 100%;
+}
+
+.whyEasyLifeSection .whyEasyLifeSubSection {
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  background-color: #f0f2fb;
+  padding: 2.4rem;
+}
+
+.whyEasyLifeSubSection h1 {
+  color: var(--color-primary);
+}
+
+.whyEasyLifeSection .logos {
+  display: flex;
+  justify-content: center;
+  gap: 1.8rem;
+}
+
+.whyEasyLifeSection .logos i:global(.fa-user),
+.whyEasyLifeSection .logos i:global(.fa-arrow-right-arrow-left),
+.whyEasyLifeSection .logos i:global(.fa-landmark) {
+  font-size: 1.8rem;
+  padding: 1.8rem;
+  border-radius: 50%;
+}
+
+.whyEasyLifeSection .logos i:global(.fa-user),
+.whyEasyLifeSection .logos i:global(.fa-landmark) {
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
+}
+
+.whyEasyLifeSection .logos i:global(.fa-landmark) {
+  background-color: var(--color-primary-darker);
+}
+
+.whyEasyLifeSection .logos i:global(.fa-arrow-right-arrow-left) {
+  font-size: 2.6rem;
+  color: var(--color-text-muted);
+}
+
+.whyEasyLifeBottomSection {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  background-color: #f0f2fb;
+  border-radius: 1.6rem;
+  @media screen and (max-width: 68rem) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.whyEasyLifeBottomSection .details {
+  display: flex;
+  flex-direction: column;
+  padding: 4.8rem;
+  justify-content: center;
+}
+.whyEasyLifeBottomSection .details .heading {
+  color: var(--color-primary);
+}
+
+.bottomSection {
+  position: relative;
+  height: 45rem;
+}
+
+.graph {
+  width: 90%;
+  position: absolute;
+  color: #1b317f;
+  background-color: #ffffff;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  bottom: 0%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+/* How it works */
+.howItWorks {
+  background-color: var(--color-primary-darker);
+  background-color: #02155a;
+  padding: 6.4rem 0;
+}
+
+.content .steps {
+  color: var(--color-text-white);
+}
+
+.content .howItWorksHeading {
+  color: var(--color-text-white);
+  max-width: 60%;
+  margin-bottom: 2rem;
+  @media screen and (max-width: 58rem) {
+    max-width: 80%;
+  }
+}
+
+.content ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 2.4rem;
+  color: var(--color-text-white);
+  padding: 1.4rem;
+  /* width: 100%; */
+}
+
+.content ul li {
+  background-color: #1b317f;
+  background-color: var(--color-primary-darker);
+  border-radius: 1.6rem;
+  padding: 2.4rem;
+}
+
+.content ul li h1 {
+  font-size: 4.8em;
+  font-weight: 700;
+  line-height: 1.6;
+  text-align: left;
+  position: relative;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgb(62, 62, 62) 0%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to bottom, rgb(62, 62, 62) 0%, transparent 100%);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  @media screen and (max-width: 68rem) {
+    font-size: 3.8em;
+  }
+  @media screen and (max-width: 40rem) {
+    font-size: 2.8em;
+  }
+}
+
+/* 
+Statistics
+*/
+.statContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.statContent h4 {
+  color: var(--color-primary);
+}
+
+.statHeading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: var(--color-primary);
+}
+
+.statHeading h5 {
+  color: var(--color-primary);
+}
+
+.statHeading p {
+  width: 75%;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  gap: 2.4rem;
+  text-align: center;
+  width: 100%;
+}
+
+.choosePlan {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  gap: 2.4rem;
+  width: 100%;
+}
+
+.statdetails h1 {
+  color: var(--color-primary);
+}
+
+.statdetails .statDesc {
+  width: 75%;
+  margin: 0 auto;
+}
+
+.salaryLoan,
+.personalLoan,
+.groupLoan {
+  background-color: rgba(2, 21, 90);
+  padding: 2.4rem;
+  color: var(--color-text-white);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.salaryLoan ul,
+.personalLoan ul,
+.groupLoan ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.personalLoan {
+  background-color: rgba(4, 44, 189, 0.7);
+}
+.choosePlanHeading {
+  color: var(--color-primary);
+  padding: 0;
+  margin: 0;
+}
+.salaryLoan h4 {
+  color: var(--color-text-white);
+}
+
+.groupLoan {
+  background-color: #e1e6f7;
+  color: var(--color-text);
+}
+
+/* 
+Services
+*/
+.services {
+  padding: 2.4rem;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
+  border-radius: 1.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3.6rem;
+}
+
+.servicesHeading {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  width: 100%;
+}
+
+.headerDescription {
+  width: 70%;
+  justify-content: center;
+  align-items: center;
+  padding-right: 2rem;
+}
+
+.servicesHeader p {
+  color: var(--color-primary);
+}
+
+.servicesHeader {
+  width: 60%;
+}
+
+.srevicesTypes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 4.8rem;
+  width: 100%;
+}
+
+.moneyTransfers,
+.edsa,
+.rokelKopor {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  line-height: 1.6;
+  padding: 0 1rem;
+}
+
+.moneyTransfers h4,
+.edsa h4,
+.rokelKopor h4 {
+  color: var(--color-primary);
+}
+
+.moneyTransfers i:global(.fa-rotate),
+.rokelKopor i:global(.fa-building-columns),
+.edsa i:global(.fa-lightbulb) {
+  align-items: center;
+  justify-content: center;
+  font-size: 3.4rem;
+  padding: 1rem;
+  border-radius: 50%;
+  color: var(--color-primary);
+}
+
+/* 
+Raffle Draw
+*/
+.raffleDraw {
+  background-color: #edefee;
+  border-radius: 1rem;
+  padding: 1.8rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 2.4rem;
+  width: 100%;
+}
+
+.raffleDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  padding: 2.4rem;
+  padding-left: 0;
+  width: 100%;
+  line-height: 1.6;
+}
+
+.raffleTips {
+  margin-top: 2.4rem;
+  padding: 1.2rem;
+}
+
+.raffleTips p {
+  color: var(--color-primary);
+}
+
+.raffleDraw img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+.raffleDetails a:link,
+.raffleDetails a:visited {
+  border: 0.1rem solid var(--color-primary);
+  padding: 0.6rem 1rem;
+  border-radius: 1rem;
+  text-align: center;
+}
+
+.raffleDetails a:hover,
+.raffleDetails a:active {
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
+}
+
+/* 
+Loan Knowledge
+*/
+.loanKnowledge {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  gap: 2.8rem;
+  width: 100%;
+}
+
+.loanKnowledge h3,
+.loanKnowledge h4 {
+  color: var(--color-primary);
+}
+
+.loanTips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  border-radius: 1rem;
+  background-color: #e6eaf8;
+  gap: 2.4rem;
+  width: 100%;
+}
+
+.loanTips .loanTipsDetails {
+  padding: 2.8rem;
+  line-height: 1.6;
+}
+
+.financialEducation {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.financialEducation .heading {
+  color: var(--color-primary);
+  margin: 0;
+  padding: 0;
+}
+
+.financialEducation a:link,
+.financialEducation a:visited {
+  border: 0.1rem solid var(--color-primary);
+  padding: 0.6rem 1rem;
+  border-radius: 1rem;
+  text-align: center;
+}
+
+.financialEducation a:hover,
+.financialEducation a:active {
+  border: 0.1rem solid var(--color-primary);
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
+}
+
+.loanTipsImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+/* 
+Testimonials
+*/
+.testimonials {
+  background-color: #e6eaf8;
+  padding: 4.8rem 0;
+}
+
+.testimonials h3 {
+  color: var(--color-primary);
+}
+
+.testimonialContainer {
+  margin-top: 2.4rem;
+  display: flex;
+  gap: 1.5rem; /* Increased spacing for elegance */
+  overflow-x: auto; /* Horizontal scrolling for overflow content */
+  padding: 2rem;
+  scroll-behavior: smooth; /* Smooth scrolling for horizontal overflow */
+}
+
+.testimonialCard {
+  flex: 0 0 32rem; /* Slightly wider card for more content */
+  height: 28rem; /* Increased height for elegance */
+  background: linear-gradient(145deg, #ffffff, #f0f0f0); /* Subtle gradient */
+  border-radius: 12px; /* Smoother corners */
+  padding: 2rem;
+  box-shadow: 0.6rem 0.6rem 1.2rem rgba(0, 0, 0, 0.1),
+    -0.6rem -0.6rem 1.2rem rgba(255, 255, 255, 0.8); /* Elegant shadow */
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  text-align: center;
+}
+
+.testimonialCard:hover {
+  transform: translateY(-0.8rem); /* Enhanced lift effect on hover */
+  box-shadow: 0.8rem 0.8rem 1.6rem rgba(0, 0, 0, 0.15),
+    -0.8rem -0.8rem 1.6rem rgba(255, 255, 255, 0.85); /* Stronger shadow on hover */
+}
+
+.quote {
+  font-style: italic;
+  color: #333;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.author {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--color-primary); /* Use an accent color for the author */
+}
+
+.decoration {
+  position: absolute;
+  top: -5rem;
+  left: -5rem;
+  width: 15rem;
+  height: 15rem;
+  background: rgba(0, 123, 255, 0.1); /* Light accent background */
+  border-radius: 50%;
+  z-index: -1; /* Push behind content */
+  animation: float 6s ease-in-out infinite; /* Smooth animation */
+}
+
+.decoration2 {
+  position: absolute;
+  bottom: -5rem;
+  right: -5rem;
+  width: 12rem;
+  height: 12rem;
+  background: rgba(0, 123, 255, 0.15); /* Slightly stronger accent */
+  border-radius: 50%;
+  z-index: -1;
+  animation: float 6s ease-in-out infinite alternate; /* Alternate animation */
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* 
+Features
+*/
+
+.featuresList {
+  padding-left: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 4.8rem;
+  width: 100%;
+}
+
+.featureDetails p {
+  line-height: 1.6;
+}
+
+.featureDetails i {
+  color: var(--color-primary);
+  font-size: 3rem;
+  padding: 2rem;
+  border-radius: 5rem;
+  background-color: #e6eaf9;
+  margin-bottom: 1.4rem;
+}
+
+/* 
+Call To Action
+*/
+.callToAction {
+  background-color: var(--color-primary-darker);
+  color: var(--color-text-white);
+  padding: 2.4rem;
+  border-radius: 1rem;
+  /* color: #8296de; */
+}
+.callToAction h3 {
+  color: #e6eaf8;
+  font-weight: 600;
+}
+
+.callToActionContent {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  gap: 2.6rem;
+  width: 100%;
+}
+
+.callToActionContent .btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.8rem;
+  @media screen and (max-width: 40rem) {
+    flex-direction: column;
+  }
+}
+
+.callToActionContent .btns .startBtn {
+  padding: 0.8rem 1rem;
+  background-color: #fff;
+  border: 0.1rem solid #8296de;
+  border-radius: 1rem;
+}
+
+.callToActionContent .btns .startBtn:hover {
+  border: 0.1rem solid #8296de;
+  background-color: var(--color-primary-darker);
+  color: var(--color-text-white);
+}
+
+.callToActionContent .btns .learnMoreBtn {
+  border: 0.1rem solid #8296de;
+  color: var(--color-text-white);
+  border-radius: 1rem;
+  padding: 0.8rem 1rem;
+}
+
+.callToActionContent .btns .learnMoreBtn:hover {
+  border: 0.1rem solid #8296de;
+  color: var(--color-primary);
+  background-color: #fff;
+}
+
+.callToActionDescription {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}

@@ -1,0 +1,114 @@
+.panel {
+  color: #797979;
+  background-color: #fff;
+  border-radius: 1rem;
+  font-size: 1.4rem;
+  font-weight: 300;
+  padding: 2rem;
+}
+
+.bioGraphInfo h1 {
+  font-size: 2.2rem;
+  font-weight: 400;
+  padding: 2.4rem 1.4rem 0;
+}
+
+.bioInfoHeading {
+  display: flex;
+  gap: 2.4rem;
+  align-items: center;
+  padding: 1.4rem;
+}
+
+.bioInfoHeading button {
+  align-self: flex-end;
+}
+
+.bioDetails {
+  padding: 2.4rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  margin: 2.2rem 0;
+}
+
+.bioDetail {
+  padding: 1.4rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.4rem;
+  border-radius: 1rem;
+  @media screen and (max-width: 60rem) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bioRow {
+  margin-bottom: 1rem;
+  padding: 0 1.6rem;
+}
+
+.bioRow p span {
+  width: 12rem;
+  display: inline-block;
+}
+
+/*  */
+.submitBtns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2.4rem;
+  margin-top: 1.6rem;
+}
+
+.addBtns {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+/* Form */
+.contactDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contactInput {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3.6rem;
+  @media screen and (max-width: 40rem) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.inputControl {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputControl label {
+  font-size: 1.4rem;
+}
+
+.inputControl input {
+  background-color: #f7f7f7;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+/*  */
+.guarantorDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.noDataAlert {
+  padding: 1.6rem;
+  font-size: 1.6rem;
+}

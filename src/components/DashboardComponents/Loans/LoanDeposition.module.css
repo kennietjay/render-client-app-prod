@@ -1,0 +1,122 @@
+/*  */
+.header {
+  color: var(--color-primary);
+}
+.deposition .container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+  gap: 1.6rem;
+  padding: 1.6rem 0;
+}
+
+.paginationContainer {
+  background-color: #fff;
+  width: 100%;
+  padding: 1.2rem 1rem;
+  border-radius: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .deposition .container {
+    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .deposition .container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/*  */
+.card {
+  background-color: #ffffff;
+  border: 0.1rem solid #e0e0e0;
+  border-radius: 0.8rem;
+  padding: 1.6rem;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-0.4rem);
+  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
+}
+
+.title {
+  color: var(--color-primary);
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+}
+
+/* Status Indicator */
+.statusWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.statusDot {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  margin-right: 0.8rem;
+}
+
+.statusPaid {
+  background-color: #1b921e; /* Green for Paid */
+}
+
+.statusApproved {
+  background-color: #2196f3; /* Blue for Approved */
+}
+
+.statusApplied {
+  background-color: #ffa500; /* Bright Orange for Applied */
+}
+
+.statusRejected {
+  background-color: #ff2a00; /* Purple for Paying */
+}
+
+.statusReviewing {
+  background-color: #bfa287; /* Light Blue for Processed */
+}
+
+.statusClosed {
+  background-color: #6d68ff; /* Bright Red for Rejected */
+}
+
+.statusProcessing {
+  background-color: #86ee0f; /* Light Green for Processing */
+}
+
+.statusPaying {
+  background-color: #673ab7; /* Purple for Paying */
+}
+
+.statusCanceled {
+  background-color: #6c757d; /* Gray for Closed */
+}
+
+.statusProcessed {
+  background-color: #ff00c3; /* Light Blue for Processed */
+}
+
+.status {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+.date {
+  margin-bottom: 0.4rem;
+}
+
+.customer {
+  margin-bottom: 0.4rem;
+}
+
+.amount {
+  font-size: 1.5rem;
+  font-weight: bold;
+}

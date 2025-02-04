@@ -1,0 +1,153 @@
+.loanPage {
+  display: flex;
+  flex-direction: column;
+  transition: margin-right 0.3s ease;
+}
+
+.overviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.userName {
+  font-size: 1.8rem;
+}
+
+.btns {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.btns button {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  gap: 0.4rem;
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
+}
+.btns button:hover {
+  background-color: var(--color-primary-darker);
+  color: var(--color-text-white);
+  transition: ease 0.3s;
+}
+
+/*  */
+.searchBar {
+  background-color: #fff;
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 2.4rem;
+  border-radius: 0.5rem;
+  @media screen and (max-width: 48rem) {
+    flex-direction: column;
+  }
+}
+
+.controlIcons {
+  width: 100%;
+  display: flex;
+  gap: 2.4rem;
+}
+
+.inputField {
+  width: 100%;
+}
+
+.inputField input {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  border: 0.1rem solid #ececec;
+  border-radius: 0.5rem;
+}
+
+.inputField input:focus {
+  border: 0.1rem solid var(--color-primary);
+}
+
+.displayToggle {
+  display: flex;
+  gap: 1.4rem;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.displayToggle div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.displayToggle .imgIcon {
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+}
+.displayToggle .imgIcon img {
+  opacity: 0.4;
+}
+
+.displayToggle .imgIcon:hover {
+  background-color: #eeeeee;
+}
+
+.displayToggle div i:global(.fa-list) {
+  background-color: #eeeeee;
+  font-weight: 600;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  color: var(--color-primary);
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+.filter:hover {
+  background-color: #eeeeee;
+  border-radius: 0.5rem;
+}
+
+.filter select {
+  border: 0.1rem solid #ececec;
+  padding: 0.8rem;
+}
+
+/*  */
+.loanPaymentContainer {
+  background-color: #fff;
+  padding: 2.4rem;
+  border-radius: 1rem;
+}
+
+@media screen and (max-width: 40rem) {
+  .filter select {
+    border: 0.1rem solid #ececec;
+    padding: 0.8rem;
+    font-size: 1.6rem;
+  }
+
+  .btns button {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    gap: 0.4rem;
+  }
+  .btns button:hover {
+    background-color: var(--color-primary-darker);
+    color: var(--color-text-white);
+    transition: ease 0.3s;
+  }
+}

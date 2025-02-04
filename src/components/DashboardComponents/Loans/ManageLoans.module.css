@@ -1,0 +1,261 @@
+.tableContainer {
+  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-y: hidden; /* Prevent vertical scrolling */
+  max-width: 100%; /* Restrict the wrapper to the viewport width */
+  white-space: nowrap; /* Prevent line wrapping inside the table */
+  padding: 0.5rem 0; /* Add some spacing for a better look */
+}
+
+/* Table Root */
+.tableRoot {
+  width: 100%; /* Ensure table stretches full width */
+  border-collapse: collapse; /* Remove gaps between cells */
+  table-layout: auto;
+  padding: 0;
+  margin: 0;
+}
+
+/* Table Header */
+.tableHead {
+  background-color: #f5f5f5;
+}
+
+.tableHeadRow {
+  display: table-row;
+}
+
+.tableHeadCell {
+  text-align: left; /* Align text to the left */
+  padding: 1.2rem; /* Consistent padding with body cells */
+  border-bottom: 0.1rem solid #ddd; /* Subtle bottom border */
+}
+
+/* Table Body */
+.tableBody {
+  background-color: #fff;
+}
+
+.tableRow {
+  transition: background-color 0.3s; /* Hover effect */
+}
+
+.tableRow:hover {
+  background-color: #f9f9f9; /* Light gray on hover */
+}
+
+.tableCell {
+  padding: 1.2rem; /* Match header padding */
+  border-bottom: 0.1rem solid #ddd; /* Subtle bottom border */
+  text-align: left; /* Align text to the left */
+  vertical-align: middle; /* Vertically center text */
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Status Indicator */
+.statusWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.statusDot {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  margin-right: 0.8rem;
+}
+
+.statusPaid {
+  background-color: #1b921e; /* Green for Paid */
+}
+
+.statusApproved {
+  background-color: #2196f3; /* Blue for Approved */
+}
+
+.statusApplied {
+  background-color: #ffa500; /* Bright Orange for Applied */
+}
+
+.statusRejected {
+  background-color: #c8482f; /* Purple for Paying */
+}
+
+.statusReviewing {
+  background-color: #bfa287; /* Light Blue for Processed */
+}
+
+.statusClosed {
+  background-color: #332cff; /* Bright Red for Rejected */
+}
+
+.statusProcessing {
+  background-color: #86ee0f; /* Light Green for Processing */
+}
+
+.statusPaying {
+  background-color: #673ab7; /* Purple for Paying */
+}
+
+.statusCanceled {
+  background-color: #6c757d; /* Gray for Closed */
+}
+
+.statusProcessed {
+  background-color: #f403bc; /* Light Blue for Processed */
+}
+
+/* Button Actions */
+.iconButton {
+  color: #666;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  color: #000;
+}
+
+/*  */
+.paginationCell {
+  padding: 1.6rem; /* Match header padding */
+  text-align: right;
+}
+
+/*  */
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  gap: 2.4rem;
+  font-family: Arial, sans-serif;
+}
+
+.paginationButton i {
+  font-size: 1.8rem;
+}
+
+.paginationButton {
+  padding: 0.8rem 1.6rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.paginationButton:disabled {
+  background-color: #d3d3d3;
+  cursor: not-allowed;
+}
+
+.paginationButton:hover:not(:disabled) {
+  background-color: #d2d2d2;
+  color: var(--color-text-white);
+}
+
+.paginationInfo {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.customer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/*  */
+.viewLoanDetails {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  gap: 3.4rem;
+  padding: 2.4rem;
+}
+
+.viewLoanContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.approval {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.reviews {
+  display: flex;
+  flex-direction: column;
+}
+
+.approval div {
+  display: flex;
+  gap: 2.4rem;
+}
+
+.viewLoanDetails strong {
+  padding-right: 0.5rem;
+}
+
+.sideBarHeader {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-top: 2rem;
+}
+
+/*  */
+.approval {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  /* background-color: #f9f9f9; */
+}
+
+.reviews {
+  display: flex;
+  gap: 2rem;
+}
+
+.reviewItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.reviewButton,
+.finalButton {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.activeButton {
+  background-color: #4caf50;
+  color: white;
+}
+
+.disabledButton {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.finalAction {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}

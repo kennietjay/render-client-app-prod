@@ -1,0 +1,375 @@
+.list li .actionIcon {
+  display: flex;
+  justify-content: end;
+}
+
+.listItemHeader {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 0.2fr 2fr 1fr 1.8fr 1fr 1fr;
+  padding: 1rem 1.4rem;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+.list {
+  gap: 2rem;
+}
+
+.overviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.userName {
+  font-size: 1.8rem;
+}
+
+.btns {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.btns button {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  gap: 0.4rem;
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
+}
+.btns button:hover {
+  background-color: var(--color-primary-darker);
+  color: var(--color-text-white);
+  transition: ease 0.3s;
+}
+
+/*  */
+.profileNav,
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4.8rem;
+}
+
+.userHeading {
+  color: var(--color-text-white);
+  background: var(--color-primary);
+  border-radius: 0.4rem 0.4rem 0 0;
+  padding: 3rem;
+  text-align: center;
+}
+
+.userHeading a {
+  border-radius: 50%;
+  border: 1rem solid rgba(255, 255, 255, 0.3);
+  display: inline-block;
+}
+
+.userHeading img {
+  width: 11.2rem;
+  height: 11.2rem;
+  border-radius: 50%;
+}
+
+.userHeading h1 {
+  font-size: 2.2rem;
+  font-weight: 300;
+  margin: 1rem 0.5rem 0.5rem;
+}
+
+.userHeading p {
+  font-size: 1.2rem;
+}
+
+.bioGraphInfo h1 {
+  font-size: 2.2rem;
+  font-weight: 400;
+  padding: 2.4rem 1.4rem 0;
+}
+
+.bioGraphInfo .noAddressAlert {
+  padding: 1.4rem;
+}
+
+.bioGraphInfo {
+  padding: 1.6rem;
+}
+
+.bioInfoHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.4rem;
+}
+
+.bioInfoHeading button {
+  align-self: flex-end;
+}
+
+.bioDetails {
+  padding: 2.4rem 0 1.4rem;
+  background-color: #fff;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.4rem;
+
+  @media screen and (max-width: 40rem) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bioRow {
+  margin-bottom: 1rem;
+  padding: 0 1.6rem;
+  flex: 1;
+}
+
+.bioRow p span {
+  width: 13rem;
+  display: inline-block;
+}
+
+/*  */
+.guarantorDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.noDataAlert {
+  padding: 1.6rem;
+  font-size: 1.6rem;
+}
+
+/*  */
+.container {
+  color: #797979;
+  font-family: "Open Sans", sans-serif;
+  padding: 0 !important;
+  margin: 0.5rem !important;
+  font-size: 1.4rem;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+}
+
+.formContainer {
+  margin-bottom: 3.6rem;
+}
+
+.row {
+  margin-top: 3rem;
+}
+
+.panel {
+  background-color: #fff;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  padding: 2.4rem;
+}
+
+/* .profileNav, */
+.customerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* 
+Recent or Account
+*/
+.recentServiceUpdates {
+  height: 100%;
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  color: var(--color-text);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  gap: 1rem;
+  padding: 1.4rem;
+}
+
+.recentServiceUpdate {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2.4rem;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+.recentUpdate {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  width: 100%;
+}
+
+.recentUpdate i {
+  color: var(--color-primary);
+  font-size: 3.6rem;
+  padding: 2rem;
+  background-color: #e6eaf8;
+  border-radius: 1rem;
+}
+
+/* 
+Forms
+*/
+.form {
+  padding: 1.4rem;
+}
+
+.contactInput {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  padding: 0.5rem;
+  gap: 4.8rem;
+  @media screen and (max-width: 40rem) {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+}
+
+.contactInput.twoColumns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr;
+  @media screen and (max-width: 48rem) {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+}
+
+.inputControl {
+  display: flex;
+  flex-direction: column;
+}
+
+.submitBtns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2.4rem;
+
+  margin-top: 2.4rem;
+}
+
+.addBtns {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Form */
+.contactDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contactInput {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3.6rem;
+  @media screen and (max-width: 40rem) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.inputControl {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputControl label {
+  font-size: 1.4rem;
+}
+
+.inputControl input {
+  background-color: #f7f7f7;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+/*  */
+.business {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.noDataAlert {
+  padding: 1.6rem;
+  font-size: 1.6rem;
+}
+
+.loanDetailsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2.6rem;
+}
+
+.loanDetailsContent .section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/*  */
+
+.guarantorBioDetails {
+  padding: 2.4rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  margin: 2.2rem 0;
+}
+
+.guarantorBioDetail {
+  padding: 1.4rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.4rem;
+  border-radius: 1rem;
+  @media screen and (max-width: 60rem) {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 40rem) {
+  .panel {
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+    padding: 1.4rem;
+  }
+
+  .bioDetails {
+    padding: 2.4rem 0 1.4rem;
+    background-color: #fff;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.4rem;
+
+    @media screen and (max-width: 40rem) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .bioRow {
+    margin-bottom: 1rem;
+    padding: 0 1.6rem;
+    flex: 1;
+  }
+
+  .bioRow p span {
+    width: 10rem;
+    display: inline-block;
+  }
+}

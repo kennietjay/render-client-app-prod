@@ -1,0 +1,80 @@
+.responseContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.responseBox {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 30px;
+  max-width: 400px;
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.successIcon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+}
+
+.responseTitle {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--color-primary); /* Success green color */
+}
+
+.responseMessage {
+  font-size: 16px;
+  color: #333333;
+  margin-bottom: 20px;
+}
+
+.responseActions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.signInButton {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signInButton:hover {
+  background-color: #43a047;
+}
+
+.closeButton {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.closeButton:hover {
+  background-color: #e53935;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

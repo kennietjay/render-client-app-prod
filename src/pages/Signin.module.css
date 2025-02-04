@@ -1,0 +1,14 @@
+/*  */
+.wrapper {
+  background-image: url("./images/heros-bg.jpg");
+  background-color: var(--color-primary);
+  background-blend-mode: screen;
+  height: 100%;
+  width: 100%;
+  padding: 3.6rem;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

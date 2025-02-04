@@ -1,0 +1,49 @@
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 2rem;
+  line-height: 2.4rem;
+  font-family: "Unbounded", sans-serif;
+  color: var(--color-primary);
+}
+
+.logoContainer img {
+  width: 8rem;
+  height: 100%;
+}
+
+@media screen and (max-width: 62rem) {
+  .logoContainer img {
+    width: 6rem;
+    height: 100%;
+  }
+
+  .logoContainer {
+    font-size: 1.8rem;
+  }
+}
+
+@media screen and (max-width: 40rem) {
+  .logoContainer img {
+    width: 4rem;
+    height: 100%;
+  }
+
+  .logoContainer {
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+  }
+}
+
+@media screen and (max-width: 32rem) {
+  .logoContainer img {
+    width: 4rem;
+    height: 100%;
+  }
+
+  .logoContainer {
+    font-size: 1rem;
+    line-height: 1.6rem;
+  }
+}
