@@ -12,7 +12,6 @@ import LoadingSpinner from "../../LoadingSpinner";
 
 //
 const LoanTable = ({
-  loanData,
   searchResults,
   handleCustomerSubMenuClick,
   handleApproval,
@@ -25,6 +24,8 @@ const LoanTable = ({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedLoan, setSelectedLoan] = useState(null);
 
+  console.log(searchResults);
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const loansPerPage = 10;
@@ -34,6 +35,19 @@ const LoanTable = ({
   const indexOfLastLoan = currentPage * loansPerPage;
   const indexOfFirstLoan = indexOfLastLoan - loansPerPage;
   const currentLoans = searchResults?.slice(indexOfFirstLoan, indexOfLastLoan);
+
+  useEffect(() => {
+    if (contextPayments.length > 0) {
+      setLocalPayments([...contextPayments]); // Ensure UI updates
+    }
+  }, [contextPayments]);
+
+  useEffect(() => {
+    const refreshData = async () => {
+      await getPayments();
+    };
+    refreshData();
+  }, [getPayments]);
 
   // Function to open the sidebar with loan details
   const openSidebar = (loan) => {
@@ -47,22 +61,26 @@ const LoanTable = ({
     setIsSidebarOpen(false);
   };
 
-  useEffect(() => {
-    setLocalPayments(contextPayments); // Sync payments from context
-  }, [contextPayments]);
-
   const refreshPayments = async () => {
-    const updatedPayments = await getPayments(); // Fetch updated data
-    setLocalPayments(updatedPayments);
+    setLoading(true);
+    try {
+      const updatedPayments = await getPayments(); // Fetch updated data
+      setLocalPayments(updatedPayments);
+    } catch (error) {
+      console.error("Error fetching updated payments:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Create a mapping of loan_id to the latest payment
-  const paymentMap = localPayments.reduce((map, payment) => {
-    // Update the map with the latest payment for each loan_id
-    map[payment.loan_id] = {
-      amount: parseFloat(payment.amount), // Current payment amount
-      balance_after: parseFloat(payment.balance_after), // Balance after payment
-    };
+  const paymentMap = localPayments?.reduce((map, payment) => {
+    if (payment?.loan_id) {
+      map[payment.loan_id] = {
+        amount: parseFloat(payment.amount) || 0, // Ensure default values
+        balance_after: parseFloat(payment.balance_after) || 0,
+      };
+    }
     return map;
   }, {});
 
@@ -104,21 +122,21 @@ const LoanTable = ({
                 const {
                   formattedDate: approvalDate,
                   formattedTime: approvalTime,
-                } = formatDateAndTime(loan.approval_date);
+                } = formatDateAndTime(loan?.approval_date);
 
                 const {
                   formattedDate: submissionDate,
                   formattedTime: submissionTime,
-                } = formatDateAndTime(loan.submission_date);
+                } = formatDateAndTime(loan?.submission_date);
 
                 console.log(loan.submission_date);
 
                 //
                 // Retrieve the latest payment details from the mapping
-                const paymentDetails = paymentMap[loan.loan_id] || {
+                const paymentDetails = paymentMap[loan?.loan_id] || {
                   amount: 0,
                   balance_after:
-                    loan.status === "approved" ? loan.total_amount : 0,
+                    loan.status === "approved" ? loan?.total_amount : 0,
                 };
                 const { amount, balance_after } = paymentDetails;
 
@@ -130,7 +148,7 @@ const LoanTable = ({
                         onClick={() => openSidebar(loan)}
                         className={styles.link}
                       >
-                        {loan.loan_id}
+                        {loan?.loan_id}
                       </Link>
                     </td>
                     <td className={styles.tableCell}>
@@ -146,7 +164,7 @@ const LoanTable = ({
                       <div className={styles.statusWrapper}>
                         <div
                           className={`${styles.statusDot} ${
-                            loan.status === "paid"
+                            loan?.status === "paid"
                               ? styles.statusPaid
                               : loan?.status === "approved"
                               ? styles.statusApproved
@@ -167,23 +185,23 @@ const LoanTable = ({
                               : styles.statusProcessed
                           }`}
                         ></div>
-                        {capitalizeWords(loan.status)}
+                        {capitalizeWords(loan?.status)}
                       </div>
                     </td>
                     <td className={styles.tableCell}>
-                      {loan.loan_amount
-                        ? `NLe ${loan.loan_amount.toLocaleString()}`
+                      {loan?.loan_amount
+                        ? `NLe ${loan?.loan_amount.toLocaleString()}`
                         : "N/A"}
                     </td>
 
                     <td className={styles.tableCell}>
-                      {loan.approved_amount
-                        ? `NLe ${loan.approved_amount.toLocaleString()}`
+                      {loan?.approved_amount
+                        ? `NLe ${loan?.approved_amount.toLocaleString()}`
                         : "N/A"}
                     </td>
 
                     <td className={styles.tableCell}>
-                      {loan.approval_date ? (
+                      {loan?.approval_date ? (
                         <div className={styles.approvalDate}>
                           <div className={styles.date}>{approvalDate}</div>
                           <div className={styles.time}>{approvalTime}</div>
@@ -194,20 +212,20 @@ const LoanTable = ({
                     </td>
 
                     <td className={styles.tableCell}>
-                      {loan.total_amount
-                        ? `NLe ${loan.total_amount.toLocaleString()}`
+                      {loan?.total_amount
+                        ? `NLe ${loan?.total_amount.toLocaleString()}`
                         : "N/A"}
                     </td>
 
                     {/* Display the latest payment balance_after */}
                     <td className={styles.tableCell}>
                       {balance_after
-                        ? `NLe ${balance_after.toLocaleString()}`
+                        ? `NLe ${balance_after?.toLocaleString()}`
                         : "NLe 0"}
                     </td>
 
                     <td className={styles.tableCell}>
-                      {amount ? `NLe ${amount.toLocaleString()}` : `NLe 0`}
+                      {amount ? `NLe ${amount?.toLocaleString()}` : `NLe 0`}
                     </td>
 
                     <td className={styles.tableCell}>
@@ -263,7 +281,13 @@ const LoanTable = ({
 export default LoanTable;
 
 //
-function ManageLoan({ loan, isModalOpen, closeModal, handleApproval }) {
+function ManageLoan({
+  loan,
+  isModalOpen,
+  closeModal,
+  handleApproval,
+  refreshPayments,
+}) {
   const { formattedDate: approvalDate } = formatDateAndTime(loan.approval_date);
   const { formattedDate: firstReviewDate } = formatDateAndTime(
     loan.first_review_date

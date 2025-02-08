@@ -157,6 +157,8 @@ function LoanProvider({ children }) {
         headers: getHeaders(),
       });
 
+      console.log(response.data.loan);
+
       setLoan(response?.data?.loan || null);
       return response?.data?.loan;
     } catch (err) {
@@ -175,7 +177,7 @@ function LoanProvider({ children }) {
         headers: getHeaders(),
       });
       setLoan(response?.data?.loan);
-      return response?.data;
+      return response?.data?.loan;
     } catch (err) {
       return handleError(err);
     } finally {

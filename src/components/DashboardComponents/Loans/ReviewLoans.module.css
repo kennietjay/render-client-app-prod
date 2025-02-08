@@ -176,6 +176,18 @@
   padding: 2.4rem;
 }
 
+.viewLoanDetails div p {
+  display: flex;
+  justify-content: space-between;
+}
+
+.viewLoanDetails div p input {
+  box-sizing: border-box;
+  padding: 0.6rem 1rem;
+  border-radius: 0.8rem;
+  border: 0.1rem solid var(--color-primary);
+}
+
 .viewLoanContent {
   display: flex;
   flex-direction: column;
@@ -258,4 +270,15 @@
   flex-direction: column;
   gap: 0.5rem;
   align-items: flex-start;
+}
+
+/* 
+Buttons
+*/
+
+.editBtns {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.4rem;
 }

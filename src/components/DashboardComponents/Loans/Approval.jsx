@@ -3,6 +3,8 @@ import styles from "./LoanApproval.module.css";
 import formatDateAndTime from "/utils/formatDateAndTime";
 import { useLoan } from "../../../context/LoanContext";
 
+import Modal from "../../../components/Modal";
+
 const handleFinalDecision = async ({
   action,
   updatedFormData,
@@ -12,8 +14,6 @@ const handleFinalDecision = async ({
   rejectLoan,
 }) => {
   // Define action-to-context function mapping
-
-  console.log(updatedFormData);
 
   const actionFunctions = {
     approve: approveLoan,
@@ -40,7 +40,7 @@ const handleFinalDecision = async ({
 };
 
 //
-function Approval({ approvalData, loading }) {
+function Approval({ approvalData, loading, closeModal }) {
   const { approveLoan, rejectLoan, cancelLoan, closeLoan } = useLoan();
   const { formattedDate: approvalDate } = approvalData?.approval_date
     ? formatDateAndTime(approvalData?.approval_date)
@@ -60,6 +60,7 @@ function Approval({ approvalData, loading }) {
     approved_by: "",
     comments: "",
   });
+
   const [activeForm, setActiveForm] = useState(null);
   const [formData, setFormData] = useState({
     loan_amount: approvalData?.loan_amount || "",
@@ -74,7 +75,9 @@ function Approval({ approvalData, loading }) {
     processing_fee: approvalData?.processing_fee || "",
   });
 
-  console.log(approvalData);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error, setError] = useState(null); // State for error messages
+  // console.log(approvalData);
 
   // Recalculate values dynamically
   useEffect(() => {
@@ -126,22 +129,52 @@ function Approval({ approvalData, loading }) {
   //
   const handleFormOpen = (formType) => {
     setActiveForm(formType); // Open the selected form
+    setIsModalOpen(true);
   };
 
   //
   const closeForm = () => {
     setActiveForm(null); // Close the form
+    setIsModalOpen(false);
     setFormData((prev) => ({
       ...prev,
       comments: "",
       approved_by: "",
     })); // Reset fields
     setOtherActionFormData({ approved_by: "", comments: "" });
+    setError(null); // Clear error messages
   };
 
   //
   const handleFormSubmit = (e) => {
     e.preventDefault();
+
+    // Check if the loan is already paid
+    if (approvalData?.status === "paid") {
+      setError("This loan is already paid and cannot be modified.");
+      return;
+    }
+
+    // Check if the loan is in a valid state for the requested action
+    if (
+      (activeForm === "approve" && approvalData?.status !== "processed") ||
+      //
+      (activeForm === "cancel" && approvalData?.status !== "approved") ||
+      (activeForm === "cancel" && approvalData?.status !== "processed") ||
+      (activeForm === "cancel" && approvalData?.status !== "paying") ||
+      //
+      (activeForm === "reject" && approvalData?.status !== "applied") ||
+      (activeForm === "reject" && approvalData?.status !== "processed") ||
+      //
+      (activeForm === "close" && approvalData?.status !== "approved") ||
+      (activeForm === "close" && approvalData?.status !== "paid") ||
+      (activeForm === "close" && approvalData?.status !== "paying")
+    ) {
+      setError(
+        `Cannot ${activeForm} a loan with status: ${approvalData?.status}`
+      );
+      return;
+    }
 
     const inputsData = {
       ...formData,
@@ -158,28 +191,57 @@ function Approval({ approvalData, loading }) {
     const updatedFormData =
       activeForm === "approve" ? inputsData : inputsDataOthers;
 
-    console.log(updatedFormData);
-
     handleFinalDecision({
       action: activeForm,
       updatedFormData,
-
       approveLoan,
       closeLoan,
       cancelLoan,
       rejectLoan,
     });
 
-    //
     closeForm();
   };
 
+  //   const inputsData = {
+  //     ...formData,
+  //     customerId: approvalData?.customer_id,
+  //     loanId: approvalData?.loan_id,
+  //   };
+
+  //   const inputsDataOthers = {
+  //     ...otherActionFormData,
+  //     customerId: approvalData?.customer_id,
+  //     loanId: approvalData?.loan_id,
+  //   };
+
+  //   const updatedFormData =
+  //     activeForm === "approve" ? inputsData : inputsDataOthers;
+
+  //   console.log(updatedFormData);
+
+  //   handleFinalDecision({
+  //     action: activeForm,
+  //     updatedFormData,
+
+  //     approveLoan,
+  //     closeLoan,
+  //     cancelLoan,
+  //     rejectLoan,
+  //   });
+
+  //   //
+  //   closeForm();
+  // };
+
   return (
     <div className={styles.approvalContainer}>
-      <h3>Loan Details</h3>
+      <h3>Selected Loan Details</h3>
+      <span onClick={closeModal}>X</span>
       <div className={`${styles.form} ${styles.loanPropertyDisplay}`}>
         <div className={styles.viewLoanDetails}>
           <div>
+            <h4>Loan Specs</h4>
             <p>
               <strong>Loan ID:</strong> {approvalData?.loan_id}
             </p>
@@ -209,6 +271,7 @@ function Approval({ approvalData, loading }) {
           </div>
 
           <div>
+            <h4>Approval</h4>
             <p>
               <strong>Payment Balance:</strong> NLe
               {approvalData?.balance?.toLocaleString()}
@@ -234,6 +297,7 @@ function Approval({ approvalData, loading }) {
           </div>
 
           <div>
+            <h4>Reviews</h4>
             <p>
               <strong>First Review:</strong> {approvalData?.first_review}
             </p>
@@ -259,6 +323,7 @@ function Approval({ approvalData, loading }) {
           </div>
 
           <div>
+            <h4>Coustomer</h4>
             <p>
               <strong>Customer Name:</strong> {approvalData?.full_name}
             </p>
@@ -299,7 +364,9 @@ function Approval({ approvalData, loading }) {
               {approvalData?.owe_arrears_elsewhere}
             </p>
           </div>
+
           <div>
+            <h4>Consent</h4>
             <p>
               <strong>Consent:</strong> {approvalData?.consent}
             </p>
@@ -319,30 +386,32 @@ function Approval({ approvalData, loading }) {
         </div>
 
         {/* Dynamic Form Rendering */}
-        {activeForm && (
-          <div className={`${styles.bottomForm} ${styles.slideUp}`}>
-            {activeForm === "approve" && (
-              <ApprovalLoanForm
-                formData={formData}
-                handleInputChange={(e) => handleInputChange(e, true)}
-                handleFormSubmit={handleFormSubmit}
-                closeForm={closeForm}
-                loading={loading}
-                approvalData={approvalData}
-              />
-            )}
-            {["cancel", "reject", "close"].includes(activeForm) && (
-              <OtherActionForm
-                action={activeForm}
-                formData={otherActionFormData}
-                handleInputChange={handleInputChange}
-                handleFormSubmit={handleFormSubmit}
-                closeForm={closeForm}
-                loading={loading}
-              />
-            )}
-          </div>
-        )}
+        <Modal isOpen={isModalOpen} onClose={closeForm}>
+          {activeForm && (
+            <div className={`${styles.bottomForm} ${styles.slideUp}`}>
+              {activeForm === "approve" && (
+                <ApprovalLoanForm
+                  formData={formData}
+                  handleInputChange={(e) => handleInputChange(e, true)}
+                  handleFormSubmit={handleFormSubmit}
+                  closeForm={closeForm}
+                  loading={loading}
+                  approvalData={approvalData}
+                />
+              )}
+              {["cancel", "reject", "close"].includes(activeForm) && (
+                <OtherActionForm
+                  action={activeForm}
+                  formData={otherActionFormData}
+                  handleInputChange={handleInputChange}
+                  handleFormSubmit={handleFormSubmit}
+                  closeForm={closeForm}
+                  loading={loading}
+                />
+              )}
+            </div>
+          )}
+        </Modal>
       </div>
     </div>
   );
@@ -389,7 +458,7 @@ function OtherActionForm({
           required
         />
       </div>
-      <div>
+      <div className={styles.btnsDeposition}>
         <button type="button" onClick={closeForm}>
           Cancel
         </button>

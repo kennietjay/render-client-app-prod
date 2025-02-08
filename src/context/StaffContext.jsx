@@ -34,8 +34,6 @@ export const StaffProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-  console.log(BASE_URL);
-
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token && checkTokenValidity(token)) {
@@ -83,10 +81,6 @@ export const StaffProvider = ({ children }) => {
       throw error;
     }
   }, []);
-
-  // useEffect(() => {
-  //   getAllStaff();
-  // }, [getAllStaff]);
 
   // Assign a role to a staff member
   const assignRole = useCallback(async (staffId, roleId) => {

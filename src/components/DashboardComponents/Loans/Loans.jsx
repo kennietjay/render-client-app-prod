@@ -1,4 +1,3 @@
-//
 import React, { useEffect, useState } from "react";
 import styles from "./LoanPage.module.css";
 import LoadingSpinner from "../../LoadingSpinner";
@@ -17,13 +16,20 @@ function Loans({
   handleApproval,
   selectedLoan,
 }) {
-  // const { loans, getLoans } = useLoan();
+  const [allLoans, setAllLoans] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSignupOpen, setIsSigupOpen] = useState(false);
   const [isSignupResponse, setSignupResponse] = useState(false);
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useState(() => {
+    console.log("Reloaded... ");
+    setAllLoans(loanData);
+  }, [loanData]);
+
+  console.log(allLoans);
 
   const handleSearchChange = (e) => {
     setSearchText(e.target.value); // Update search text immediately
@@ -67,9 +73,14 @@ function Loans({
           <div>
             <div className={styles.btns}>
               <h3>Loans Maintenance</h3>
-              <button className={styles.apply} onClick={openSignup}>
-                Add Loan
-              </button>
+              <div className={styles.btns}>
+                <button className={styles.apply} onClick={openSignup}>
+                  New Customer
+                </button>
+                <button className={styles.apply} onClick={openModal}>
+                  Add Loan
+                </button>
+              </div>
             </div>
 
             <div>

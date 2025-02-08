@@ -5,9 +5,21 @@
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
-  /* display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  gap: 4.8rem; */
+  position: relative;
+}
+
+.approvalContainer span {
+  padding: 1rem;
+  border-radius: 5rem;
+  cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+}
+
+.approvalContainer span:hover {
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
 }
 
 .approval {

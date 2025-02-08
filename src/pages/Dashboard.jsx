@@ -13,7 +13,7 @@ import Overview from "../components/DashboardComponents/Overview/Overview";
 import LoanApplication from "../components/DashboardComponents/Loans/AdminLoanForms/LoanApplication";
 import CustomerDetails from "../components/DashboardComponents/Customers/CustomerDetails";
 import ProfileItems from "./ProfileItems";
-import ManageLoans from "../components/DashboardComponents/Loans/ManageLoans";
+import ReviewLoans from "../components/DashboardComponents/Loans/ReviewLoans";
 import ActiveLoans from "../components/DashboardComponents/Loans/ActiveLoans";
 import History from "../components/DashboardComponents/Loans/History";
 import Payments from "../components/DashboardComponents/Loans/Payments";
@@ -495,8 +495,8 @@ function DashboardMain({
         {/* Loan Subsections */}
         {activeSection === "payments" && <Payments loanData={loanData} />}
 
-        {activeSection === "manage-loans" && (
-          <ManageLoans
+        {activeSection === "review-loans" && (
+          <ReviewLoans
             loanData={loanData}
             handleCustomerSubMenuClick={handleCustomerSubMenuClick}
             handleApproval={handleApproval}
@@ -508,7 +508,7 @@ function DashboardMain({
           <ActiveLoans loanData={loanData} />
         )}
 
-        {activeSection === "deposition" && (
+        {activeSection === "manage-loans" && (
           <LoanDeposition loanData={loanData} />
         )}
 
@@ -592,16 +592,16 @@ function Aside({
                 <ul className={styles.subMenu}>
                   <li
                     className={
-                      activeSection === "manage-loans" ? styles.active : ""
+                      activeSection === "review-loans" ? styles.active : ""
                     }
                   >
                     <Link
-                      to="#manage-loans"
+                      to="#review-loans"
                       className={styles.navSubLink}
-                      onClick={() => handleMenuClick("manage-loans")}
+                      onClick={() => handleMenuClick("review-loans")}
                     >
                       <i className="fa-solid fa-bars-staggered"></i>
-                      <span>Manage Loans</span>
+                      <span>Review Loans</span>
                     </Link>
                   </li>
                   <li
@@ -620,16 +620,16 @@ function Aside({
                   </li>
                   <li
                     className={
-                      activeSection === "deposition" ? styles.active : ""
+                      activeSection === "manage-loans" ? styles.active : ""
                     }
                   >
                     <Link
-                      to="#deposition"
+                      to="#manage-loans"
                       className={styles.navSubLink}
-                      onClick={() => handleMenuClick("deposition")}
+                      onClick={() => handleMenuClick("manage-loans")}
                     >
                       <i className="fa-solid fa-check-to-slot"></i>
-                      <span>Deposition</span>
+                      <span>Manage Loans</span>
                     </Link>
                   </li>
                   <li

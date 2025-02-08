@@ -131,6 +131,11 @@
   padding: 2.4rem;
 }
 
+.viewLoanDetails div p {
+  display: flex;
+  justify-content: space-between;
+}
+
 .viewLoanContent {
   display: flex;
   flex-direction: column;

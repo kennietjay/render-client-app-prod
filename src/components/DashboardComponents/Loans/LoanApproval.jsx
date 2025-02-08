@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useLoan } from "../../../context/LoanContext";
 import styles from "./LoanApproval.module.css";
 import LoadingSpinner from "../../LoadingSpinner";
-import Approval from "./Approval";
+// import Approval from "./Approval";
 
 function LoanApproval({ loan, handleApproval }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const { firstReview, secondReview, approveLoan, getLoans } = useLoan();
   const {
     customer_id,
@@ -29,20 +30,20 @@ function LoanApproval({ loan, handleApproval }) {
     second_review_notes: "",
   });
 
-  const [approvalData, setApprovalData] = useState({
-    approved_amount: "",
-    approved_by: "",
-    approval_comments: "",
-    total_amount: loan?.total_amount,
-    loan_amount: loan?.loan_amount,
-    interest_rate: loan?.interest_rate,
-    payment: loan?.payment,
-    loan_period: loan?.loan_period,
-    processing_fee: loan?.processing_fee,
-    disbursed_amount: loan?.disbursed_amount,
-    first_review_notes: loan?.first_review_notes,
-    second_review_notes: loan?.second_review_notes,
-  });
+  // const [approvalData, setApprovalData] = useState({
+  //   approved_amount: "",
+  //   approved_by: "",
+  //   approval_comments: "",
+  //   total_amount: loan?.total_amount,
+  //   loan_amount: loan?.loan_amount,
+  //   interest_rate: loan?.interest_rate,
+  //   payment: loan?.payment,
+  //   loan_period: loan?.loan_period,
+  //   processing_fee: loan?.processing_fee,
+  //   disbursed_amount: loan?.disbursed_amount,
+  //   first_review_notes: loan?.first_review_notes,
+  //   second_review_notes: loan?.second_review_notes,
+  // });
 
   const isFirstReviewClickable =
     (status === "applied" || status === "") &&
@@ -77,7 +78,7 @@ function LoanApproval({ loan, handleApproval }) {
     setLoading(true);
 
     try {
-      await firstReview(loan?.loan_id, customer_id, {
+      const response = await firstReview(loan?.loan_id, customer_id, {
         ...firstReviewData,
         first_review: "complete",
         status: "processing", // Ensure this does not conflict with "processed"
@@ -99,7 +100,7 @@ function LoanApproval({ loan, handleApproval }) {
     e.preventDefault();
     setLoading(true);
     try {
-      await secondReview(loan?.loan_id, customer_id, {
+      const response = await secondReview(loan?.loan_id, customer_id, {
         ...secondReviewData,
         second_review: "complete",
         status: "processed", // Update the status to indicate it's processed
@@ -240,7 +241,7 @@ function LoanApproval({ loan, handleApproval }) {
               </div>
 
               {/* Final Action */}
-              <div className={styles.finalAction}>
+              {/* <div className={styles.finalAction}>
                 <button
                   disabled={!isFinalActionClickable || isApprovalComplete}
                   className={`${styles.finalButton} ${
@@ -252,7 +253,7 @@ function LoanApproval({ loan, handleApproval }) {
                 >
                   Final Action
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </>

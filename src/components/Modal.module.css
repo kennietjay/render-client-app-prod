@@ -16,8 +16,8 @@
   box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
   width: 98%;
   max-width: 85rem;
-  height: auto;
-  max-height: 90rem;
+  /* height: auto; */
+  height: 100%;
   position: relative;
   padding: 2.4rem;
   overflow: auto;
