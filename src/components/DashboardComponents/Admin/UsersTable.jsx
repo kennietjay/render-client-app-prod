@@ -32,7 +32,6 @@ const UsersTable = ({ handleCustomerSelect, handleCustomerSubMenuClick }) => {
   const openSidebar = (user) => {
     setIsSideBarOpen(true);
     setSelectedUser(user);
-    console.log(user);
   };
 
   const closeSidebar = () => {
@@ -62,8 +61,8 @@ const UsersTable = ({ handleCustomerSelect, handleCustomerSubMenuClick }) => {
           <tr className={styles.tableHeadRow}>
             <th className={styles.tableHeadCell}>ID</th>
             <th className={styles.tableHeadCell}>Name</th>
-            <th className={styles.tableHeadCell}>Phone</th>
             <th className={styles.tableHeadCell}>Email</th>
+            <th className={styles.tableHeadCell}>Phone</th>
             <th className={styles.tableHeadCell}>Status</th>
             <th className={styles.tableHeadCell}>Role</th>
             <th className={`${styles.tableHeadCell} `}>Act</th>

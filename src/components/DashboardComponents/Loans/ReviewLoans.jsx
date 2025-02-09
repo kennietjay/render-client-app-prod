@@ -314,7 +314,7 @@ function ReviewLoan({
                       <input
                         type="text"
                         name="loan_id"
-                        value={formData.loan_id}
+                        value={formData.loan_id || ""}
                         onChange={handleInputChange}
                         readOnly
                       />
@@ -328,7 +328,7 @@ function ReviewLoan({
                       <input
                         type="text"
                         name="full_name"
-                        value={formData.full_name}
+                        value={formData.full_name || ""}
                         onChange={handleInputChange}
                         readOnly
                       />
@@ -342,7 +342,7 @@ function ReviewLoan({
                       <input
                         type="text"
                         name="customer_id"
-                        value={formData.customer_id}
+                        value={formData.customer_id || ""}
                         onChange={handleInputChange}
                         readOnly
                       />
@@ -356,7 +356,7 @@ function ReviewLoan({
                       <input
                         type="text"
                         name="status"
-                        value={formData.status}
+                        value={formData.status || ""}
                         onChange={handleInputChange}
                         readOnly
                       />
@@ -370,7 +370,7 @@ function ReviewLoan({
                       <input
                         type="text"
                         name="loan_type"
-                        value={formData.loan_type}
+                        value={formData.loan_type || ""}
                         onChange={handleInputChange}
                       />
                     ) : (
@@ -383,7 +383,7 @@ function ReviewLoan({
                       <input
                         type="text"
                         name="loan_purpose"
-                        value={formData.loan_purpose}
+                        value={formData.loan_purpose || ""}
                         onChange={handleInputChange}
                       />
                     ) : (
@@ -399,7 +399,7 @@ function ReviewLoan({
                       <input
                         type="number"
                         name="loan_amount"
-                        value={formData.loan_amount}
+                        value={formData.loan_amount || ""}
                         onChange={handleInputChange}
                       />
                     ) : (
@@ -412,7 +412,7 @@ function ReviewLoan({
                       <input
                         type="number"
                         name="interest_rate"
-                        value={formData.interest_rate}
+                        value={formData.interest_rate || ""}
                         onChange={handleInputChange}
                       />
                     ) : (
@@ -425,7 +425,7 @@ function ReviewLoan({
                       <input
                         type="number"
                         name="loan_period"
-                        value={formData.loan_period}
+                        value={formData.loan_period || ""}
                         onChange={handleInputChange}
                       />
                     ) : (
@@ -438,7 +438,7 @@ function ReviewLoan({
                       <input
                         type="number"
                         name="total_amount"
-                        value={formData.total_amount}
+                        value={formData.total_amount || ""}
                         onChange={handleInputChange}
                       />
                     ) : (
@@ -451,7 +451,7 @@ function ReviewLoan({
                       <input
                         type="number"
                         name="approved_amount"
-                        value={formData.approved_amount}
+                        value={formData.approved_amount || ""}
                         onChange={handleInputChange}
                       />
                     ) : (
@@ -464,7 +464,7 @@ function ReviewLoan({
                       <input
                         type="number"
                         name="processing_fee"
-                        value={formData.processing_fee}
+                        value={formData.processing_fee || ""}
                         onChange={handleInputChange}
                       />
                     ) : (
@@ -479,7 +479,7 @@ function ReviewLoan({
                       <input
                         type="text"
                         name="first_reviewer"
-                        value={formData.first_reviewer}
+                        value={formData.first_reviewer || ""}
                         onChange={handleInputChange}
                       />
                     ) : (
@@ -496,7 +496,7 @@ function ReviewLoan({
                       <input
                         type="text"
                         name="second_reviewer"
-                        value={formData.second_reviewer}
+                        value={formData.second_reviewer || ""}
                         onChange={handleInputChange}
                       />
                     ) : (

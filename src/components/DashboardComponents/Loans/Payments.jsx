@@ -146,25 +146,34 @@ function LoanPayments() {
     }
 
     if (
-      (loanDetails?.status !== "approved" &&
-        loanDetails?.status !== "paying") ||
+      (loanDetails?.status == "applied" ||
+        loanDetails?.status == "processed" ||
+        loanDetails?.status == "processing") &&
       !loanDetails?.approval_date
     ) {
       setError(
-        "Cannot process payment. Loan is not approved or needs attention."
+        "Cannot process payment. Loan has not been approved or processed."
       );
       return;
     }
 
-    if (
-      (loanDetails?.status !== "canceled" &&
-        loanDetails?.status !== "closed" &&
-        loanDetails?.status !== "rejected") ||
-      !loanDetails?.approval_date
-    ) {
-      setError(
-        "Cannot process payment. This loan is either closed, canceled or rejected."
-      );
+    if (loanDetails?.status == "paid" && loanDetails.balance_after === 0) {
+      setError("No further payment to process, this loan is fully paid.");
+      return;
+    }
+
+    if (loanDetails?.status == "canceled") {
+      setError("Cannot process payment, this loan is canceled.");
+      return;
+    }
+
+    if (loanDetails?.status == "closed") {
+      setError("Cannot process payment, this loan is closed.");
+      return;
+    }
+
+    if (loanDetails?.status == "rejected") {
+      setError("Cannot process payment, this loan was rejected.");
       return;
     }
 
