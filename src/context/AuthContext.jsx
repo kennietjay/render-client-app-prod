@@ -203,7 +203,7 @@ const AuthProvider = ({ children }) => {
       setNewUser(createdUser); // ✅ Update state with new user
       console.log("Created User:", createdUser);
 
-      return response?.data; // ✅ Return full user data
+      return { success: true, newUser: createdUser }; // ✅ Return full user data
     } catch (error) {
       return { error: error.response?.data?.msg || error?.message };
     } finally {
