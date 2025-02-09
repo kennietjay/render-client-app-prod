@@ -277,7 +277,7 @@ function UserSignup({ isSignupOpen, onSubmit, closeSignup }) {
                     <input
                       type="text"
                       name="date_of_birth"
-                      placeholder="YYYY-MM-DD"
+                      placeholder="DD-MM-YYYY"
                       value={formData.date_of_birth}
                       onChange={handleChange}
                       onBlur={(e) => handleDateInput(e, setError, setFormData)}

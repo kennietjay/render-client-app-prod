@@ -190,6 +190,7 @@ const AuthProvider = ({ children }) => {
     fetchUserProfile(); // Fetch user when the provider mounts
   }, [fetchUserProfile]);
 
+  // =============================================================
   // Register a regular user
   const createUser = async (userData) => {
     try {
@@ -202,6 +203,7 @@ const AuthProvider = ({ children }) => {
 
       setNewUser(createdUser); // ✅ Update state with new user
       console.log("Created User:", createdUser);
+      console.log("Created User:", response);
 
       return { success: true, newUser: createdUser }; // ✅ Return full user data
     } catch (error) {

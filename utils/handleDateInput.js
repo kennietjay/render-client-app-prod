@@ -19,11 +19,11 @@ export const handleDateInput = (e, setError, setFormData) => {
     setError("Invalid date format. Use DD-MM-YYYY.");
   } else {
     setError("");
-    const formattedForDB = convertToDBFormat(formattedDate); // ✅ Convert for MySQL
+    const formattedForDB = convertToDBFormat(formattedDate); // ✅ Convert for MySQL (YYYY-MM-DD)
 
     setFormData((prev) => ({
       ...prev,
-      date_of_birth: formattedForDB,
+      date_of_birth: formattedForDB, // ✅ Store correctly in form data
     }));
   }
 };
