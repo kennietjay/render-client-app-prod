@@ -19,7 +19,7 @@ function UserSignup({ isSignupOpen, onSubmit, closeSignup }) {
     last_name: "Tamia",
     email: "jay4tamia@gmail.com",
     gender: "male",
-    date_of_birth: "1989-01-31",
+    date_of_birth: "28-01-1984",
     phone: "076304506",
     password: "password",
     confirm_password: "password",
@@ -139,16 +139,13 @@ function UserSignup({ isSignupOpen, onSubmit, closeSignup }) {
     try {
       // Save the final formatted data
       const response = await createUser(newData);
-      console.log(newData);
 
       // console.log(newUser);
       if (response.success) {
         if (onSubmit) {
           onSubmit(response, newUser);
-          console.log(response, newUser);
+          console.log(newUser);
         }
-
-        console.log(response);
 
         // Reset form data with default values
         setFormData({

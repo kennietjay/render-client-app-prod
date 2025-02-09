@@ -20,7 +20,7 @@ function Loans({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSignupOpen, setIsSigupOpen] = useState(false);
   const [isSignupResponse, setSignupResponse] = useState(false);
-  const [newUser, setNewUser] = useState(null);
+  const [createdUser, setCreatedUser] = useState(null);
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -54,12 +54,12 @@ function Loans({
   const closeSignup = () => setIsSigupOpen(false);
 
   //
-  const handleSignupSubmit = (response, user) => {
-    console.log(response, user);
+  const handleSignupSubmit = (response, newUser) => {
+    console.log(newUser);
 
     if (response.success) {
       setSignupResponse(true);
-      setNewUser(user);
+      setCreatedUser(newUser);
       closeSignup();
       // setSuccess(true);
     } else {
@@ -122,7 +122,7 @@ function Loans({
               isSignupResponse={isSignupResponse}
               closeResponse={closeResponse}
               openModal={openModal}
-              newUser={newUser}
+              newUser={createdUser}
             />
           </div>
         </div>

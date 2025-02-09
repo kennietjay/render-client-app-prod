@@ -191,25 +191,27 @@ const AuthProvider = ({ children }) => {
   }, [fetchUserProfile]);
 
   // =============================================================
-  // Register a regular user
-  const createUser = async (userData) => {
-    console.log(userData);
 
-    //
+  const createUser = async (userData) => {
+    console.log("📌 Sending user data to backend:", userData); // ✅ Check this in console
+
     try {
       setLoading(true);
       const response = await axios.post(`${BASE_URL}/user/signup`, userData);
 
-      getAllUsers(); // ✅ Refresh user list
+      getAllUsers();
 
-      const createdUser = response?.data?.user || response?.data; // ✅ Get the created user object
+      const createdUser = response?.data?.user || response?.data;
 
-      setNewUser(createdUser); // ✅ Update state with new user
-      console.log("Created User:", createdUser);
-      console.log("Created User:", response);
+      setNewUser(createdUser);
+      console.log("✅ Created User:", createdUser);
 
-      return { success: true, newUser: createdUser }; // ✅ Return full user data
+      return { success: true, createdUser };
     } catch (error) {
+      console.error(
+        "❌ Signup Error:",
+        error.response?.data?.msg || error?.message
+      );
       return { error: error.response?.data?.msg || error?.message };
     } finally {
       setLoading(false);

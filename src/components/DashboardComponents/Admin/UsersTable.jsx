@@ -144,7 +144,7 @@ const UsersTable = ({ handleCustomerSelect, handleCustomerSubMenuClick }) => {
           ))}
           {/* Pagination */}
           <tr>
-            <td colSpan="6" className={`${styles.paginationCell}`}>
+            <td colSpan="7" className={`${styles.paginationCell}`}>
               {/* Uncomment and use the pagination logic as needed */}
               <Pagination
                 currentPage={currentPage}

@@ -156,6 +156,18 @@ function LoanPayments() {
       return;
     }
 
+    if (
+      (loanDetails?.status !== "canceled" &&
+        loanDetails?.status !== "closed" &&
+        loanDetails?.status !== "rejected") ||
+      !loanDetails?.approval_date
+    ) {
+      setError(
+        "Cannot process payment. This loan is either closed, canceled or rejected."
+      );
+      return;
+    }
+
     setLoading(true);
     const newPayment = {
       ...paymentData,
