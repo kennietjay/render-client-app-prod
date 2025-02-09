@@ -139,16 +139,17 @@ function UserSignup({ isSignupOpen, onSubmit, closeSignup }) {
     try {
       // Save the final formatted data
       const response = await createUser(newData);
+      console.log(newData);
 
       // console.log(newUser);
       if (response.success) {
         if (onSubmit) {
           onSubmit(response, newUser);
+          console.log(response, newUser);
         }
 
         console.log(response);
 
-        console.log(newUser);
         // Reset form data with default values
         setFormData({
           first_name: "",

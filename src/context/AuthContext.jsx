@@ -193,6 +193,9 @@ const AuthProvider = ({ children }) => {
   // =============================================================
   // Register a regular user
   const createUser = async (userData) => {
+    console.log(userData);
+
+    //
     try {
       setLoading(true);
       const response = await axios.post(`${BASE_URL}/user/signup`, userData);
