@@ -20,6 +20,7 @@ function Loans({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSignupOpen, setIsSigupOpen] = useState(false);
   const [isSignupResponse, setSignupResponse] = useState(false);
+  const [newUser, setNewUser] = useState(null);
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ function Loans({
     setAllLoans(loanData);
   }, [loanData]);
 
-  console.log(allLoans);
+  // console.log(allLoans);
 
   const handleSearchChange = (e) => {
     setSearchText(e.target.value); // Update search text immediately
@@ -47,18 +48,25 @@ function Loans({
     setIsModalOpen(false);
   };
 
-  const openSignup = () => setIsSigupOpen(true);
+  const openSignup = () => {
+    setIsSigupOpen(true);
+  };
   const closeSignup = () => setIsSigupOpen(false);
 
-  const handleSignupSubmit = (response) => {
+  //
+  const handleSignupSubmit = (response, user) => {
+    console.log(response, user);
+
     if (response.success) {
       setSignupResponse(true);
+      setNewUser(user);
       closeSignup();
       // setSuccess(true);
     } else {
       setError(response.error || "Signup failed.");
     }
   };
+
   const closeResponse = () => {
     setSignupResponse(false);
     closeModal();
@@ -114,6 +122,7 @@ function Loans({
               isSignupResponse={isSignupResponse}
               closeResponse={closeResponse}
               openModal={openModal}
+              newUser={newUser}
             />
           </div>
         </div>

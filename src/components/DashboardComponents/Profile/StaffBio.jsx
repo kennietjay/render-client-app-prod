@@ -48,8 +48,6 @@ function StaffBio({ profile }) {
     setMode(newMode);
   };
 
-  console.log(profile);
-
   //
   useEffect(() => {
     if (staff) {

@@ -207,7 +207,7 @@ export const StaffProvider = ({ children }) => {
         }
       );
 
-      console.log(response?.data?.permissions);
+      // console.log(response?.data?.permissions);
 
       return response?.data?.permissions;
     } catch (error) {
@@ -315,7 +315,7 @@ export const StaffProvider = ({ children }) => {
         headers: getAuthHeaders(),
       });
 
-      console.log("Received response from /profile:", response.data); // Log the full response
+      // console.log("Received response from /profile:", response.data); // Log the full response
 
       setStaffProfile(response?.data);
       return response.data;

@@ -63,6 +63,7 @@ const UsersTable = ({ handleCustomerSelect, handleCustomerSubMenuClick }) => {
             <th className={styles.tableHeadCell}>ID</th>
             <th className={styles.tableHeadCell}>Name</th>
             <th className={styles.tableHeadCell}>Phone</th>
+            <th className={styles.tableHeadCell}>Email</th>
             <th className={styles.tableHeadCell}>Status</th>
             <th className={styles.tableHeadCell}>Role</th>
             <th className={`${styles.tableHeadCell} `}>Act</th>
@@ -81,6 +82,8 @@ const UsersTable = ({ handleCustomerSelect, handleCustomerSubMenuClick }) => {
               </td>
 
               {/* Phone */}
+              <td className={styles.tableCell}>{user?.email || "N/A"}</td>
+
               <td className={styles.tableCell}>{user?.phone || "N/A"}</td>
 
               {/* Status */}

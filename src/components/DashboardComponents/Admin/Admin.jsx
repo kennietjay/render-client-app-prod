@@ -15,7 +15,11 @@ function Admin({
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  console.log(allUsers);
+  // console.log(allUsers);
+
+  useEffect(() => {
+    console.log(allUsers);
+  }, [allUsers]);
 
   return (
     <>

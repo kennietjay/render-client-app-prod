@@ -9,11 +9,14 @@ function SignupResponse({
   openModal,
   isSignupResponse,
   closeResponse,
+  newUser,
 }) {
   const startLoanApplication = () => {
     closeResponse();
     openModal();
   };
+
+  console.log(newUser);
 
   return (
     <SmallModal isOpen={isSignupResponse}>

@@ -36,6 +36,7 @@ const AuthProvider = ({ children }) => {
   const inactivityTimer = useRef(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const [newUser, setNewUser] = useState(null);
   const [allUsers, setAllUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -191,14 +192,18 @@ const AuthProvider = ({ children }) => {
 
   // Register a regular user
   const createUser = async (userData) => {
-    console.log(userData);
-
     try {
       setLoading(true);
       const response = await axios.post(`${BASE_URL}/user/signup`, userData);
-      setUser(response.data);
-      // navigate("/user/signin");
-      return { success: response.data?.msg };
+
+      getAllUsers(); // ✅ Refresh user list
+
+      const createdUser = response?.data?.user || response?.data; // ✅ Get the created user object
+
+      setNewUser(createdUser); // ✅ Update state with new user
+      console.log("Created User:", createdUser);
+
+      return response?.data; // ✅ Return full user data
     } catch (error) {
       return { error: error.response?.data?.msg || error?.message };
     } finally {
@@ -344,6 +349,7 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
+        newUser,
         allUsers,
         loading,
         isAuthenticated,

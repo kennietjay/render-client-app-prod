@@ -24,8 +24,6 @@ const LoanTable = ({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedLoan, setSelectedLoan] = useState(null);
 
-  console.log(searchResults);
-
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const loansPerPage = 10;
@@ -84,7 +82,7 @@ const LoanTable = ({
     return map;
   }, {});
 
-  console.log("Payment Map:", paymentMap);
+  // console.log("Payment Map:", paymentMap);
   //
 
   return (
@@ -128,8 +126,6 @@ const LoanTable = ({
                   formattedDate: submissionDate,
                   formattedTime: submissionTime,
                 } = formatDateAndTime(loan?.submission_date);
-
-                console.log(loan.submission_date);
 
                 //
                 // Retrieve the latest payment details from the mapping
@@ -288,15 +284,17 @@ function ManageLoan({
   handleApproval,
   refreshPayments,
 }) {
-  const { formattedDate: approvalDate } = formatDateAndTime(loan.approval_date);
+  const { formattedDate: approvalDate } = formatDateAndTime(
+    loan?.approval_date
+  );
   const { formattedDate: firstReviewDate } = formatDateAndTime(
-    loan.first_review_date
+    loan?.first_review_date
   );
   const { formattedDate: secondReviewDate } = formatDateAndTime(
-    loan.second_review_date
+    loan?.second_review_date
   );
   const { formattedDate: submissionDate } = formatDateAndTime(
-    loan.submission_date
+    loan?.submission_date
   );
 
   return (
@@ -339,7 +337,7 @@ function ManageLoan({
                     <strong>Submission Date:</strong> {submissionDate || "N/A"}
                   </p>
 
-                  {loan.co_debtor === "yes" ? (
+                  {loan?.co_debtor === "yes" ? (
                     <>
                       <p>
                         <strong>Co-Debtor:</strong> {loan?.co_debtor}

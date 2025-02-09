@@ -29,7 +29,7 @@ const StaffTable = ({ staffData, refreshStaffList, handleSelectedStaff }) => {
     indexOfLastCustomer
   );
 
-  console.log(allRoles, allPermissions);
+  // console.log(allRoles, allPermissions);
 
   const handleViewStaff = (staff) => {
     setViewStaff(true); // Open modal with selected staff member

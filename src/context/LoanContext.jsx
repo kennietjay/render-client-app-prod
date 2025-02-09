@@ -69,7 +69,7 @@ function LoanProvider({ children }) {
           response.data.loans
         );
 
-        console.log(customers, loanIds);
+        // console.log(customers, loanIds);
 
         setCustomersData(customers);
         setLoanIds(loanIds);

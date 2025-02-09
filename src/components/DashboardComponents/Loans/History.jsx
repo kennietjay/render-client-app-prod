@@ -51,8 +51,6 @@ function History(props) {
       loan.status === "canceled"
   );
 
-  console.log(loanData);
-
   //
   return (
     <>

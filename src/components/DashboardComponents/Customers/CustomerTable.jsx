@@ -24,13 +24,13 @@ const CustomerTable = ({ customers, handleCustomerSubMenuClick }) => {
     fetchData();
   }, [getLoans]);
 
-  console.log(customersData, loanIds);
+  // console.log(customersData, loanIds);
 
   const openDetails = (customer) => {
     setIsDetailsOpen(true);
 
     handleCustomerSubMenuClick("customer-details", customer);
-    console.log(customer);
+    // console.log(customer);
   };
 
   const closeSidebar = () => {
