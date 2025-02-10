@@ -6,6 +6,7 @@ import GoogleMap from "../components/GoogleMap";
 import { Alert } from "react-bootstrap";
 import { useContact } from "../context/ContactContext";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { response } from "../../../server/server";
 
 function Contacts(props) {
   return (
@@ -113,20 +114,24 @@ const ContactForm = () => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     // Form submission logic
+    try {
+      const newMessage = {
+        full_name: formData.full_name,
+        email: formData.email,
+        message: formData.message,
+      };
 
-    const newMessage = {
-      full_name: formData.full_name,
-      email: formData.email,
-      message: formData.message,
-    };
+      const response = await createMessage(newMessage);
+      if (success) {
+        setSuccess(response.msg);
+      }
 
-    const response = await createMessage(newMessage);
-    if (success) {
-      setSuccess(response.msg);
+      setError("");
+      setFormData({ full_name: "", email: "", message: "" });
+    } catch (error) {
+      setError(response.msg);
+      console.log(error);
     }
-
-    setError("");
-    setFormData({ full_name: "", email: "", message: "" });
   };
 
   return (
