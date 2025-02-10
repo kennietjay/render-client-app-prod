@@ -147,13 +147,15 @@ function LoanPayments() {
 
     if (
       (loanDetails?.status == "applied" ||
-        loanDetails?.status == "processed" ||
         loanDetails?.status == "processing") &&
       !loanDetails?.approval_date
     ) {
-      setError(
-        "Cannot process payment. Loan has not been approved or processed."
-      );
+      setError("Loan has not been approved or processed.");
+      return;
+    }
+
+    if (loanDetails?.status == "processed" && !loanDetails?.approval_date) {
+      setError("Loan is not approved.");
       return;
     }
 

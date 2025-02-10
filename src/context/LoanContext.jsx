@@ -223,6 +223,8 @@ function LoanProvider({ children }) {
 
       await getLoans();
       setLoans(response?.data?.loans);
+
+      return { success: response.data };
     } catch (err) {
       console.error("Loan API Error:", err);
       throw err;
@@ -247,7 +249,7 @@ function LoanProvider({ children }) {
 
       setLoans(response?.data?.loans);
 
-      return response.data;
+      return { success: response.data };
     } catch (err) {
       console.error("Loan API Error:", err);
       throw err;
@@ -274,7 +276,7 @@ function LoanProvider({ children }) {
       );
 
       await getLoans(); // Refresh loans after approval
-      return response.data;
+      return { success: response.data };
     } catch (err) {
       console.error("Loan API Error:", err);
       handleError(err); // Handle error appropriately
@@ -297,7 +299,7 @@ function LoanProvider({ children }) {
       // setLoan(response.data.loan);
 
       await getLoans();
-      return response.data;
+      return { success: response.data };
     } catch (err) {
       return handleError(err);
     } finally {
@@ -319,7 +321,7 @@ function LoanProvider({ children }) {
       // setLoan(response.data.loan);
 
       await getLoans();
-      return response.data;
+      return { success: response.data };
     } catch (err) {
       return handleError(err);
     } finally {
@@ -341,7 +343,7 @@ function LoanProvider({ children }) {
       // setLoan(response.data.loan);
 
       await getLoans();
-      return response.data;
+      return { success: response.data };
     } catch (err) {
       return handleError(err);
     } finally {

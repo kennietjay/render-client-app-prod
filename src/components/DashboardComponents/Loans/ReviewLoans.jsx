@@ -16,7 +16,6 @@ function filterLoansByStatus(loans, ...statuses) {
 }
 
 function ReviewLoans({
-  props,
   handleCustomerSubMenuClick,
   handleApproval,
   setApprovalData,
@@ -272,26 +271,38 @@ function ReviewLoan({
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({ ...loan });
+  const [reviewedLoan, setReviewedLoan] = useState(loan);
+  const [reviewSuccess, setReviewSuccess] = useState(null);
+  const [reviewError, setReviewError] = useState(null);
 
-  const { formattedDate: approvalDate } = loan?.approval_date
-    ? formatDateAndTime(loan.approval_date)
+  const { formattedDate: approvalDate } = reviewedLoan?.approval_date
+    ? formatDateAndTime(reviewedLoan.approval_date)
     : { formattedDate: "N/A" };
 
   const { formattedDate: firstReviewDate } = formatDateAndTime(
-    loan?.first_review_date
+    reviewedLoan?.first_review_date
   );
   const { formattedDate: secondReviewDate } = formatDateAndTime(
-    loan?.second_review_date
+    reviewedLoan?.second_review_date
   );
   const { formattedDate: submissionDate } = formatDateAndTime(
-    loan?.submission_date
+    reviewedLoan?.submission_date
   );
+
+  // Check if both reviews are complete
+  const areReviewsComplete =
+    reviewedLoan?.first_review === "complete" &&
+    reviewedLoan?.second_review === "complete";
 
   const toggleEdit = () => {
     if (isEditing) {
       alert("Loan details updated successfully!"); // Placeholder for API call
     }
     setIsEditing(!isEditing);
+  };
+
+  const handleLoanReviews = (updatedLoan) => {
+    setReviewedLoan(updatedLoan);
   };
 
   const handleInputChange = (e) => {
@@ -303,7 +314,7 @@ function ReviewLoan({
     <div className={styles.manageLoan}>
       <SideBar isOpen={isModalOpen} closeModal={closeModal}>
         <h3 className={styles.sideBarHeader}>Loan Details</h3>
-        {loan ? (
+        {reviewedLoan ? (
           <div className={styles.sideBarContainer}>
             <div className={styles.viewLoanContent}>
               <div className={styles.viewLoanDetails}>
@@ -319,7 +330,7 @@ function ReviewLoan({
                         readOnly
                       />
                     ) : (
-                      loan?.loan_id
+                      reviewedLoan?.loan_id
                     )}
                   </p>
                   <p>
@@ -333,7 +344,7 @@ function ReviewLoan({
                         readOnly
                       />
                     ) : (
-                      loan?.full_name
+                      reviewedLoan?.full_name
                     )}
                   </p>
                   <p>
@@ -347,7 +358,7 @@ function ReviewLoan({
                         readOnly
                       />
                     ) : (
-                      loan?.customer_id
+                      reviewedLoan?.customer_id
                     )}
                   </p>
                   <p>
@@ -361,7 +372,7 @@ function ReviewLoan({
                         readOnly
                       />
                     ) : (
-                      loan?.status
+                      reviewedLoan?.status
                     )}
                   </p>
                   <p>
@@ -374,7 +385,7 @@ function ReviewLoan({
                         onChange={handleInputChange}
                       />
                     ) : (
-                      loan?.loan_type
+                      reviewedLoan?.loan_type
                     )}
                   </p>
                   <p>
@@ -387,7 +398,7 @@ function ReviewLoan({
                         onChange={handleInputChange}
                       />
                     ) : (
-                      loan?.loan_purpose
+                      reviewedLoan?.loan_purpose
                     )}
                   </p>
                 </div>
@@ -403,7 +414,7 @@ function ReviewLoan({
                         onChange={handleInputChange}
                       />
                     ) : (
-                      `NLe${loan?.loan_amount?.toLocaleString()}`
+                      `NLe${reviewedLoan?.loan_amount?.toLocaleString()}`
                     )}
                   </p>
                   <p>
@@ -416,7 +427,7 @@ function ReviewLoan({
                         onChange={handleInputChange}
                       />
                     ) : (
-                      `${loan?.interest_rate}%`
+                      `${reviewedLoan?.interest_rate}%`
                     )}
                   </p>
                   <p>
@@ -429,7 +440,7 @@ function ReviewLoan({
                         onChange={handleInputChange}
                       />
                     ) : (
-                      `${loan?.loan_period} months`
+                      `${reviewedLoan?.loan_period} months`
                     )}
                   </p>
                   <p>
@@ -442,7 +453,7 @@ function ReviewLoan({
                         onChange={handleInputChange}
                       />
                     ) : (
-                      `NLe${loan?.total_amount?.toLocaleString()}`
+                      `NLe${reviewedLoan?.total_amount?.toLocaleString()}`
                     )}
                   </p>
                   <p>
@@ -455,7 +466,7 @@ function ReviewLoan({
                         onChange={handleInputChange}
                       />
                     ) : (
-                      `NLe${loan?.approved_amount || "N/A"}`
+                      `NLe${reviewedLoan?.approved_amount || "N/A"}`
                     )}
                   </p>
                   <p>
@@ -468,7 +479,7 @@ function ReviewLoan({
                         onChange={handleInputChange}
                       />
                     ) : (
-                      `NLe${loan?.processing_fee}`
+                      `NLe${reviewedLoan?.processing_fee}`
                     )}
                   </p>
                 </div>
@@ -483,7 +494,7 @@ function ReviewLoan({
                         onChange={handleInputChange}
                       />
                     ) : (
-                      loan?.first_reviewer || "N/A"
+                      reviewedLoan?.first_reviewer || "N/A"
                     )}
                   </p>
                   <p>
@@ -500,7 +511,7 @@ function ReviewLoan({
                         onChange={handleInputChange}
                       />
                     ) : (
-                      loan?.second_reviewer || "N/A"
+                      reviewedLoan?.second_reviewer || "N/A"
                     )}
                   </p>
                   <p>
@@ -518,16 +529,25 @@ function ReviewLoan({
                 >
                   cancel
                 </button>
-                <button onClick={toggleEdit} className={styles.toggleBtn}>
+                <button
+                  onClick={toggleEdit}
+                  className={styles.toggleBtn}
+                  disabled={areReviewsComplete}
+                >
                   {isEditing ? "Save" : "Edit"}
                 </button>
               </div>
 
               <div>
                 <LoanApproval
-                  loan={loan}
+                  reviewedLoan={reviewedLoan}
                   handleApproval={handleApproval}
+                  handleLoanReviews={handleLoanReviews}
                   setApprovalData={setApprovalData}
+                  setReviewSuccess={setReviewSuccess}
+                  reviewSuccess={reviewSuccess}
+                  setReviewError={setReviewError}
+                  reviewError={reviewError}
                 />
               </div>
             </div>

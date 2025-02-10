@@ -275,10 +275,15 @@
 /* 
 Buttons
 */
-
 .editBtns {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 2.4rem;
+}
+
+.toggleBtn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
