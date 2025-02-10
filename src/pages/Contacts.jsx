@@ -6,7 +6,7 @@ import GoogleMap from "../components/GoogleMap";
 import { Alert } from "react-bootstrap";
 import { useContact } from "../context/ContactContext";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { response } from "../../../server/server";
+// import { response } from "../../../server/server";
 
 function Contacts(props) {
   return (
@@ -129,7 +129,7 @@ const ContactForm = () => {
       setError("");
       setFormData({ full_name: "", email: "", message: "" });
     } catch (error) {
-      setError(response.msg);
+      setError(error);
       console.log(error);
     }
   };

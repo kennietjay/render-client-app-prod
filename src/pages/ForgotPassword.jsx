@@ -61,13 +61,11 @@ function SignIn(props) {
       const response = await forgotPassword(passwordResetEmail);
 
       if (response.success) {
-        setSuccess("Password has been reset successfully");
+        setSuccess("Password reset requested. Check your email.");
         setError(null);
 
         // Redirect based on user role
         const role = response.success?.role;
-
-        console.log(role);
 
         setTimeout(() => {
           if (role === "staff") {
@@ -75,7 +73,7 @@ function SignIn(props) {
           } else {
             navigate("/user/signin");
           }
-        }, 3000); // Redirect after 3 seconds
+        }, 5000); // Redirect after 3 seconds
       }
 
       console.log(response);
