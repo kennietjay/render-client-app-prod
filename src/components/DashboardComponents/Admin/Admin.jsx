@@ -9,8 +9,8 @@ function Admin({
   customers,
   handleCustomerSelect,
 }) {
-  const { allUsers } = useAuth();
-  // const [allUsers, setAllUsers] = useState();
+  const { allUsers, getAllUsers } = useAuth();
+  const [users, setUsers] = useState();
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,11 @@ function Admin({
   // console.log(allUsers);
 
   useEffect(() => {
-    console.log(allUsers);
+    // async function fetchUsers() {
+    //   await getAllUsers();
+    // }
+    // fetchUsers();
+    setUsers(allUsers);
   }, [allUsers]);
 
   return (
@@ -31,7 +35,7 @@ function Admin({
 
           <div>
             <p>All Application Users</p>
-            <UsersTable allUsers={allUsers} loading={loading} />
+            <UsersTable users={users} loading={loading} />
           </div>
         </div>
       )}

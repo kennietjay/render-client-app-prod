@@ -37,7 +37,7 @@ const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [newUser, setNewUser] = useState(null);
-  const [allUsers, setAllUser] = useState(null);
+  const [allUsers, setAllUsers] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -199,12 +199,12 @@ const AuthProvider = ({ children }) => {
       setLoading(true);
       const response = await axios.post(`${BASE_URL}/user/signup`, userData);
 
-      getAllUsers();
-
       const createdUser = response?.data?.user || response?.data;
 
       setNewUser(createdUser);
       console.log("✅ Created User:", createdUser);
+
+      getAllUsers();
 
       return { success: true, createdUser };
     } catch (error) {
@@ -283,7 +283,7 @@ const AuthProvider = ({ children }) => {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
-      setAllUser(response?.data);
+      setAllUsers(response?.data);
       return response?.data;
     } catch (error) {
       console.error("Get all users error:", error.response?.data || error);
