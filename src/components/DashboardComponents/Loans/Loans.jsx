@@ -5,6 +5,7 @@ import LoanTable from "./LoanTable";
 import LoanApplication from "./AdminLoanForms/LoanApplication";
 import UserSignup from "./AdminLoanForms/UserSignup";
 import SignupResponse from "../../../pages/SignupResponse";
+import AddUser from "../../AddUser";
 
 function Loans({
   loanData,
@@ -111,7 +112,7 @@ function Loans({
               isModalOpen={isModalOpen}
               setIsModalOpen={setIsModalOpen}
             />
-            <UserSignup
+            <AddUser
               isSignupOpen={isSignupOpen}
               setIsSigupOpen={setIsSigupOpen}
               closeSignup={closeSignup}

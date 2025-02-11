@@ -8,17 +8,53 @@ import { useAuth } from "../../../context/AuthContext";
 import UpdateUser from "./UpdateUser";
 import { Alert } from "react-bootstrap";
 import LoadingSpinner from "../../LoadingSpinner";
+import AddUser from "../../AddUser";
 
-const UsersTable = ({ handleCustomerSelect, handleCustomerSubMenuClick }) => {
-  const { allUsers } = useAuth();
-  const [loading, setLoading] = useState(false);
+const UsersTable = ({
+  users,
+  addUser,
+  updateUser,
+  removeUser,
+  isSignupOpen,
+  closeSignup,
+}) => {
+  const [newUser, setNewUser] = useState({ name: "", email: "" });
+  // const { users } = useAuth();
+  // const [loading, setLoading] = useState(false);
   const [isSidebarOpen, setIsSideBarOpen] = useState(false);
   const [isSmallModalOpen, setSmallModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [formData, setFormData] = useState({
     status: "",
   });
 
+  //
+  const [currentPage, setCurrentPage] = useState(1);
+  const UsersPerPage = 10;
+
+  const totalPages = Math.ceil(users?.length / UsersPerPage);
+  const indexOfLastUser = currentPage * UsersPerPage;
+  const indexOfFirstUser = indexOfLastUser - UsersPerPage;
+  const currentUsers = users?.slice(indexOfFirstUser, indexOfLastUser);
+
+  //
+  // const handleAddUser = () => {
+  //   if (newUser.name && newUser.email) {
+  //     addUser({ id: Date.now(), ...newUser }); // Add a new user with a unique ID
+  //     setNewUser({ name: "", email: "" }); // Reset the form
+  //   }
+  // };
+
+  // const handleUpdateUser = (userId, updatedData) => {
+  //   updateUser({ id: userId, ...updatedData });
+  // };
+
+  // const handleRemoveUser = (userId) => {
+  //   removeUser(userId);
+  // };
+
+  //
   const openSmallModal = (user) => {
     setSmallModalOpen(true);
     setSelectedUser(user);
@@ -40,146 +76,158 @@ const UsersTable = ({ handleCustomerSelect, handleCustomerSubMenuClick }) => {
   };
 
   const handleChange = (e) => {
-    //
     const { name, value } = e.target.value;
     setFormData({ ...formData, [name]: value });
   };
 
   //
-  const [currentPage, setCurrentPage] = useState(1);
-  const UsersPerPage = 10;
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
 
-  const totalPages = Math.ceil(allUsers?.length / UsersPerPage);
-  const indexOfLastUser = currentPage * UsersPerPage;
-  const indexOfFirstUser = indexOfLastUser - UsersPerPage;
-  const currentUsers = allUsers?.slice(indexOfFirstUser, indexOfLastUser);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
-    <div className={styles.tableWrapper}>
-      <table className={styles.tableRoot}>
-        <thead className={styles.tableHead}>
-          <tr className={styles.tableHeadRow}>
-            <th className={styles.tableHeadCell}>ID</th>
-            <th className={styles.tableHeadCell}>Name</th>
-            <th className={styles.tableHeadCell}>Email</th>
-            <th className={styles.tableHeadCell}>Phone</th>
-            <th className={styles.tableHeadCell}>Status</th>
-            <th className={styles.tableHeadCell}>Role</th>
-            <th className={`${styles.tableHeadCell} `}>Act</th>
-          </tr>
-        </thead>
-        <tbody className={styles.tableBody}>
-          {currentUsers?.map((user) => (
-            <tr key={user?.id} className={styles.tableRow}>
-              {/* ID */}
-              <td className={styles.tableCell}>{user?.id || "N/A"}</td>
-              {/* Name */}
-              <td className={styles.tableCell}>
-                <Link onClick={() => openSidebar(user)}>
-                  {`${user?.first_name || "Unknown"} ${user?.last_name || ""}`}
-                </Link>
-              </td>
+    <>
+      <div className={styles.tableWrapper}>
+        <table className={styles.tableRoot}>
+          <thead className={styles.tableHead}>
+            <tr className={styles.tableHeadRow}>
+              <th className={styles.tableHeadCell}>ID</th>
+              <th className={styles.tableHeadCell}>Name</th>
+              <th className={styles.tableHeadCell}>Email</th>
+              <th className={styles.tableHeadCell}>Phone</th>
+              <th className={styles.tableHeadCell}>Status</th>
+              <th className={styles.tableHeadCell}>Role</th>
+              <th className={`${styles.tableHeadCell} `}>Act</th>
+            </tr>
+          </thead>
+          <tbody className={styles.tableBody}>
+            {currentUsers?.map((user) => (
+              <tr key={user?.id} className={styles.tableRow}>
+                {/* ID */}
+                <td className={styles.tableCell}>{user?.id || "N/A"}</td>
+                {/* Name */}
+                <td className={styles.tableCell}>
+                  <Link onClick={() => openSidebar(user)}>
+                    {`${user?.first_name || "Unknown"} ${
+                      user?.last_name || ""
+                    }`}
+                  </Link>
+                </td>
 
-              {/* Phone */}
-              <td className={styles.tableCell}>{user?.email || "N/A"}</td>
+                {/* Phone */}
+                <td className={styles.tableCell}>{user?.email || "N/A"}</td>
 
-              <td className={styles.tableCell}>{user?.phone || "N/A"}</td>
+                <td className={styles.tableCell}>{user?.phone || "N/A"}</td>
 
-              {/* Status */}
-              <td className={styles.tableCell}>
-                {user.status ? (
-                  <div className={styles.statusWrapper}>
-                    <div
-                      className={`${styles.statusDot} ${
-                        user.status === "active"
-                          ? styles.statusActive
-                          : user?.status === "inactive"
-                          ? styles.statusInactive
-                          : user?.status === "on_leave"
-                          ? styles.statusOnLeave
-                          : user?.status === "terminated"
-                          ? styles.statusTerminated
-                          : styles.statusUnknown
-                      }`}
-                    ></div>
-                    {capitalizeWords(user.status)}
-                  </div>
-                ) : (
-                  "N/A"
-                )}
-              </td>
+                {/* Status */}
+                <td className={styles.tableCell}>
+                  {user.status ? (
+                    <div className={styles.statusWrapper}>
+                      <div
+                        className={`${styles.statusDot} ${
+                          user.status === "active"
+                            ? styles.statusActive
+                            : user?.status === "inactive"
+                            ? styles.statusInactive
+                            : user?.status === "on_leave"
+                            ? styles.statusOnLeave
+                            : user?.status === "terminated"
+                            ? styles.statusTerminated
+                            : styles.statusUnknown
+                        }`}
+                      ></div>
+                      {capitalizeWords(user.status)}
+                    </div>
+                  ) : (
+                    "N/A"
+                  )}
+                </td>
 
-              {/* Role */}
-              <td className={styles.tableCell}>
-                {user?.roles?.length > 0
-                  ? capitalizeWords(
-                      user.roles.map((role) => role.name).join(", ")
-                    )
-                  : "No roles"}
-              </td>
+                {/* Role */}
+                <td className={styles.tableCell}>
+                  {user?.roles?.length > 0
+                    ? capitalizeWords(
+                        user.roles.map((role) => role.name).join(", ")
+                      )
+                    : "No roles"}
+                </td>
 
-              {/* Actions */}
-              <td className={styles.tableCell}>
-                <button
-                  className={styles.iconButton}
-                  onClick={() => openSmallModal(user)}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    width="24"
-                    height="24"
+                {/* Actions */}
+                <td className={styles.tableCell}>
+                  <button
+                    className={styles.iconButton}
+                    onClick={() => openSmallModal(user)}
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M10.5 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      width="24"
+                      height="24"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10.5 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {/* Pagination */}
+            <tr>
+              <td colSpan="7" className={`${styles.paginationCell}`}>
+                {/* Uncomment and use the pagination logic as needed */}
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
               </td>
             </tr>
-          ))}
-          {/* Pagination */}
-          <tr>
-            <td colSpan="7" className={`${styles.paginationCell}`}>
-              {/* Uncomment and use the pagination logic as needed */}
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
 
-      {/* Small Modal for Activating/Deactivating Accounts */}
-      {isSmallModalOpen && (
-        <SmallModal
-          isOpen={isSmallModalOpen}
-          onClose={closeSmallModal}
-          formData={formData}
-          handleChange={handleChange}
-        >
-          <View
+        {/* Small Modal for Activating/Deactivating Accounts */}
+        {isSmallModalOpen && (
+          <SmallModal
+            isOpen={isSmallModalOpen}
+            onClose={closeSmallModal}
             formData={formData}
-            selectedUser={selectedUser}
             handleChange={handleChange}
-          />
-        </SmallModal>
-      )}
+          >
+            <View
+              formData={formData}
+              selectedUser={selectedUser}
+              handleChange={handleChange}
+            />
+          </SmallModal>
+        )}
 
-      {isSidebarOpen && (
-        <UpdateUser
-          selectedUser={selectedUser}
-          setSelectedUser={setSelectedUser}
-          isSidebarOpen={isSidebarOpen}
-          closeSidebar={closeSidebar}
-        />
-      )}
-    </div>
+        {isSidebarOpen && (
+          <UpdateUser
+            selectedUser={selectedUser}
+            setSelectedUser={setSelectedUser}
+            isSidebarOpen={isSidebarOpen}
+            closeSidebar={closeSidebar}
+          />
+        )}
+
+        {/* AddUser Modal */}
+        {/* {isSignupOpen && (
+          <AddUser
+            isSignupOpen={isSignupOpen}
+            closeSignup={closeSignup}
+            addUser={addUser}
+          />
+        )} */}
+      </div>
+    </>
   );
 };
 
