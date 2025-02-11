@@ -11,7 +11,7 @@ function Admin({
   handleCustomerSelect,
 }) {
   const { allUsers, getAllUsers } = useAuth();
-  const [users, setUsers] = useState(allUsers);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
 

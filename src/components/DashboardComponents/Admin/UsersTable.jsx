@@ -105,80 +105,81 @@ const UsersTable = ({
             </tr>
           </thead>
           <tbody className={styles.tableBody}>
-            {currentUsers?.map((user) => (
-              <tr key={user?.id} className={styles.tableRow}>
-                {/* ID */}
-                <td className={styles.tableCell}>{user?.id || "N/A"}</td>
-                {/* Name */}
-                <td className={styles.tableCell}>
-                  <Link onClick={() => openSidebar(user)}>
-                    {`${user?.first_name || "Unknown"} ${
-                      user?.last_name || ""
-                    }`}
-                  </Link>
-                </td>
+            {currentUsers &&
+              currentUsers?.map((user) => (
+                <tr key={user?.id} className={styles.tableRow}>
+                  {/* ID */}
+                  <td className={styles.tableCell}>{user?.id || "N/A"}</td>
+                  {/* Name */}
+                  <td className={styles.tableCell}>
+                    <Link onClick={() => openSidebar(user)}>
+                      {`${user?.first_name || "Unknown"} ${
+                        user?.last_name || ""
+                      }`}
+                    </Link>
+                  </td>
 
-                {/* Phone */}
-                <td className={styles.tableCell}>{user?.email || "N/A"}</td>
+                  {/* Phone */}
+                  <td className={styles.tableCell}>{user?.email || "N/A"}</td>
 
-                <td className={styles.tableCell}>{user?.phone || "N/A"}</td>
+                  <td className={styles.tableCell}>{user?.phone || "N/A"}</td>
 
-                {/* Status */}
-                <td className={styles.tableCell}>
-                  {user.status ? (
-                    <div className={styles.statusWrapper}>
-                      <div
-                        className={`${styles.statusDot} ${
-                          user.status === "active"
-                            ? styles.statusActive
-                            : user?.status === "inactive"
-                            ? styles.statusInactive
-                            : user?.status === "on_leave"
-                            ? styles.statusOnLeave
-                            : user?.status === "terminated"
-                            ? styles.statusTerminated
-                            : styles.statusUnknown
-                        }`}
-                      ></div>
-                      {capitalizeWords(user.status)}
-                    </div>
-                  ) : (
-                    "N/A"
-                  )}
-                </td>
+                  {/* Status */}
+                  <td className={styles.tableCell}>
+                    {user.status ? (
+                      <div className={styles.statusWrapper}>
+                        <div
+                          className={`${styles.statusDot} ${
+                            user.status === "active"
+                              ? styles.statusActive
+                              : user?.status === "inactive"
+                              ? styles.statusInactive
+                              : user?.status === "on_leave"
+                              ? styles.statusOnLeave
+                              : user?.status === "terminated"
+                              ? styles.statusTerminated
+                              : styles.statusUnknown
+                          }`}
+                        ></div>
+                        {capitalizeWords(user.status)}
+                      </div>
+                    ) : (
+                      "N/A"
+                    )}
+                  </td>
 
-                {/* Role */}
-                <td className={styles.tableCell}>
-                  {user?.roles?.length > 0
-                    ? capitalizeWords(
-                        user.roles.map((role) => role.name).join(", ")
-                      )
-                    : "No roles"}
-                </td>
+                  {/* Role */}
+                  <td className={styles.tableCell}>
+                    {user?.roles?.length > 0
+                      ? capitalizeWords(
+                          user.roles.map((role) => role.name).join(", ")
+                        )
+                      : "No roles"}
+                  </td>
 
-                {/* Actions */}
-                <td className={styles.tableCell}>
-                  <button
-                    className={styles.iconButton}
-                    onClick={() => openSmallModal(user)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      width="24"
-                      height="24"
+                  {/* Actions */}
+                  <td className={styles.tableCell}>
+                    <button
+                      className={styles.iconButton}
+                      onClick={() => openSmallModal(user)}
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M10.5 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </td>
-              </tr>
-            ))}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        width="24"
+                        height="24"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10.5 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              ))}
             {/* Pagination */}
             <tr>
               <td colSpan="7" className={`${styles.paginationCell}`}>
