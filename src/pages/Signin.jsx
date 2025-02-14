@@ -161,7 +161,7 @@ function Signin(props) {
                 <Link to="/user/signup">Register here</Link>
               </p>
               <p>
-                <Link to="/home">Cancel</Link>
+                <Link to="/">Cancel</Link>
               </p>
             </div>
           </div>
