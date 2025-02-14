@@ -4,8 +4,6 @@ import { useCallback } from "react";
 import api from "../../utils/api"; // ✅ Import global API interceptor
 
 // const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-// const BASE_URL =
-//   "https://val-server-bcbfdrehb2agdygp.canadacentral-01.azurewebsites.net";
 
 const BASE_URL = "https://render-server-app.onrender.com";
 
