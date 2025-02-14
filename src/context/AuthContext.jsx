@@ -12,8 +12,9 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { showSessionExpiredMessage } from "../../utils/sessionUtils";
 
-// const BASE_URL = "https://render-server-app.onrender.com";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
+// const BASE_URL = "https://render-server-app.onrender.com";
 
 const INACTIVITY_LIMIT = 15 * 60 * 1000; // 15 minutes inactivity
 
@@ -78,12 +79,12 @@ const AuthProvider = ({ children }) => {
   }, [navigate]);
 
   // Function to automatically logout user on token expiration
-  // const autoLogoutOnTokenExpiration = useCallback(() => {
-  //   const token = localStorage.getItem("accessToken");
-  //   if (!token || !checkTokenValidity(token)) {
-  //     signoutUser();
-  //   }
-  // }, [signoutUser]);
+  const autoLogoutOnTokenExpiration = useCallback(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!token || !checkTokenValidity(token)) {
+      signoutUser();
+    }
+  }, [signoutUser]);
 
   useEffect(() => {
     // Function to reset the inactivity timer
@@ -114,7 +115,7 @@ const AuthProvider = ({ children }) => {
     );
 
     // Periodic token expiration check
-    // const interval = setInterval(autoLogoutOnTokenExpiration, 60000); // Check every 1 minute
+    const interval = setInterval(autoLogoutOnTokenExpiration, 60000); // Check every 1 minute
 
     // Cleanup on unmount
     return () => {
@@ -132,7 +133,7 @@ const AuthProvider = ({ children }) => {
     setIsAuthenticated,
     setUser,
     setLoading,
-    // autoLogoutOnTokenExpiration,
+    autoLogoutOnTokenExpiration,
   ]);
 
   // Sign-in function
