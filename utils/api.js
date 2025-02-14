@@ -51,6 +51,7 @@ api.interceptors.response.use(
       // ✅ Reset after 5 seconds to allow new logins
       setTimeout(() => {
         isLoggingOut = false;
+        sessionStorage.removeItem("loggedOut");
       }, 5000);
     }
 

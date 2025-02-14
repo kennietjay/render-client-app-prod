@@ -78,12 +78,12 @@ const AuthProvider = ({ children }) => {
   }, [navigate]);
 
   // Function to automatically logout user on token expiration
-  const autoLogoutOnTokenExpiration = useCallback(() => {
-    const token = localStorage.getItem("accessToken");
-    if (!token || !checkTokenValidity(token)) {
-      signoutUser();
-    }
-  }, [signoutUser]);
+  // const autoLogoutOnTokenExpiration = useCallback(() => {
+  //   const token = localStorage.getItem("accessToken");
+  //   if (!token || !checkTokenValidity(token)) {
+  //     signoutUser();
+  //   }
+  // }, [signoutUser]);
 
   useEffect(() => {
     // Function to reset the inactivity timer
