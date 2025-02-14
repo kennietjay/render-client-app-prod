@@ -40,45 +40,29 @@ const AuthProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
+  // ✅ Handle session expired message
   useEffect(() => {
     if (sessionStorage.getItem("loggedOut") === "true") {
       showSessionExpiredMessage();
-      sessionStorage.removeItem("loggedOut"); // ✅ Remove flag after showing
+      sessionStorage.removeItem("loggedOut");
     }
   }, []);
 
-  // Logout function
+  // ✅ Logout function
   const signoutUser = useCallback(async () => {
     try {
-      const refreshToken = localStorage.getItem("refreshToken");
-
-      if (!refreshToken) throw new Error("No refresh token provided");
-
-      // Make sign-out request
-      const response = await api.post(
-        `${BASE_URL}`,
-        { refreshToken },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
-      );
-
-      // Clear local storage and reset authentication state
+      console.warn("🔴 Logging out user...");
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       setUser(null);
       setIsAuthenticated(false);
       navigate("/user/signin");
-
-      return { success: response.data?.msg };
     } catch (error) {
-      return { error: error.response?.data?.msg || "Sign-out failed" };
+      console.error("❌ Sign-out Error:", error);
     }
   }, [navigate]);
 
-  // Function to automatically logout user on token expiration
+  // ✅ Auto logout when token expires
   const autoLogoutOnTokenExpiration = useCallback(() => {
     const token = localStorage.getItem("accessToken");
     if (!token || !checkTokenValidity(token)) {
@@ -87,79 +71,56 @@ const AuthProvider = ({ children }) => {
   }, [signoutUser]);
 
   useEffect(() => {
-    // Function to reset the inactivity timer
     const resetInactivityTimer = () => {
-      if (inactivityTimer.current) {
-        clearTimeout(inactivityTimer.current);
-      }
+      if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
       inactivityTimer.current = setTimeout(() => {
-        console.warn("Logged out due to inactivity");
+        console.warn("🔴 Logged out due to inactivity");
         signoutUser();
-      }, INACTIVITY_LIMIT); // Log out after inactivity
+      }, INACTIVITY_LIMIT);
     };
 
-    // Initialize user session on mount
+    // ✅ Initialize session
     const token = localStorage.getItem("accessToken");
     if (token && checkTokenValidity(token)) {
       setIsAuthenticated(true);
       setUser(jwtDecode(token));
-    } else {
-      signoutUser();
     }
+
     setLoading(false);
 
-    // Monitor user activity
-    const activityEvents = ["mousemove", "keydown", "click"];
-    activityEvents.forEach((event) =>
+    // ✅ Monitor user activity
+    ["mousemove", "keydown", "click"].forEach((event) =>
       window.addEventListener(event, resetInactivityTimer)
     );
 
-    // Periodic token expiration check
-    const interval = setInterval(autoLogoutOnTokenExpiration, 60000); // Check every 1 minute
+    // ✅ Check token every minute
+    const interval = setInterval(autoLogoutOnTokenExpiration, 60000);
 
-    // Cleanup on unmount
     return () => {
-      if (inactivityTimer.current) {
-        clearTimeout(inactivityTimer.current);
-      }
+      if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
       clearInterval(interval);
-      activityEvents.forEach((event) =>
+      ["mousemove", "keydown", "click"].forEach((event) =>
         window.removeEventListener(event, resetInactivityTimer)
       );
     };
-  }, [
-    signoutUser,
-    // checkTokenValidity,
-    setIsAuthenticated,
-    setUser,
-    setLoading,
-    autoLogoutOnTokenExpiration,
-  ]);
+  }, [signoutUser, autoLogoutOnTokenExpiration]);
 
-  // Sign-in function
+  // ✅ Sign-in function
   const signinUser = async (credentials) => {
     setLoading(true);
     try {
       const response = await api.post(`${BASE_URL}/user/signin`, credentials);
-
-      console.log("BASE_URL:", import.meta.env.VITE_BACKEND_URL);
-
       const { accessToken, refreshToken } = response.data;
 
-      // Decode and verify role
-      const decoded = jwtDecode(accessToken);
-      if (!["user", "customer"].includes(decoded.role)) {
-        return { error: "Unauthorized role for sign-in" };
+      // ✅ Ensure token is valid
+      if (!checkTokenValidity(accessToken)) {
+        return { error: "Received an expired token. Please try again." };
       }
 
-      // Store tokens and decode user info
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
-      console.log("Access Token:", accessToken);
-      console.log("Refresh Token:", refreshToken);
-
-      // const decoded = jwtDecode(accessToken);
+      const decoded = jwtDecode(accessToken);
       setUser(decoded);
       setIsAuthenticated(true);
       navigate("/user/profile");
@@ -171,57 +132,44 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  // ==============================================================
-
-  // Fetch the logged-in user’s profile
+  // ✅ Fetch user profile
   const fetchUserProfile = useCallback(async () => {
     try {
-      // ✅ Ensure token exists before fetching profile
       const accessToken = localStorage.getItem("accessToken");
       if (!accessToken) {
-        throw new Error("No access token found. User is logged out.");
+        throw new Error("No access token found. Logging out...");
       }
 
-      // ✅ Fetch user profile
-      const response = await api.get("/user/profile"); // Use the global `api`
+      const response = await api.get("/user/profile");
       setUser(response.data);
       return response.data;
     } catch (error) {
-      console.error(
-        "Fetch profile error:",
-        error.response?.data || error.message
-      );
-
-      // ✅ If user is logged out, reset everything
-      if (error.message.includes("User logged out")) {
-        setUser(null);
-        setIsAuthenticated(false);
-      }
-
-      throw new Error(error.response?.data?.msg || "Failed to fetch profile");
+      console.error("❌ Fetch profile error:", error.response?.data || error);
+      signoutUser();
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [signoutUser]);
 
   useEffect(() => {
-    fetchUserProfile(); // Fetch user when the provider mounts
+    fetchUserProfile();
   }, [fetchUserProfile]);
 
   // =============================================================
+
   const createUser = async (userData) => {
-    console.log("📌 Sending user data to backend:", userData);
+    console.log("📌 Sending user data to backend:", userData); // ✅ Check this in console
 
     try {
       setLoading(true);
-      const response = await api.post("/user/signup", userData);
+      const response = await api.post(`${BASE_URL}/user/signup`, userData);
 
       const createdUser = response?.data?.user || response?.data;
 
+      setNewUser(createdUser);
       console.log("✅ Created User:", createdUser);
 
-      setNewUser(createdUser);
-      getAllUsers(); // ✅ Refresh user list after adding new user
+      getAllUsers();
 
       return { success: true, msg: response?.data?.msg, createdUser };
     } catch (error) {
@@ -229,10 +177,9 @@ const AuthProvider = ({ children }) => {
         "❌ Signup Error:",
         error.response?.data?.msg || error?.msg
       );
-
       return {
         success: false,
-        msg: error.response?.data?.msg || "Signup failed. Please try again.",
+        msg: error?.response?.data?.msg || "Signup failed. Please try again.",
       };
     } finally {
       setLoading(false);
@@ -428,3 +375,189 @@ const useAuth = () => {
 };
 
 export { AuthProvider, useAuth };
+
+//
+// useEffect(() => {
+//   if (sessionStorage.getItem("loggedOut") === "true") {
+//     showSessionExpiredMessage();
+//     sessionStorage.removeItem("loggedOut"); // ✅ Remove flag after showing
+//   }
+// }, []);
+
+// // Logout function
+// const signoutUser = useCallback(async () => {
+//   try {
+//     const refreshToken = localStorage.getItem("refreshToken");
+
+//     if (!refreshToken) throw new Error("No refresh token provided");
+
+//     // Make sign-out request
+//     const response = await api.post(
+//       `${BASE_URL}`,
+//       { refreshToken },
+//       {
+//         headers: {
+//           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+//         },
+//       }
+//     );
+
+//     // Clear local storage and reset authentication state
+//     localStorage.removeItem("accessToken");
+//     localStorage.removeItem("refreshToken");
+//     setUser(null);
+//     setIsAuthenticated(false);
+//     navigate("/user/signin");
+
+//     return { success: response.data?.msg };
+//   } catch (error) {
+//     return { error: error.response?.data?.msg || "Sign-out failed" };
+//   }
+// }, [navigate]);
+
+// // Function to automatically logout user on token expiration
+// const autoLogoutOnTokenExpiration = useCallback(() => {
+//   const token = localStorage.getItem("accessToken");
+//   if (!token || !checkTokenValidity(token)) {
+//     signoutUser();
+//   }
+// }, [signoutUser]);
+
+// useEffect(() => {
+//   // Function to reset the inactivity timer
+//   const resetInactivityTimer = () => {
+//     if (inactivityTimer.current) {
+//       clearTimeout(inactivityTimer.current);
+//     }
+//     inactivityTimer.current = setTimeout(() => {
+//       console.warn("Logged out due to inactivity");
+//       signoutUser();
+//     }, INACTIVITY_LIMIT); // Log out after inactivity
+//   };
+
+//   // Initialize user session on mount
+//   const token = localStorage.getItem("accessToken");
+//   if (token && checkTokenValidity(token)) {
+//     setIsAuthenticated(true);
+//     setUser(jwtDecode(token));
+//   } else {
+//     signoutUser();
+//   }
+//   setLoading(false);
+
+//   // Monitor user activity
+//   const activityEvents = ["mousemove", "keydown", "click"];
+//   activityEvents.forEach((event) =>
+//     window.addEventListener(event, resetInactivityTimer)
+//   );
+
+//   // Periodic token expiration check
+//   const interval = setInterval(autoLogoutOnTokenExpiration, 60000); // Check every 1 minute
+
+//   // Cleanup on unmount
+//   return () => {
+//     if (inactivityTimer.current) {
+//       clearTimeout(inactivityTimer.current);
+//     }
+//     clearInterval(interval);
+//     activityEvents.forEach((event) =>
+//       window.removeEventListener(event, resetInactivityTimer)
+//     );
+//   };
+// }, [
+//   signoutUser,
+//   // checkTokenValidity,
+//   setIsAuthenticated,
+//   setUser,
+//   setLoading,
+//   autoLogoutOnTokenExpiration,
+// ]);
+
+// // Sign-in function
+// const signinUser = async (credentials) => {
+//   setLoading(true);
+//   try {
+//     const response = await api.post(`${BASE_URL}/user/signin`, credentials);
+
+//     console.log("BASE_URL:", import.meta.env.VITE_BACKEND_URL);
+
+//     const { accessToken, refreshToken } = response.data;
+
+//     // Decode and verify role
+//     const decoded = jwtDecode(accessToken);
+//     if (!["user", "customer"].includes(decoded.role)) {
+//       return { error: "Unauthorized role for sign-in" };
+//     }
+
+//     // Store tokens and decode user info
+//     localStorage.setItem("accessToken", accessToken);
+//     localStorage.setItem("refreshToken", refreshToken);
+
+//     console.log("Access Token:", accessToken);
+//     console.log("Refresh Token:", refreshToken);
+
+//     // const decoded = jwtDecode(accessToken);
+//     setUser(decoded);
+//     setIsAuthenticated(true);
+//     navigate("/user/profile");
+//     return { success: response?.data.msg };
+//   } catch (error) {
+//     return { error: error.response?.data?.msg || "Sign-in failed" };
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
+// // ==============================================================
+
+// // Fetch the logged-in user’s profile
+// const fetchUserProfile = useCallback(async () => {
+//   try {
+//     // ✅ Ensure token exists before fetching profile
+//     const accessToken = localStorage.getItem("accessToken");
+//     if (!accessToken) {
+//       throw new Error("No access token found. User is logged out.");
+//     }
+
+//     // ✅ Fetch user profile
+//     const response = await api.get("/user/profile"); // Use the global `api`
+//     setUser(response.data);
+//     return response.data;
+//   } catch (error) {
+//     console.error(
+//       "Fetch profile error:",
+//       error.response?.data || error.message
+//     );
+
+//     // ✅ If user is logged out, reset everything
+//     if (error.message.includes("User logged out")) {
+//       setUser(null);
+//       setIsAuthenticated(false);
+//     }
+
+//     throw new Error(error.response?.data?.msg || "Failed to fetch profile");
+//   } finally {
+//     setLoading(false);
+//   }
+// }, []);
+
+// // const fetchUserProfile = useCallback(async () => {
+// //   try {
+// //     const accessToken = localStorage.getItem("accessToken");
+
+// //     const response = await api.get(`${BASE_URL}/user/profile`, {
+// //       headers: { Authorization: `Bearer ${accessToken}` },
+// //     });
+// //     setUser(response.data);
+// //     return response.data;
+// //   } catch (error) {
+// //     console.error("Fetch profile error:", error.response?.data || error);
+// //     throw new Error(error.response?.data?.msg || "Failed to fetch profile");
+// //   } finally {
+// //     setLoading(false);
+// //   }
+// // }, []);
+
+// useEffect(() => {
+//   fetchUserProfile(); // Fetch user when the provider mounts
+// }, [fetchUserProfile]);
