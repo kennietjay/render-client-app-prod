@@ -1,6 +1,7 @@
 import axios from "axios";
 import { showSessionExpiredMessage } from "./sessionUtils";
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+const BASE_URL =
+  import.meta.env.VITE_BACKEND_URL || "https://render-server-app.onrender.com";
 
 const api = axios.create({
   baseURL: BASE_URL,
