@@ -1,6 +1,6 @@
-import axios from "axios";
+// import api from "api";
 import React, { createContext, useCallback, useContext, useState } from "react";
-
+import api from "../../utils/api"; // ✅ Import global API interceptor
 // const BASE_URL = "http://192.168.12.109:8000";
 // const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -30,7 +30,7 @@ function BankProvider({ children }) {
       const token = getAuthToken();
       if (!token) throw new Error("No access token found");
 
-      const response = await axios.get(
+      const response = await api.get(
         `${BASE_URL}/customer/${customerId}/bank`,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -54,7 +54,7 @@ function BankProvider({ children }) {
       const token = getAuthToken();
       if (!token) throw new Error("No access token found");
 
-      const response = await axios.put(
+      const response = await api.put(
         `${BASE_URL}/customer/${customer_id}/bank`,
         updatedData,
         {

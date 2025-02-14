@@ -19,7 +19,7 @@ function UserSignup({ isSignupOpen, onSubmit, closeSignup }) {
     last_name: "Tamia",
     email: "jay4tamia@gmail.com",
     gender: "male",
-    date_of_birth: "28-01-1984",
+    date_of_birth: "28-01-",
     phone: "076304506",
     password: "password",
     confirm_password: "password",

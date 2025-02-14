@@ -1,9 +1,12 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
-import axios from "axios";
+// import api from "api";
+import api from "../../utils/api"; // ✅ Import global API interceptor
 
 const LoanContext = createContext();
 
 const BASE_URL = "https://render-server-app.onrender.com";
+
+// const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const getAuthToken = () => localStorage.getItem("accessToken");
 const getHeaders = () => ({
@@ -35,7 +38,7 @@ function LoanProvider({ children }) {
 
     setLoading(true);
     try {
-      const response = await axios.post(`${BASE_URL}/loans/create`, loanData, {
+      const response = await api.post(`${BASE_URL}/loans/create`, loanData, {
         headers: getHeaders(),
       });
 
@@ -56,7 +59,7 @@ function LoanProvider({ children }) {
   const getLoans = useCallback(async ({ query = "", status = "all" } = {}) => {
     setLoading(true);
     try {
-      const response = await axios.get(`${BASE_URL}/loans/all`, {
+      const response = await api.get(`${BASE_URL}/loans/all`, {
         params: { query, status }, // Pass query parameters
         headers: getHeaders(),
       });
@@ -117,7 +120,7 @@ function LoanProvider({ children }) {
     console.log(customerId);
     setLoading(true);
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `${BASE_URL}/loans/customer/${customerId}/all`,
         {
           headers: getHeaders(),
@@ -153,7 +156,7 @@ function LoanProvider({ children }) {
 
     setLoading(true);
     try {
-      const response = await axios.get(`${BASE_URL}/loans/${loanId}`, {
+      const response = await api.get(`${BASE_URL}/loans/${loanId}`, {
         headers: getHeaders(),
       });
 
@@ -173,7 +176,7 @@ function LoanProvider({ children }) {
   const getLoanWithDetails = async (loanId) => {
     setLoading(true);
     try {
-      const response = await axios.get(`${BASE_URL}/loans/details/${loanId}`, {
+      const response = await api.get(`${BASE_URL}/loans/details/${loanId}`, {
         headers: getHeaders(),
       });
       setLoan(response?.data?.loan);
@@ -191,7 +194,7 @@ function LoanProvider({ children }) {
 
     setLoading(true);
     try {
-      const response = await axios.put(
+      const response = await api.put(
         `${BASE_URL}/loans/${customerId}/update/${loanId}`,
         updatedData,
         { headers: getHeaders() }
@@ -211,7 +214,7 @@ function LoanProvider({ children }) {
   // First Review
   const firstReview = async (loanId, customerId, reviewedData) => {
     try {
-      const response = await axios.patch(
+      const response = await api.patch(
         `${BASE_URL}/loans/${customerId}/review/first/${loanId}`,
         reviewedData,
         {
@@ -241,7 +244,7 @@ function LoanProvider({ children }) {
 
     try {
       // Correct the URL construction
-      const response = await axios.patch(
+      const response = await api.patch(
         `${BASE_URL}/loans/${customerId}/review/second/${loanId}`, // Ensure no extra "loans" path
         reviewedData,
         { headers: getHeaders() }
@@ -269,7 +272,7 @@ function LoanProvider({ children }) {
       console.log("Customer ID:", approvalData.customerId);
       console.log("Approval Data:", approvalData);
 
-      const response = await axios.patch(
+      const response = await api.patch(
         `${BASE_URL}/loans/${approvalData.customerId}/approve/${approvalData.loanId}`,
         approvalData,
         { headers: getHeaders() }
@@ -291,7 +294,7 @@ function LoanProvider({ children }) {
 
     setLoading(true);
     try {
-      const response = await axios.patch(
+      const response = await api.patch(
         `${BASE_URL}/loans/${updatedFormData.customerId}/reject/${updatedFormData.loanId}`,
         updatedFormData,
         { headers: getHeaders() }
@@ -313,7 +316,7 @@ function LoanProvider({ children }) {
 
     setLoading(true);
     try {
-      const response = await axios.patch(
+      const response = await api.patch(
         `${BASE_URL}/loans/${updatedFormData?.customerId}/cancel/${updatedFormData?.loanId}`,
         updatedFormData,
         { headers: getHeaders() }
@@ -335,7 +338,7 @@ function LoanProvider({ children }) {
 
     setLoading(true);
     try {
-      const response = await axios.patch(
+      const response = await api.patch(
         `${BASE_URL}/loans/${updatedFormData?.customerId}/close/${updatedFormData?.loanId}`,
         updatedFormData,
         { headers: getHeaders() }
@@ -355,7 +358,7 @@ function LoanProvider({ children }) {
   const payLoan = async (loanId, paymentData, customerId) => {
     setLoading(true);
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${BASE_URL}/loans/${customerId}/pay/${loanId}`,
         paymentData,
         { headers: getHeaders() }
@@ -372,7 +375,7 @@ function LoanProvider({ children }) {
 
   const recordPayment = async (data, loan_id) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${BASE_URL}/loans/${loan_id}/pay`,
         data,
         {
@@ -395,7 +398,7 @@ function LoanProvider({ children }) {
   const deleteLoan = async (loanId, customerId) => {
     setLoading(true);
     try {
-      const response = await axios.delete(
+      const response = await api.delete(
         `${BASE_URL}/loans/${customerId}/delete${loanId}`,
         { headers: getHeaders() }
       );

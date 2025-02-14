@@ -1,6 +1,6 @@
-import axios from "axios";
+// import api from "api";
 import React, { createContext, useContext, useState } from "react";
-
+import api from "../../utils/api"; // ✅ Import global API interceptor
 // const BASE_URL = "http://192.168.12.109:8000";
 // const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -14,38 +14,41 @@ const ContactContext = createContext();
 
 // Contact Provider Component
 function ContactProvider({ children }) {
-  const [message, setMessage] = useState(null); // Store success message
   const [loading, setLoading] = useState(false); // Track loading state
-  const [error, setError] = useState(null); // Track errors
 
   const createMessage = async (formData) => {
     try {
       setLoading(true);
-      const response = await axios.post(
+      const response = await api.post(
         `${BASE_URL}/contact-us/message`,
         formData,
         {
           headers: {
-            "Content-Type": "application/json", // Only include necessary headers
+            "Content-Type": "application/json",
           },
         }
       );
-      setError("");
-      setMessage(response.data);
-      return { success: response.data.msg };
+
+      return { success: true, msg: response.data.msg };
     } catch (error) {
       console.error(
         "Error creating message:",
         error.response?.data?.msg || error.message
       );
-      return { error: error.response?.data?.msg || error.message };
+
+      return {
+        success: false,
+        msg:
+          error.response?.data?.msg ||
+          "Failed to send message. Please try again.",
+      };
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <ContactContext.Provider value={{ createMessage, message, loading, error }}>
+    <ContactContext.Provider value={{ createMessage, loading }}>
       {children}
     </ContactContext.Provider>
   );

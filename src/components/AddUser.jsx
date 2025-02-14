@@ -4,33 +4,42 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import Modal from "../components/Modal";
 import { Alert } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
-import { handleDateInput } from "/utils/handleDateInput";
+import { handleDateInput, convertToDBFormat } from "/utils/dateUtils.js";
+import { formatPhoneNumber } from "../../utils/phoneUtils";
 
-function AddUser({ isSignupOpen, onSubmit, closeSignup, addUser }) {
+function AddUser({ isAddUserOpen, onSubmit, closeAddUser, addUser }) {
   const { createUser, loading } = useAuth();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
   // Initialize form fields with default values
   const [formData, setFormData] = useState({
-    first_name: "",
+    first_name: "Ama",
     middle_name: "",
-    last_name: "",
+    last_name: "Doe",
     email: "",
-    gender: "",
-    date_of_birth: "",
-    phone: "",
-    password: "",
-    confirm_password: "",
+    gender: "Male",
+    date_of_birth: "23-10-1984",
+    phone: "076860509",
+    password: "password",
+    confirm_password: "password",
   });
 
-  // Handle input changes
+  // ✅ Handle Input Change (Prevent Date Format Issues)
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value || "", // Ensure value is never undefined or null
-    }));
+
+    if (name === "date_of_birth") {
+      setFormData((prev) => ({
+        ...prev,
+        date_of_birth: value, // Keep input as DD-MM-YYYY
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   // Capitalize first letters of names (including hyphenated names)
@@ -42,23 +51,7 @@ function AddUser({ isSignupOpen, onSubmit, closeSignup, addUser }) {
       .join("-");
 
   // Format Sierra Leone phone numbers
-  const formatPhoneNumber = (phone) => {
-    let cleanedPhone = phone.replace(/\D/g, ""); // Remove non-digits
-
-    if (cleanedPhone.length === 9 && cleanedPhone.startsWith("0")) {
-      cleanedPhone = cleanedPhone.slice(1); // Remove leading 0
-    }
-
-    if (/^\d{8}$/.test(cleanedPhone)) {
-      return `+232-${cleanedPhone.slice(0, 2)}-${cleanedPhone.slice(2)}`;
-    }
-
-    if (/^232\d{8}$/.test(cleanedPhone)) {
-      return `+232-${cleanedPhone.slice(3, 5)}-${cleanedPhone.slice(5)}`;
-    }
-
-    return null;
-  };
+  // const phoneNumber = formatPhoneNumber(formData.phone);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -98,9 +91,17 @@ function AddUser({ isSignupOpen, onSubmit, closeSignup, addUser }) {
       return;
     }
 
-    // Format names, email, and gender
+    // ✅ Convert date format before sending
+    const formattedDOB = convertToDBFormat(formData.date_of_birth);
+
+    if (!formattedDOB) {
+      setError("Invalid date format. Use DD-MM-YYYY.");
+      return;
+    }
+
     const formattedData = {
       ...formData,
+      date_of_birth: formattedDOB, // ✅ Ensure correct format is sent
       first_name: capitalizeName(formData.first_name),
       last_name: capitalizeName(formData.last_name),
       middle_name: capitalizeName(formData.middle_name || ""),
@@ -128,15 +129,15 @@ function AddUser({ isSignupOpen, onSubmit, closeSignup, addUser }) {
           password: "",
           confirm_password: "",
         });
-        closeSignup(); // Close modal
+        closeAddUser(); // Close modal
 
         setSuccess("User created successfully!");
         setError(null);
       } else {
-        setError(response.error);
+        setError(response.msg);
       }
     } catch (error) {
-      setError(error.message || "An error occurred while creating the user.");
+      setError(error?.msg || "An error occurred while creating the user.");
     }
   };
 
@@ -150,10 +151,10 @@ function AddUser({ isSignupOpen, onSubmit, closeSignup, addUser }) {
         />
       ) : (
         <div className={styles.wrapper}>
-          <Modal isOpen={isSignupOpen} onClose={closeSignup}>
+          <Modal isOpen={isAddUserOpen} onClose={closeAddUser}>
             <div className={styles.formContainer}>
               <form onSubmit={handleSubmit} className={styles.form}>
-                <span className={styles.closeBtn} onClick={closeSignup}>
+                <span className={styles.closeBtn} onClick={closeAddUser}>
                   X
                 </span>
                 <div className={styles.formSubHeader}>

@@ -225,6 +225,22 @@ function LoanPayments() {
   // Calculate outstanding balance
   const outstandingBalance = calculateOutstandingBalance(loanDetails, payments);
 
+  // Find the payment with the highest ID
+  const latestPayment = payments?.length
+    ? [...payments].sort((a, b) => new Date(b.date) - new Date(a.date))[0]
+    : null;
+
+  // Function to calculate total amount paid
+  const calculateTotalAmountPaid = (payments) => {
+    // Provide an initial value of 0 to handle empty arrays
+    return payments.reduce((total, payment) => {
+      // Convert the amount to a number and add it to the total
+      return total + parseFloat(payment.amount);
+    }, 0); // Initial value is 0
+  };
+
+  // Example usage
+  const totalAmountPaid = calculateTotalAmountPaid(payments);
   return (
     <>
       {!loanDetails && loading ? (
@@ -269,21 +285,30 @@ function LoanPayments() {
               {loanDetails && (
                 <div className={styles.loanDetails}>
                   <p>
+                    <strong>Customer ID:</strong> {loanDetails?.customer_id}
+                  </p>
+                  <p>
                     <strong>Loan ID:</strong> {loanDetails?.loan_id}
                   </p>
                   <p>
-                    <strong>Loan Amount:</strong> NLe{loanDetails?.total_amount}
+                    <strong>Loan Amount:</strong> NLe{" "}
+                    {loanDetails?.total_amount}
                   </p>
                   <p>
-                    <strong>Outstanding Balance:</strong> NLe
+                    <strong>Outstanding Balance:</strong> NLe{" "}
                     {outstandingBalance}
+                  </p>
+                  <p>
+                    <strong>Last Payment:</strong> NLe{" "}
+                    {latestPayment?.amount ? latestPayment.amount : 0}
                   </p>
                   <p>
                     <strong>Approval Date:</strong>{" "}
                     {approvalDate ? approvalDate : "N/A"}
                   </p>
+
                   <p>
-                    <strong>Customer ID:</strong> {loanDetails?.customer_id}
+                    <strong>Total To-Date:</strong> NLe {totalAmountPaid}
                   </p>
                 </div>
               )}
@@ -296,7 +321,7 @@ function LoanPayments() {
                   id="amount"
                   name="amount"
                   placeholder="Enter payment amount"
-                  value={paymentData.amount}
+                  value={paymentData?.amount}
                   onChange={handleInputChange}
                   required
                 />

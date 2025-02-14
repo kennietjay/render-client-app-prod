@@ -106,7 +106,7 @@ function LoanApplication({ isModalOpen, closeModal }) {
       consent: "",
       full_name: "Hannah Kamara",
       applicant_initial: "HK",
-      submission_date: "2024-10-18",
+      submission_date: "10-18-2025",
     },
   });
 

@@ -9,6 +9,7 @@ function UpdateUser({
   closeSidebar,
   selectedUser,
   setSelectedUser,
+  updateUserData,
 }) {
   const { updateUser } = useAuth();
   const [success, setSuccess] = useState(null);
@@ -42,9 +43,10 @@ function UpdateUser({
       ...selectedUser,
     };
 
-    const response = await updateUser(selectedUser.id, updatedUserData);
+    const response = await updateUser(selectedUser?.id, updatedUserData);
     if (response.success) {
       setSuccess("User updated successfully.");
+      updateUserData(selectedUser);
     } else {
       setError("User update failed.");
     }
@@ -82,7 +84,7 @@ function UpdateUser({
             <label>First Name:</label>
             <input
               type="text"
-              value={selectedUser.first_name || ""}
+              value={selectedUser?.first_name || ""}
               onChange={(e) =>
                 setSelectedUser({ ...selectedUser, first_name: e.target.value })
               }

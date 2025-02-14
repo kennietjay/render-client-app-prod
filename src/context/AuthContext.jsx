@@ -6,15 +6,13 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-import axios from "axios";
+// import axios from "axios";
+import api from "../../utils/api"; // ✅ Import global API interceptor
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { showSessionExpiredMessage } from "../../utils/sessionUtils";
 
-// const BASE_URL = "http://192.168.12.109:8000";
 // const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-
-// const BASE_URL =
-//   "https://val-server-bcbfdrehb2agdygp.canadacentral-01.azurewebsites.net";
 
 const BASE_URL = "https://render-server-app.onrender.com";
 
@@ -42,6 +40,13 @@ const AuthProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (sessionStorage.getItem("loggedOut") === "true") {
+      showSessionExpiredMessage();
+      sessionStorage.removeItem("loggedOut"); // ✅ Remove flag after showing
+    }
+  }, []);
+
   // Logout function
   const signoutUser = useCallback(async () => {
     try {
@@ -50,7 +55,7 @@ const AuthProvider = ({ children }) => {
       if (!refreshToken) throw new Error("No refresh token provided");
 
       // Make sign-out request
-      const response = await axios.post(
+      const response = await api.post(
         `${BASE_URL}`,
         { refreshToken },
         {
@@ -135,7 +140,7 @@ const AuthProvider = ({ children }) => {
   const signinUser = async (credentials) => {
     setLoading(true);
     try {
-      const response = await axios.post(`${BASE_URL}/user/signin`, credentials);
+      const response = await api.post(`${BASE_URL}/user/signin`, credentials);
 
       console.log("BASE_URL:", import.meta.env.VITE_BACKEND_URL);
 
@@ -171,15 +176,28 @@ const AuthProvider = ({ children }) => {
   // Fetch the logged-in user’s profile
   const fetchUserProfile = useCallback(async () => {
     try {
+      // ✅ Ensure token exists before fetching profile
       const accessToken = localStorage.getItem("accessToken");
+      if (!accessToken) {
+        throw new Error("No access token found. User is logged out.");
+      }
 
-      const response = await axios.get(`${BASE_URL}/user/profile`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      // ✅ Fetch user profile
+      const response = await api.get("/user/profile"); // Use the global `api`
       setUser(response.data);
       return response.data;
     } catch (error) {
-      console.error("Fetch profile error:", error.response?.data || error);
+      console.error(
+        "Fetch profile error:",
+        error.response?.data || error.message
+      );
+
+      // ✅ If user is logged out, reset everything
+      if (error.message.includes("User logged out")) {
+        setUser(null);
+        setIsAuthenticated(false);
+      }
+
       throw new Error(error.response?.data?.msg || "Failed to fetch profile");
     } finally {
       setLoading(false);
@@ -191,28 +209,31 @@ const AuthProvider = ({ children }) => {
   }, [fetchUserProfile]);
 
   // =============================================================
-
   const createUser = async (userData) => {
-    console.log("📌 Sending user data to backend:", userData); // ✅ Check this in console
+    console.log("📌 Sending user data to backend:", userData);
 
     try {
       setLoading(true);
-      const response = await axios.post(`${BASE_URL}/user/signup`, userData);
+      const response = await api.post("/user/signup", userData);
 
       const createdUser = response?.data?.user || response?.data;
 
-      setNewUser(createdUser);
       console.log("✅ Created User:", createdUser);
 
-      getAllUsers();
+      setNewUser(createdUser);
+      getAllUsers(); // ✅ Refresh user list after adding new user
 
-      return { success: true, createdUser };
+      return { success: true, msg: response?.data?.msg, createdUser };
     } catch (error) {
       console.error(
         "❌ Signup Error:",
-        error.response?.data?.msg || error?.message
+        error.response?.data?.msg || error?.msg
       );
-      return { error: error.response?.data?.msg || error?.message };
+
+      return {
+        success: false,
+        msg: error.response?.data?.msg || "Signup failed. Please try again.",
+      };
     } finally {
       setLoading(false);
     }
@@ -222,7 +243,7 @@ const AuthProvider = ({ children }) => {
   const forgotPassword = async (email) => {
     try {
       setLoading(true);
-      const response = await axios.post(
+      const response = await api.post(
         `${BASE_URL}/user/forgot-password`,
         email
       ); // Wrap email in an object
@@ -240,7 +261,7 @@ const AuthProvider = ({ children }) => {
   // Reset password using reset token (for locked-out users)
   const resetPassword = async (resetToken, newPassword) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${BASE_URL}/user/reset-password/${resetToken}`,
         newPassword,
         { headers: { "Content-Type": "application/json" } }
@@ -256,7 +277,7 @@ const AuthProvider = ({ children }) => {
   const changePassword = async (newPasswordData) => {
     try {
       const accessToken = localStorage.getItem("accessToken");
-      const response = await axios.post(
+      const response = await api.post(
         `${BASE_URL}/user/change-password`,
         { newPassword: newPasswordData.password },
         { headers: { Authorization: `Bearer ${accessToken}` } }
@@ -279,7 +300,7 @@ const AuthProvider = ({ children }) => {
   const getAllUsers = useCallback(async () => {
     try {
       const accessToken = localStorage.getItem("accessToken");
-      const response = await axios.get(`${BASE_URL}/user/all`, {
+      const response = await api.get(`${BASE_URL}/user/all`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
@@ -295,7 +316,22 @@ const AuthProvider = ({ children }) => {
   const getUserById = useCallback(async (userId) => {
     try {
       const accessToken = localStorage.getItem("accessToken");
-      const response = await axios.get(`${BASE_URL}/user/${userId}/profile`, {
+      const response = await api.get(`${BASE_URL}/user/${userId}/profile`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error("Get user by ID error:", error.response?.data || error);
+      return error.response?.data?.msg || "Failed to fetch user";
+    }
+  }, []);
+
+  // Get a user by ID
+  const getUserByEmailOrPhone = useCallback(async (identifier) => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await api.get(`${BASE_URL}/user/search/${identifier}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
@@ -316,7 +352,7 @@ const AuthProvider = ({ children }) => {
       console.log("Request Headers:", { Authorization: `Bearer ${token}` });
       console.log("Updated User Data:", userData);
 
-      const response = await axios.put(url, userData, {
+      const response = await api.put(url, userData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -342,7 +378,7 @@ const AuthProvider = ({ children }) => {
   const deleteUser = async (userId) => {
     try {
       const accessToken = localStorage.getItem("accessToken");
-      const response = await axios.delete(`${BASE_URL}/user/${userId}`, {
+      const response = await api.delete(`${BASE_URL}/user/${userId}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       return { success: response.data.msg };
@@ -370,6 +406,7 @@ const AuthProvider = ({ children }) => {
         getAllUsers,
         updateUser,
         deleteUser,
+        getUserByEmailOrPhone,
 
         forgotPassword,
         resetPassword,

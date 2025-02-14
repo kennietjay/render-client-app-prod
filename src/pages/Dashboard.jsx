@@ -39,12 +39,16 @@ const Dashboard = () => {
     staffProfile,
     getStaffProfile,
   } = useStaff();
-  const { fetchTransfers, transfers } = useTransfer();
-  const { getPayments } = useTransaction();
+
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [allUsers, setAllUsers] = useState([]);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+
+  const { fetchTransfers, transfers } = useTransfer();
+  const { getPayments } = useTransaction();
+
   const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
   const [isAutoOpen, setIsAutoOpen] = useState(window.innerWidth > 62 * 16);
   const [activeSection, setActiveSection] = useState("recent");
@@ -155,21 +159,23 @@ const Dashboard = () => {
     // console.log("Updated customer: ", customersData);
   }, [customersData]);
 
-  //
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        await getAllUsers();
-        setSuccess();
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
+  // ✅ Memoize fetchUsers to prevent unnecessary re-renders
+  const fetchUsers = useCallback(async () => {
+    setLoading(true);
+    try {
+      const users = await getAllUsers(); // Fetch from API
+      setAllUsers(users); // ✅ Update state
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    } finally {
+      setLoading(false);
+    }
   }, [getAllUsers]);
+
+  // ✅ Fetch users on mount
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]); // Now `fetchUsers` is a stable reference
 
   //
   useEffect(() => {
@@ -295,6 +301,8 @@ const Dashboard = () => {
             isAutoOpen={isAutoOpen}
             openModal={openModal}
             user={user}
+            allUsers={allUsers}
+            getAllUsers={getAllUsers}
             loanData={loans}
             loanIds={loanIds}
             customers={customersData}
@@ -376,6 +384,8 @@ function DashboardHeader({
 
 function DashboardMain({
   user,
+  allUsers,
+  getAllUsers,
   loanData,
   loanIds,
   customers,
@@ -390,7 +400,7 @@ function DashboardMain({
   setDebouncedSearchText,
   setSelectedStatus,
   transfers,
-  loading,
+  // loading,
   staffProfile,
   handleCustomerSubMenuClick,
   selectedCustomer,
@@ -405,6 +415,64 @@ function DashboardMain({
   handleApproval,
   setSelectedLoan,
 }) {
+  const [users, setUsers] = useState(allUsers || []);
+  const [loading, setLoading] = useState(false);
+  const [isAddUserOpen, setIsAddUserOpen] = useState(false);
+
+  // ✅ Always sync users when allUsers updates
+  useEffect(() => {
+    setUsers(allUsers);
+  }, [allUsers]);
+
+  // ✅ Function to manually refresh users from API
+  const refreshUsers = async () => {
+    setLoading(true);
+    try {
+      const updatedUsers = await getAllUsers(); // ✅ Fetch latest users
+      setUsers(updatedUsers);
+    } catch (error) {
+      console.error("Error refreshing users:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ✅ Update UI after adding a user
+  const addUser = async (newUser) => {
+    setUsers((prevUsers) => [...prevUsers, newUser]); // Optimistic UI update
+    await refreshUsers(); // Fetch latest users
+  };
+
+  // ✅ Update UI after editing a user
+  const updateUserData = async (updatedUser) => {
+    if (!updatedUser || !updatedUser?.id) {
+      console.error("🚨 Invalid updated user data:", updatedUser);
+      return;
+    }
+
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user?.id === updatedUser?.id ? updatedUser : user
+      )
+    );
+
+    try {
+      await refreshUsers(); // ✅ Fetch fresh user data
+    } catch (error) {
+      console.error("🚨 Error refreshing users:", error);
+    }
+  };
+
+  // ✅ Update UI after removing a user
+  const removeUser = async (userId) => {
+    setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+    await refreshUsers();
+  };
+
+  // ✅ Open and close modal
+  const openAddUser = () => setIsAddUserOpen(true);
+  const closeAddUser = () => setIsAddUserOpen(false);
+
   return (
     <div
       id="main"
@@ -442,6 +510,7 @@ function DashboardMain({
           <div className={styles.section}>
             <Loans
               user={user}
+              getAllUsers={getAllUsers}
               openModal={openModal}
               searchText={searchText}
               selectedStatus={selectedStatus}
@@ -453,6 +522,10 @@ function DashboardMain({
               handleCustomerSubMenuClick={handleCustomerSubMenuClick}
               handleApproval={handleApproval}
               selectedLoan={selectedLoan}
+              isAddUserOpen={isAddUserOpen}
+              openAddUser={openAddUser}
+              closeAddUser={closeAddUser}
+              addUser={addUser}
             />
           </div>
         )}
@@ -488,7 +561,16 @@ function DashboardMain({
 
         {activeSection === "admin" && (
           <div className={styles.section}>
-            <Admin />
+            <Admin
+              isAddUserOpen={isAddUserOpen}
+              openAddUser={openAddUser}
+              closeAddUser={closeAddUser}
+              users={users}
+              getAllUsers={getAllUsers}
+              addUser={addUser}
+              updateUserData={updateUserData}
+              removeUser={removeUser}
+            />
           </div>
         )}
 

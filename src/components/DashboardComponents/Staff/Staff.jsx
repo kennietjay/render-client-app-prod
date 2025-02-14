@@ -7,6 +7,8 @@ import StaffTable from "./StaffTable";
 import { Alert } from "react-bootstrap";
 import { useStaff } from "../../../context/StaffContext";
 import { formatDateToInput } from "../../../../utils/formatDateToInput";
+// import AddStaff from "./AddStaff";
+import { handleDateInput, convertToDBFormat } from "/utils/dateUtils.js";
 
 function Staff({
   props,
@@ -25,13 +27,13 @@ function Staff({
     last_name: "Tamia",
     middle_name: "T",
     gender: "Male",
-    date_of_birth: "12/12/2000",
+    date_of_birth: "12-12-2000",
     email: "kennie4tamia@gmail.com",
     phone: "076234567",
     second_phone: "076234567",
     role_id: "7",
     department: "Management",
-    employment_date: "12/13/2024",
+    employment_date: "08-01-2024",
     password: "password",
     confirm_password: "password",
   });
@@ -85,10 +87,15 @@ function Staff({
     return null;
   };
 
-  // Handle input changes
+  // ✅ Handle Input Change (Prevent Date Format Issues)
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+        name === "date_of_birth" || name === "employment_date" ? value : value,
+    }));
   };
 
   const handleSubmit = async (event) => {
@@ -136,6 +143,15 @@ function Staff({
       return;
     }
 
+    // ✅ Convert to YYYY-MM-DD before sending
+    const formattedDOB = convertToDBFormat(formData.date_of_birth);
+    const formattedEmploymentDate = convertToDBFormat(formData.employment_date);
+
+    if (!formattedDOB || !formattedEmploymentDate) {
+      setError("Invalid date format. Use DD-MM-YYYY.");
+      return;
+    }
+
     // Create final data object
     const finalFormData = {
       ...formData,
@@ -145,7 +161,7 @@ function Staff({
       middle_name: capitalizeName(formData.middle_name),
       email: formData.email.toLowerCase(),
       department: formData.department, // Use formData directly
-      employment_date: formData.employment_date, // Use formData directly
+      employment_date: formattedEmploymentDate, // Use formData directly
     };
 
     const newUser = {
@@ -219,6 +235,8 @@ function Staff({
               />
             </div>
           </div>
+
+          {/*  */}
           <SmallModal isOpen={!!activeAction} onClose={closeActionModal}>
             <div>
               <div>
@@ -229,6 +247,8 @@ function Staff({
                     handleSubmit={handleSubmit}
                     lodaing={loading}
                     formData={formData}
+                    setFormData={setFormData}
+                    setError={setError}
                   />
                 )}
               </div>
@@ -249,7 +269,10 @@ function AddStaff({
   handleChange,
   loading,
   formData,
+  setFormData,
 }) {
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   //
   if (loading) {
     <LoadingSpinner size={60} color="#FF5722" message="Loading data..." />;
@@ -262,6 +285,17 @@ function AddStaff({
       </span>
       <form onSubmit={handleSubmit}>
         <h3>Add New Staff</h3>
+
+        {success && (
+          <Alert variant="success" className="warning">
+            {success}
+          </Alert>
+        )}
+        {error && (
+          <Alert variant="warning" className="warning">
+            {error}
+          </Alert>
+        )}
         <div className={styles.inputControl}>
           <label>First Name:</label>
           <input
@@ -305,10 +339,12 @@ function AddStaff({
         <div className={styles.inputControl}>
           <label>Date of Birth:</label>
           <input
-            type="date"
+            type="text"
             name="date_of_birth"
-            value={formatDateToInput(formData?.date_of_birth) || ""}
+            placeholder="DD-MM-YYYY"
+            value={formData.date_of_birth}
             onChange={handleChange}
+            onBlur={(e) => handleDateInput(e, setError, setFormData)}
           />
         </div>
 
@@ -359,10 +395,12 @@ function AddStaff({
         <div className={styles.inputControl}>
           <label>Emaployment Date:</label>
           <input
-            type="date"
+            type="text"
             name="employment_date"
-            value={formatDateToInput(formData?.employment_date) || ""}
+            placeholder="DD-MM-YYYY"
+            value={formData?.employment_date}
             onChange={handleChange}
+            onBlur={(e) => handleDateInput(e, setError, setFormData)}
           />
         </div>
 
@@ -412,11 +450,11 @@ function AddStaff({
 
         {/* Other fields */}
         <div className={styles.actionButtons}>
-          <button type="submit" disabled={loading}>
-            {loading ? "Processing..." : "Save Changes"}
-          </button>
           <button type="button" onClick={closeActionModal} disabled={loading}>
             Cancel
+          </button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Processing..." : "Save Changes"}
           </button>
         </div>
       </form>

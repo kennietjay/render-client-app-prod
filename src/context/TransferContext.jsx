@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
-import axios from "axios";
+// import api from "api";
 import { useCallback } from "react";
+import api from "../../utils/api"; // ✅ Import global API interceptor
 
 // const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 // const BASE_URL =
@@ -25,7 +26,7 @@ export const TransferProvider = ({ children }) => {
   const fetchTransfers = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${BASE_URL}/money/transfers/all`, {
+      const res = await api.get(`${BASE_URL}/money/transfers/all`, {
         headers: getHeaders(),
       });
       setTransfers(res.data.data);
@@ -40,7 +41,7 @@ export const TransferProvider = ({ children }) => {
   const fetchTransferById = async (id) => {
     setLoading(true);
     try {
-      const res = await axios.get(`${BASE_URL}/money/transfers/${id}`, {
+      const res = await api.get(`${BASE_URL}/money/transfers/${id}`, {
         headers: getHeaders(),
       });
       return res.data.data;
@@ -55,7 +56,7 @@ export const TransferProvider = ({ children }) => {
   const createTransfer = async (data) => {
     setLoading(true);
     try {
-      const res = await axios.post(`${BASE_URL}/money/transfers/create`, data, {
+      const res = await api.post(`${BASE_URL}/money/transfers/create`, data, {
         headers: getHeaders(),
       });
       fetchTransfers(); // Refresh the list
@@ -71,7 +72,7 @@ export const TransferProvider = ({ children }) => {
   const updateTransfer = async (id, data) => {
     setLoading(true);
     try {
-      const res = await axios.put(`${BASE_URL}/money/transfers/${id}`, data, {
+      const res = await api.put(`${BASE_URL}/money/transfers/${id}`, data, {
         headers: getHeaders(),
       });
       fetchTransfers(); // Refresh the list
@@ -87,7 +88,7 @@ export const TransferProvider = ({ children }) => {
   const deleteTransfer = async (id) => {
     setLoading(true);
     try {
-      await axios.delete(`${BASE_URL}/money/transfers/${id}`, {
+      await api.delete(`${BASE_URL}/money/transfers/${id}`, {
         headers: getHeaders(),
       });
       fetchTransfers(); // Refresh the list

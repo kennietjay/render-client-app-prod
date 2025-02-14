@@ -95,8 +95,8 @@ const ContactInfo = () => {
 
 const ContactForm = () => {
   const { createMessage, loading } = useContact();
-  const [error, setError] = useState();
-  const [success, setSuccess] = useState();
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -113,7 +113,7 @@ const ContactForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-    // Form submission logic
+
     try {
       const newMessage = {
         full_name: formData.full_name,
@@ -122,15 +122,19 @@ const ContactForm = () => {
       };
 
       const response = await createMessage(newMessage);
-      if (success) {
-        setSuccess(response.msg);
-      }
 
-      setError("");
-      setFormData({ full_name: "", email: "", message: "" });
+      if (response.success) {
+        setSuccess(response.msg);
+        setError(null); // Ensure error is cleared
+        setFormData({ full_name: "", email: "", message: "" });
+      } else {
+        setError(response.msg);
+        setSuccess(null);
+      }
     } catch (error) {
-      setError(error);
-      console.log(error);
+      console.error("Unexpected error:", error);
+      setError("An unexpected error occurred. Please try again.");
+      setSuccess(null);
     }
   };
 
@@ -145,22 +149,20 @@ const ContactForm = () => {
       ) : (
         <form className={styles.form} onSubmit={handleSubmit}>
           {success && (
-            <Alert dismissible variant="success">
+            <Alert
+              variant="success"
+              dismissible
+              onClose={() => setSuccess(null)}
+            >
               {success}
             </Alert>
           )}
 
           {error && (
-            <Alert
-              variant="warning"
-              className="warning"
-              dismissible
-              onClose={() => setError("")}
-            >
+            <Alert variant="danger" dismissible onClose={() => setError(null)}>
               {error}
             </Alert>
           )}
-
           <h2 className={styles.title}>Get in Touch</h2>
           <div className={styles.inputGroup}>
             <label>Full Name</label>

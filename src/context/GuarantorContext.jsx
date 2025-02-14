@@ -1,5 +1,6 @@
-import axios from "axios";
+// import api from "api";
 import React, { createContext, useCallback, useContext, useState } from "react";
+import api from "../../utils/api"; // ✅ Import global API interceptor
 
 // const BASE_URL = "http://192.168.12.109:8000";
 // const BASE_URL = import.meta.env.VITE_BACKEND_URL;
@@ -30,7 +31,7 @@ function GuarantorProvider({ children }) {
 
     setLoading(true);
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${BASE_URL}/customer/${customerId}/guarantors/create`,
         newGuarantor,
         { headers: { Authorization: `Bearer ${token}` } }
@@ -53,7 +54,7 @@ function GuarantorProvider({ children }) {
 
       if (!customerId) throw new Error("Customer ID is required.");
 
-      const response = await axios.get(
+      const response = await api.get(
         `${BASE_URL}/customer/${customerId}/guarantors/all`,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -75,7 +76,7 @@ function GuarantorProvider({ children }) {
       const token = getAuthToken();
       if (!token) throw new Error("No access token found");
 
-      const response = await axios.get(
+      const response = await api.get(
         `${BASE_URL}/customer/${customerId}/guarantor/${guarantorId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -105,7 +106,7 @@ function GuarantorProvider({ children }) {
       const token = getAuthToken();
       if (!token) throw new Error("No access token found");
 
-      const response = await axios.put(
+      const response = await api.put(
         `${BASE_URL}/customer/${customerId}/guarantors/${guarantorId}`,
         guarantorFormData,
         {

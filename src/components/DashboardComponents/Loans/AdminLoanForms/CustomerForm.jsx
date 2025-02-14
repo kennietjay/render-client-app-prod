@@ -4,6 +4,11 @@ import LoadingSpinner from "../../../LoadingSpinner";
 
 import { Alert } from "react-bootstrap";
 import { useAuth } from "../../../../context/AuthContext";
+import {
+  handleDateInput,
+  convertToDBFormat,
+  formatDateForDisplay,
+} from "/utils/dateUtils.js";
 
 function CustomerForm({
   formData,
@@ -12,19 +17,12 @@ function CustomerForm({
   closeModal,
   handleFormData,
 }) {
-  const { getUserById } = useAuth();
+  const { getUserById, getUserByEmailOrPhone } = useAuth();
   const [searchUser, setSearchUser] = useState(null);
   const [error, setError] = useState(null);
   const [customerData, setCustomerData] = useState(formData);
   const [userId, setUserId] = useState(""); // Track the entered user ID
   const [loading, setLoading] = useState(false);
-
-  // Format date for input[type="date"]
-  const formatDateToInput = (date) => {
-    if (!date) return "";
-    const d = new Date(date);
-    return d.toISOString().split("T")[0]; // Ensures YYYY-MM-DD format
-  };
 
   // Update form data when profile is fetched
   useEffect(() => {
@@ -37,7 +35,7 @@ function CustomerForm({
         first_name: searchUser.first_name || "",
         middle_name: searchUser.middle_name || "",
         gender: searchUser?.gender || "", // Add default fallback
-        date_of_birth: formatDateToInput(searchUser?.date_of_birth), // Format date
+        date_of_birth: formatDateForDisplay(searchUser?.date_of_birth || ""), // Format date
         email: searchUser.email || "",
         phone: searchUser.phone || "",
         other_phone: searchUser.other_phone || "",
@@ -48,7 +46,11 @@ function CustomerForm({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setCustomerData((prev) => ({ ...prev, [name]: value }));
+
+    setCustomerData((prev) => ({
+      ...prev,
+      [name]: value, // Keep user input as-is
+    }));
   };
 
   const handleUserIdChange = (e) => {
@@ -63,7 +65,7 @@ function CustomerForm({
 
     try {
       setLoading(true);
-      const response = await getUserById(userId); // Fetch user using the entered user ID
+      const response = await getUserByEmailOrPhone(userId); // Fetch user using the entered user ID
       if (response) {
         setSearchUser(response);
       }
@@ -76,9 +78,24 @@ function CustomerForm({
     }
   };
 
+  //
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleFormData({ customer: customerData });
+
+    // Convert DD-MM-YYYY to YYYY-MM-DD before sending
+    const formattedDOB = convertToDBFormat(customerData.date_of_birth);
+
+    if (!formattedDOB) {
+      setError("Invalid date format. Use DD-MM-YYYY.");
+      return;
+    }
+
+    const finalData = {
+      ...customerData,
+      date_of_birth: formattedDOB, // ✅ Convert before sending to backend
+    };
+
+    handleFormData({ customer: finalData });
     nextStep();
   };
 
@@ -175,12 +192,24 @@ function CustomerForm({
                       type="text"
                       id="date_of_birth"
                       name="date_of_birth"
+                      placeholder="DD-MM-YYYY"
+                      value={customerData?.date_of_birth || ""}
+                      onChange={handleInputChange} // Allow users to type freely
+                      onBlur={(e) =>
+                        handleDateInput(e, setError, setCustomerData)
+                      } // Format & validate when user exits input
+                    />
+
+                    {/* <input
+                      type="text"
+                      id="date_of_birth"
+                      name="date_of_birth"
                       placeholder="mm/dd/yyyy"
                       value={
                         formatDateToInput(customerData?.date_of_birth) || ""
                       }
                       onChange={handleInputChange}
-                    />
+                    /> */}
                   </div>
                 </div>
 

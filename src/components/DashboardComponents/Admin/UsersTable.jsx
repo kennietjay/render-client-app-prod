@@ -8,22 +8,10 @@ import { useAuth } from "../../../context/AuthContext";
 import UpdateUser from "./UpdateUser";
 import { Alert } from "react-bootstrap";
 import LoadingSpinner from "../../LoadingSpinner";
-import AddUser from "../../AddUser";
 
-const UsersTable = ({
-  users,
-  addUser,
-  updateUser,
-  removeUser,
-  isSignupOpen,
-  closeSignup,
-}) => {
-  const [newUser, setNewUser] = useState({ name: "", email: "" });
-  // const { users } = useAuth();
-  // const [loading, setLoading] = useState(false);
+const UsersTable = ({ users, addUser, updateUserData, removeUser }) => {
   const [isSidebarOpen, setIsSideBarOpen] = useState(false);
   const [isSmallModalOpen, setSmallModalOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [formData, setFormData] = useState({
     status: "",
@@ -37,22 +25,6 @@ const UsersTable = ({
   const indexOfLastUser = currentPage * UsersPerPage;
   const indexOfFirstUser = indexOfLastUser - UsersPerPage;
   const currentUsers = users?.slice(indexOfFirstUser, indexOfLastUser);
-
-  //
-  // const handleAddUser = () => {
-  //   if (newUser.name && newUser.email) {
-  //     addUser({ id: Date.now(), ...newUser }); // Add a new user with a unique ID
-  //     setNewUser({ name: "", email: "" }); // Reset the form
-  //   }
-  // };
-
-  // const handleUpdateUser = (userId, updatedData) => {
-  //   updateUser({ id: userId, ...updatedData });
-  // };
-
-  // const handleRemoveUser = (userId) => {
-  //   removeUser(userId);
-  // };
 
   //
   const openSmallModal = (user) => {
@@ -81,13 +53,13 @@ const UsersTable = ({
   };
 
   //
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  // const openModal = () => {
+  //   setIsModalOpen(true);
+  // };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  // const closeModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
   return (
     <>
@@ -105,81 +77,80 @@ const UsersTable = ({
             </tr>
           </thead>
           <tbody className={styles.tableBody}>
-            {currentUsers &&
-              currentUsers?.map((user) => (
-                <tr key={user?.id} className={styles.tableRow}>
-                  {/* ID */}
-                  <td className={styles.tableCell}>{user?.id || "N/A"}</td>
-                  {/* Name */}
-                  <td className={styles.tableCell}>
-                    <Link onClick={() => openSidebar(user)}>
-                      {`${user?.first_name || "Unknown"} ${
-                        user?.last_name || ""
-                      }`}
-                    </Link>
-                  </td>
+            {currentUsers?.map((user, index) => (
+              <tr key={user?.id || `user-${index}`} className={styles.tableRow}>
+                {/* ID */}
+                <td className={styles.tableCell}>{user?.id || "N/A"}</td>
+                {/* Name */}
+                <td className={styles.tableCell}>
+                  <Link onClick={() => openSidebar(user)}>
+                    {`${user?.first_name || "Unknown"} ${
+                      user?.last_name || ""
+                    }`}
+                  </Link>
+                </td>
 
-                  {/* Phone */}
-                  <td className={styles.tableCell}>{user?.email || "N/A"}</td>
+                {/* Phone */}
+                <td className={styles.tableCell}>{user?.email || "N/A"}</td>
 
-                  <td className={styles.tableCell}>{user?.phone || "N/A"}</td>
+                <td className={styles.tableCell}>{user?.phone || "N/A"}</td>
 
-                  {/* Status */}
-                  <td className={styles.tableCell}>
-                    {user.status ? (
-                      <div className={styles.statusWrapper}>
-                        <div
-                          className={`${styles.statusDot} ${
-                            user.status === "active"
-                              ? styles.statusActive
-                              : user?.status === "inactive"
-                              ? styles.statusInactive
-                              : user?.status === "on_leave"
-                              ? styles.statusOnLeave
-                              : user?.status === "terminated"
-                              ? styles.statusTerminated
-                              : styles.statusUnknown
-                          }`}
-                        ></div>
-                        {capitalizeWords(user.status)}
-                      </div>
-                    ) : (
-                      "N/A"
-                    )}
-                  </td>
+                {/* Status */}
+                <td className={styles.tableCell}>
+                  {user && user?.status ? (
+                    <div className={styles.statusWrapper}>
+                      <div
+                        className={`${styles.statusDot} ${
+                          user?.status === "active"
+                            ? styles.statusActive
+                            : user?.status === "inactive"
+                            ? styles.statusInactive
+                            : user?.status === "on_leave"
+                            ? styles.statusOnLeave
+                            : user?.status === "terminated"
+                            ? styles.statusTerminated
+                            : styles.statusUnknown
+                        }`}
+                      ></div>
+                      {capitalizeWords(user?.status)}
+                    </div>
+                  ) : (
+                    "N/A"
+                  )}
+                </td>
 
-                  {/* Role */}
-                  <td className={styles.tableCell}>
-                    {user?.roles?.length > 0
-                      ? capitalizeWords(
-                          user.roles.map((role) => role.name).join(", ")
-                        )
-                      : "No roles"}
-                  </td>
+                {/* Role */}
+                <td className={styles.tableCell}>
+                  {user?.roles?.length > 0
+                    ? capitalizeWords(
+                        user?.roles.map((role) => role.name).join(", ")
+                      )
+                    : "No roles"}
+                </td>
 
-                  {/* Actions */}
-                  <td className={styles.tableCell}>
-                    <button
-                      className={styles.iconButton}
-                      onClick={() => openSmallModal(user)}
+                {/* Actions */}
+                <td className={styles.tableCell}>
+                  <button
+                    className={styles.iconButton}
+                    onClick={() => openSmallModal(user)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      width="24"
+                      height="24"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        width="24"
-                        height="24"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10.5 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                      <path
+                        fillRule="evenodd"
+                        d="M10.5 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            ))}
             {/* Pagination */}
             <tr>
               <td colSpan="7" className={`${styles.paginationCell}`}>
@@ -206,6 +177,7 @@ const UsersTable = ({
               formData={formData}
               selectedUser={selectedUser}
               handleChange={handleChange}
+              updateUserData={updateUserData}
             />
           </SmallModal>
         )}
@@ -216,17 +188,9 @@ const UsersTable = ({
             setSelectedUser={setSelectedUser}
             isSidebarOpen={isSidebarOpen}
             closeSidebar={closeSidebar}
+            updateUserData={updateUserData}
           />
         )}
-
-        {/* AddUser Modal */}
-        {/* {isSignupOpen && (
-          <AddUser
-            isSignupOpen={isSignupOpen}
-            closeSignup={closeSignup}
-            addUser={addUser}
-          />
-        )} */}
       </div>
     </>
   );
@@ -234,7 +198,7 @@ const UsersTable = ({
 
 export default UsersTable;
 
-function View({ selectedUser }) {
+function View({ selectedUser, updateUserData }) {
   const [isStatusChnage, setIsStatusChnage] = useState(false);
   const [isPasswordChnage, setIsPasswordChnage] = useState(false);
 
@@ -309,6 +273,7 @@ function View({ selectedUser }) {
               handleChangeStatus={handleChangeStatus}
               setEditStatus={setEditStatus}
               editStatus={editStatus}
+              updateUserData={updateUserData}
             />
           )}
         </div>
@@ -323,6 +288,7 @@ function ManageStatus({
   closeStatusChange,
   handleChangeStatus,
   editStatus,
+  updateUserData,
   // handeleStatusSubmit,
 }) {
   const { updateUser } = useAuth();
@@ -361,6 +327,7 @@ function ManageStatus({
 
       if (response.success) {
         setSuccess(`User status changed successfully.`);
+        updateUserData();
       } else {
         setError("Status change failed. Try again!");
       }
@@ -430,6 +397,7 @@ function ChangePassword({
   closePasswordChange,
   handleChangePassword,
   editPassword,
+  updateUserData,
 }) {
   const { changePassword } = useAuth();
   const [error, setError] = useState(null);
@@ -473,6 +441,8 @@ function ChangePassword({
 
       if (response.success) {
         setSuccess("Password changed successfully.");
+
+        updateUserData();
       } else {
         setError("Password changed failed");
       }

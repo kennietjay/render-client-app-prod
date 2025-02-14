@@ -3,7 +3,6 @@ import styles from "./LoanPage.module.css";
 import LoadingSpinner from "../../LoadingSpinner";
 import LoanTable from "./LoanTable";
 import LoanApplication from "./AdminLoanForms/LoanApplication";
-import UserSignup from "./AdminLoanForms/UserSignup";
 import SignupResponse from "../../../pages/SignupResponse";
 import AddUser from "../../AddUser";
 
@@ -16,10 +15,14 @@ function Loans({
   handleCustomerSubMenuClick,
   handleApproval,
   selectedLoan,
+
+  isAddUserOpen,
+  openAddUser,
+  closeAddUser,
+  addUser,
 }) {
   const [allLoans, setAllLoans] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSignupOpen, setIsSigupOpen] = useState(false);
   const [isSignupResponse, setSignupResponse] = useState(false);
   const [createdUser, setCreatedUser] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -32,7 +35,6 @@ function Loans({
   }, [loanData]);
 
   // console.log(allLoans);
-
   const handleSearchChange = (e) => {
     setSearchText(e.target.value); // Update search text immediately
   };
@@ -49,24 +51,26 @@ function Loans({
     setIsModalOpen(false);
   };
 
-  const openSignup = () => {
-    setIsSigupOpen(true);
-  };
-  const closeSignup = () => setIsSigupOpen(false);
+  // const openSignup = () => {
+  //   setIsSigupOpen(true);
+  // };
+  // const closeSignup = () => setIsSigupOpen(false);
 
   //
-  const handleSignupSubmit = (response, newUser) => {
-    console.log(newUser);
+  // const handleSignupSubmit = (response, newUser) => {
+  //   console.log(newUser);
 
-    if (response.success) {
-      setSignupResponse(true);
-      setCreatedUser(newUser);
-      closeSignup();
-      // setSuccess(true);
-    } else {
-      setError(response.error || "Signup failed.");
-    }
-  };
+  //   if (response.success) {
+  //     setSignupResponse(true);
+  //     setCreatedUser(newUser);
+  //     closeSignup();
+  //     // setSuccess(true);
+
+  //     getAllUsers();
+  //   } else {
+  //     setError(response.error || "Signup failed.");
+  //   }
+  // };
 
   const closeResponse = () => {
     setSignupResponse(false);
@@ -83,7 +87,7 @@ function Loans({
             <div className={styles.btns}>
               <h3>Loans Maintenance</h3>
               <div className={styles.btns}>
-                <button className={styles.apply} onClick={openSignup}>
+                <button className={styles.apply} onClick={openAddUser}>
                   New Customer
                 </button>
                 <button className={styles.apply} onClick={openModal}>
@@ -113,11 +117,9 @@ function Loans({
               setIsModalOpen={setIsModalOpen}
             />
             <AddUser
-              isSignupOpen={isSignupOpen}
-              setIsSigupOpen={setIsSigupOpen}
-              closeSignup={closeSignup}
-              onSubmit={handleSignupSubmit}
-              openModal={openModal}
+              isAddUserOpen={isAddUserOpen}
+              closeAddUser={closeAddUser}
+              addUser={addUser}
             />
             <SignupResponse
               isSignupResponse={isSignupResponse}

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { formatPhoneNumber } from "../../utils/phoneUtils";
 
 function Signup(props) {
   const { createUser, loading } = useAuth();
@@ -32,27 +33,11 @@ function Signup(props) {
       .join("-");
   };
 
-  // Function to format phone number to +232-XX-XXXXXX
-  const formatPhoneNumber = (phone) => {
-    let cleanedPhone = phone.replace(/\D/g, "");
-
-    if (cleanedPhone.length === 9 && cleanedPhone.startsWith("0")) {
-      cleanedPhone = cleanedPhone.slice(1); // Remove leading 0
-    }
-
-    if (/^\d{8}$/.test(cleanedPhone)) {
-      return `+232-${cleanedPhone.slice(0, 2)}-${cleanedPhone.slice(2)}`;
-    }
-
-    if (/^232\d{8}$/.test(cleanedPhone)) {
-      return `+232-${cleanedPhone.slice(3, 5)}-${cleanedPhone.slice(5)}`;
-    }
-
-    return null;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setError(null); // Clear previous errors
+    setSuccess(null); // Clear previous success messages
 
     if (
       !formData.first_name ||
@@ -89,11 +74,8 @@ function Signup(props) {
       return;
     }
 
-    // Format the first and last names to capitalize each part (including hyphenated names)
     const formattedFirstName = capitalizeName(formData.first_name);
     const formattedLastName = capitalizeName(formData.last_name);
-
-    // Format email and username to lowercase
     const formattedEmail = formData.email.toLowerCase();
 
     const finalFormData = {
@@ -115,22 +97,110 @@ function Signup(props) {
     };
 
     try {
-      // Save the final formatted data
       const response = await createUser(newUser);
 
-      setFormData({
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: "",
-        password: "password123",
-      });
-      setSuccess(response.msg);
-      setError("");
+      if (response.success) {
+        setSuccess(response.msg);
+        setError(null); // Ensure error is cleared
+        setFormData({
+          first_name: "",
+          last_name: "",
+          email: "",
+          phone: "",
+          password: "",
+          confirm_password: "",
+        });
+      } else {
+        setError(response.msg);
+        setSuccess(null);
+      }
     } catch (error) {
-      setError(error);
+      console.error("Unexpected error:", error);
+      setError("An unexpected error occurred. Please try again.");
+      setSuccess(null);
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (
+  //     !formData.first_name ||
+  //     !formData.last_name ||
+  //     !formData.email ||
+  //     !formData.phone ||
+  //     !formData.password ||
+  //     !formData.confirm_password
+  //   ) {
+  //     setError("All fields are required");
+  //     return;
+  //   }
+
+  //   if (formData.password !== formData.confirm_password) {
+  //     setError("Passwords do not match.");
+  //     return;
+  //   }
+
+  //   if (!isValidEmailFormat(formData.email)) {
+  //     setError("Please enter a valid email address.");
+  //     return;
+  //   }
+
+  //   if (!isRecognizedEmailDomain(formData.email)) {
+  //     setError(
+  //       "Please use an email from recognized domains like Gmail, Yahoo, or .org domains."
+  //     );
+  //     return;
+  //   }
+
+  //   const formattedPhone = formatPhoneNumber(formData.phone);
+  //   if (!formattedPhone) {
+  //     setError("Please enter a valid Sierra Leone phone number.");
+  //     return;
+  //   }
+
+  //   // Format the first and last names to capitalize each part (including hyphenated names)
+  //   const formattedFirstName = capitalizeName(formData.first_name);
+  //   const formattedLastName = capitalizeName(formData.last_name);
+
+  //   // Format email and username to lowercase
+  //   const formattedEmail = formData.email.toLowerCase();
+
+  //   const finalFormData = {
+  //     ...formData,
+  //     phone: formattedPhone,
+  //     first_name: formattedFirstName,
+  //     last_name: formattedLastName,
+  //     email: formattedEmail,
+  //   };
+
+  //   console.log("Formatted Form Data: ", finalFormData);
+
+  //   const newUser = {
+  //     first_name: finalFormData.first_name,
+  //     last_name: finalFormData.last_name,
+  //     email: finalFormData.email,
+  //     phone: finalFormData.phone,
+  //     password: finalFormData.password,
+  //   };
+
+  //   try {
+  //     // Save the final formatted data
+  //     const response = await createUser(newUser);
+
+  //     setFormData({
+  //       first_name: "",
+  //       last_name: "",
+  //       email: "",
+  //       phone: "",
+  //       password: "password123",
+  //     });
+  //     setSuccess(response.msg);
+  //     setError("");
+  //   } catch (error) {
+  //     setError(error);
+  //   }
+  // };
 
   return (
     <>

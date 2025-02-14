@@ -3,6 +3,8 @@ import styles from "./Staff.module.css";
 import { Alert } from "react-bootstrap";
 import { useStaff } from "../../../context/StaffContext";
 import LoadingSpinner from "../../LoadingSpinner";
+import { handleDateInput, convertToDBFormat } from "/utils/dateUtils.js";
+import { formatPhoneNumber } from "../../../../utils/phoneUtils";
 
 function AddStaff({ closeActionModal }) {
   const { createStaff } = useStaff();
@@ -14,12 +16,12 @@ function AddStaff({ closeActionModal }) {
     last_name: "Tamia",
     middle_name: "T",
     gender: "Male",
-    date_of_birth: "12/12/2000",
+    date_of_birth: "14-12-2000",
     email: "kennie4tamia@gmail.com",
     phone: "076234567",
     role_id: "7",
     department: "Management",
-    employment_date: "12/13/2024",
+    employment_date: "23-12-2009",
     password: "password",
     confirm_password: "password",
   });
@@ -49,28 +51,39 @@ function AddStaff({ closeActionModal }) {
   };
 
   // Format phone number for Sierra Leone
-  const formatPhoneNumber = (phone) => {
-    let cleanedPhone = phone.replace(/\D/g, "");
+  // const formatPhoneNumber = (phone) => {
+  //   let cleanedPhone = phone.replace(/\D/g, "");
 
-    if (cleanedPhone.length === 9 && cleanedPhone.startsWith("0")) {
-      cleanedPhone = cleanedPhone.slice(1);
-    }
+  //   if (cleanedPhone.length === 9 && cleanedPhone.startsWith("0")) {
+  //     cleanedPhone = cleanedPhone.slice(1);
+  //   }
 
-    if (/^\d{8}$/.test(cleanedPhone)) {
-      return `+232-${cleanedPhone.slice(0, 2)}-${cleanedPhone.slice(2)}`;
-    }
+  //   if (/^\d{8}$/.test(cleanedPhone)) {
+  //     return `+232-${cleanedPhone.slice(0, 2)}-${cleanedPhone.slice(2)}`;
+  //   }
 
-    if (/^232\d{8}$/.test(cleanedPhone)) {
-      return `+232-${cleanedPhone.slice(3, 5)}-${cleanedPhone.slice(5)}`;
-    }
+  //   if (/^232\d{8}$/.test(cleanedPhone)) {
+  //     return `+232-${cleanedPhone.slice(3, 5)}-${cleanedPhone.slice(5)}`;
+  //   }
 
-    return null;
-  };
+  //   return null;
+  // };
 
-  // Handle input changes
+  // ✅ Handle Input Change (Prevent Date Format Issues)
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    if (name === "date_of_birth") {
+      setFormData((prev) => ({
+        ...prev,
+        date_of_birth: value, // Keep input as DD-MM-YYYY
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -118,16 +131,31 @@ function AddStaff({ closeActionModal }) {
       return;
     }
 
+    if (!formData.date_of_birth || !formData.employment_date) {
+      setError("Please enter both date of birth and employment date.");
+      return;
+    }
+
+    // ✅ Convert to YYYY-MM-DD before sending
+    const formattedDOB = convertToDBFormat(formData.date_of_birth);
+    const formattedEmploymentDate = convertToDBFormat(formData.employment_date);
+
+    if (!formattedDOB || !formattedEmploymentDate) {
+      setError("Invalid date format. Use DD-MM-YYYY.");
+      return;
+    }
+
     // Create final data object
     const finalFormData = {
       ...formData,
       phone: formattedPhone,
+      date_of_birth: formattedDOB,
       first_name: capitalizeName(formData.first_name),
       last_name: capitalizeName(formData.last_name),
       middle_name: capitalizeName(formData.middle_name),
       email: formData.email.toLowerCase(),
       department: formData.department, // Use formData directly
-      employment_date: formData.employment_date, // Use formData directly
+      employment_date: formattedEmploymentDate, // Use formData directly
     };
 
     const newUser = {
@@ -239,13 +267,14 @@ function AddStaff({ closeActionModal }) {
 
               {/* Date of Birth */}
               <div className={styles.inputControl}>
-                <label htmlFor="date_of_birth">Date of Birth:</label>
+                <label>Date of Birth</label>
                 <input
-                  type="date"
+                  type="text"
                   name="date_of_birth"
+                  placeholder="DD-MM-YYYY"
                   value={formData.date_of_birth}
                   onChange={handleChange}
-                  required
+                  onBlur={(e) => handleDateInput(e, setError, setFormData)}
                 />
               </div>
 
@@ -309,11 +338,12 @@ function AddStaff({ closeActionModal }) {
               <div className={styles.inputControl}>
                 <label htmlFor="employment_date">Employment Date:</label>
                 <input
-                  type="date"
+                  type="text"
                   name="employment_date"
+                  placeholder="DD-MM-YYYY"
                   value={formData.employment_date}
                   onChange={handleChange}
-                  required
+                  onBlur={(e) => handleDateInput(e, setError, setFormData)}
                 />
               </div>
 

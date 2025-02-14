@@ -13,13 +13,34 @@ function SummaryForm({ prevStep, formData, onSubmit, closeModal }) {
   const { createLoan, error } = useLoan();
   const [loading, setLoading] = useState(false);
 
-  // Ref for the component to print
-  const componentRef = useRef(); // Create the ref
+  const printRef = useRef(); // Reference for the print area
 
-  // Print function
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current, // Reference to the content to print
-  });
+  function printSummary() {
+    const printContent = printRef.current.innerHTML;
+    // Create a hidden iframe
+    const iframe = document.createElement("iframe");
+    iframe.style.position = "absolute";
+    iframe.style.width = "0";
+    iframe.style.height = "0";
+    iframe.style.border = "none";
+
+    // Append the iframe to the body
+    document.body.appendChild(iframe);
+
+    // Write the print content to the iframe
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+    iframeDoc.write(printContent);
+    iframeDoc.close();
+
+    // Print the iframe content
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+
+    // Remove the iframe after printing
+    setTimeout(() => {
+      document.body.removeChild(iframe);
+    }, 100); // Small delay to ensure printing is done
+  }
 
   useEffect(() => {
     // Fetch the staff ID associated with the logged-in user
@@ -72,15 +93,19 @@ function SummaryForm({ prevStep, formData, onSubmit, closeModal }) {
         <LoadingSpinner size={60} color="#FF5722" message="Loading data..." />
       ) : (
         <div className={styles.formContainer}>
-          <div ref={componentRef}>
+          <div>
             {" "}
             {/* Wrap content in the ref */}
+            <button onClick={printSummary} className={styles.printButton}>
+              Print
+            </button>
             <form onSubmit={onSubmit} className={styles.form}>
               <button onClick={closeModal} className={styles.closeBtn}>
                 X
               </button>
-              <div ref={componentRef}>
-                <h4>Review and Submit Application</h4>
+
+              <div ref={printRef}>
+                <h4>Loan Application Summary</h4>
                 {error && <p>{error.message}</p>}
                 <div>
                   <div className={styles.summaryStyle}>
@@ -488,11 +513,6 @@ function SummaryForm({ prevStep, formData, onSubmit, closeModal }) {
           </div>
 
           {/* Print button */}
-          <div className={styles.printButtonContainer}>
-            <button onClick={handlePrint} className={styles.printButton}>
-              Print as PDF
-            </button>
-          </div>
         </div>
       )}
     </>
