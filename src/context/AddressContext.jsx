@@ -2,9 +2,9 @@
 import React, { createContext, useCallback, useContext, useState } from "react";
 import api from "../../utils/api"; // ✅ Import global API interceptor
 // Dynamically set BASE_URL based on the environment
-// const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
-const BASE_URL = "https://render-server-app.onrender.com";
+// const BASE_URL = "https://render-server-app.onrender.com";
 
 const AddressContext = createContext();
 

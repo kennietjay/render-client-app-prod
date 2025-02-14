@@ -12,8 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { showSessionExpiredMessage } from "../../utils/sessionUtils";
 
-const BASE_URL = "https://render-server-app.onrender.com";
-// const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+// const BASE_URL = "https://render-server-app.onrender.com";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const INACTIVITY_LIMIT = 15 * 60 * 1000; // 15 minutes inactivity
 

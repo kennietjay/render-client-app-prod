@@ -11,9 +11,9 @@ import { jwtDecode } from "jwt-decode";
 import api from "../../utils/api"; // ✅ Import global API interceptor
 const StaffContext = createContext();
 
-const BASE_URL = "https://render-server-app.onrender.com";
+// const BASE_URL = "https://render-server-app.onrender.com";
 
-// const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 // Check token validity based on expiration
 const checkTokenValidity = (token) => {

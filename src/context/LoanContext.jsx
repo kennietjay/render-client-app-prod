@@ -4,9 +4,9 @@ import api from "../../utils/api"; // ✅ Import global API interceptor
 
 const LoanContext = createContext();
 
-const BASE_URL = "https://render-server-app.onrender.com";
+// const BASE_URL = "https://render-server-app.onrender.com";
 
-// const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const getAuthToken = () => localStorage.getItem("accessToken");
 const getHeaders = () => ({
