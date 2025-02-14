@@ -114,7 +114,7 @@ const AuthProvider = ({ children }) => {
     );
 
     // Periodic token expiration check
-    const interval = setInterval(autoLogoutOnTokenExpiration, 60000); // Check every 1 minute
+    // const interval = setInterval(autoLogoutOnTokenExpiration, 60000); // Check every 1 minute
 
     // Cleanup on unmount
     return () => {
@@ -132,7 +132,7 @@ const AuthProvider = ({ children }) => {
     setIsAuthenticated,
     setUser,
     setLoading,
-    autoLogoutOnTokenExpiration,
+    // autoLogoutOnTokenExpiration,
   ]);
 
   // Sign-in function
