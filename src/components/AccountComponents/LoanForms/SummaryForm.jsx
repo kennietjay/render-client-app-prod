@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./LoanApplication.module.css";
 import LoadingSpinner from "../../../components/LoadingSpinner";
-import { useReactToPrint } from "react-to-print";
 
 import { useLoan } from "../../../context/LoanContext";
 import { capitalizeWords } from "/utils/capitalizeWords";
@@ -17,9 +16,6 @@ function SummaryForm({ prevStep, formData, onSubmit, closeModal }) {
   const componentRef = useRef(); // Create the ref
 
   // Print function
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current, // Reference to the content to print
-  });
 
   useEffect(() => {
     // Fetch the staff ID associated with the logged-in user
@@ -472,24 +468,18 @@ function SummaryForm({ prevStep, formData, onSubmit, closeModal }) {
                     >
                       Edit
                     </button>
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className={styles.formNavBtn}
+                    >
+                      Submit
+                    </button>
                   </div>
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className={styles.formNavBtn}
-                  >
-                    Submit
-                  </button>
                 </div>
               </div>
             </form>
-          </div>
-
-          {/* Print button */}
-          <div className={styles.printButtonContainer}>
-            <button onClick={handlePrint} className={styles.printButton}>
-              Print as PDF
-            </button>
           </div>
         </div>
       )}

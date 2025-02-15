@@ -257,9 +257,12 @@ function Guarantor() {
                           </div>
 
                           <div className={styles.bioInfoHeading}>
-                            <button onClick={() => handleEditClick(guarantor)}>
+                            {/* <button
+                              disabled
+                              onClick={() => handleEditClick(guarantor)}
+                            >
                               Edit
-                            </button>
+                            </button> */}
                           </div>
                         </div>
                       </div>

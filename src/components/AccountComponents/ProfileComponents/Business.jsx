@@ -237,9 +237,9 @@ function Business() {
                           </div>
 
                           <div className={styles.bioInfoHeading}>
-                            <button onClick={() => handleEditClick(business)}>
+                            {/* <button onClick={() => handleEditClick(business)}>
                               Edit
-                            </button>
+                            </button> */}
                           </div>
                         </div>
                       </div>

@@ -240,12 +240,12 @@ function Addresss() {
                     </div>
 
                     <div className={styles.bioInfoHeading}>
-                      <button
+                      {/* <button
                         className={styles.edit}
                         onClick={() => handleModeChange("edit")}
                       >
                         {mode.contact ? "View" : <span>Edit</span>}
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </div>

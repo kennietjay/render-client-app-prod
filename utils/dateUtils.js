@@ -57,13 +57,16 @@ export const handleDateInput = (e, setError, setFormData) => {
 };
 
 export const formatDateForDisplay = (dateString) => {
-  if (!dateString) return "";
+  if (!dateString || typeof dateString !== "string") return "";
 
-  // Check if it's already in YYYY-MM-DD format
-  if (typeof dateString === "string" && dateString.includes("T")) {
+  // Handle cases where the date is in ISO format with "T"
+  if (dateString.includes("T")) {
     dateString = dateString.split("T")[0]; // Extract YYYY-MM-DD
   }
 
-  const [year, month, day] = dateString.split("-");
+  const parts = dateString.split("-");
+  if (parts.length !== 3) return dateString; // Prevent formatting on partial input
+
+  const [year, month, day] = parts;
   return `${day}-${month}-${year}`; // Convert YYYY-MM-DD to DD-MM-YYYY
 };

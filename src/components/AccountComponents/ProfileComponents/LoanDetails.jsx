@@ -188,9 +188,9 @@ function LoanDetails({
         <div className={styles.formContainer}>
           {mode === "view" ? (
             <>
-              <div className={styles.editLoanCloseBtn} onClick={closeModal}>
+              {/* <div className={styles.editLoanCloseBtn} onClick={closeModal}>
                 <i className="fa-solid fa-x"></i>
-              </div>
+              </div> */}
               {success && (
                 <Alert variant="success" className="success">
                   {success}
@@ -204,7 +204,7 @@ function LoanDetails({
               {error && <Alert className="danger">{error}</Alert>}
               <Modal isOpen={isModalOpen}>
                 <div className={styles.form}>
-                  <span onClick={closeModal} className={styles.closModalBtn}>
+                  <span onClick={closeModal} className={styles.closeModalBtn}>
                     x
                   </span>
                   <h3 className={styles.sectionHeader}>Loan Details</h3>
@@ -384,12 +384,12 @@ function LoanDetails({
 
                   {/* Navigation Buttons */}
                   <div className={styles.addNavBtnContainer}>
-                    <button
+                    {/* <button
                       onClick={() => openInnerModal("edit")}
                       className={styles.formNavBtn}
                     >
                       Edit
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </Modal>

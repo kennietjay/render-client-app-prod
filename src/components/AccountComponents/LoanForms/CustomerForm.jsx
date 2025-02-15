@@ -5,6 +5,12 @@ import LoadingSpinner from "../../../components/LoadingSpinner";
 import { Alert } from "react-bootstrap";
 import { useAuth } from "../../../context/AuthContext";
 
+import {
+  handleDateInput,
+  convertToDBFormat,
+  formatDateForDisplay,
+} from "../../../../utils/dateUtils";
+
 function CustomerForm({
   formData,
   nextStep,
@@ -44,16 +50,48 @@ function CustomerForm({
     setLoading(false);
   }, [user]);
 
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setCustomerData((prev) => ({ ...prev, [name]: value }));
+  // };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setCustomerData((prev) => ({ ...prev, [name]: value }));
+
+    setCustomerData((prev) => ({
+      ...prev,
+      [name]: value, // Keep user input as-is
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleFormData({ customer: customerData });
+
+    // Convert DD-MM-YYYY to YYYY-MM-DD before sending
+    const formattedDOB = convertToDBFormat(customerData.date_of_birth);
+
+    if (!formattedDOB) {
+      setError("Invalid date format. Use DD-MM-YYYY.");
+      return;
+    }
+
+    const finalData = {
+      ...customerData,
+      date_of_birth: formattedDOB, // ✅ Convert before sending to backend
+    };
+
+    handleFormData({ customer: finalData });
     nextStep();
   };
+
+  // const handleSubmit = (e) => {
+  //   // Convert DD-MM-YYYY to YYYY-MM-DD before sending
+  //   const formattedDOB = convertToDBFormat(customerData.date_of_birth);
+
+  //   e.preventDefault();
+  //   handleFormData({ customer: customerData });
+  //   nextStep();
+  // };
 
   return (
     <>
@@ -127,13 +165,15 @@ function CustomerForm({
                   <div className={styles.inputControl}>
                     <label>Date of Birth:</label>
                     <input
-                      type="date"
+                      type="text"
                       id="date_of_birth"
                       name="date_of_birth"
-                      value={
-                        formatDateToInput(customerData?.date_of_birth) || ""
-                      }
-                      onChange={handleInputChange}
+                      placeholder="DD-MM-YYYY"
+                      value={customerData?.date_of_birth || ""}
+                      onChange={handleInputChange} // Allow users to type freely
+                      onBlur={(e) =>
+                        handleDateInput(e, setError, setCustomerData)
+                      } // Format & validate when user exits input
                     />
                   </div>
                 </div>

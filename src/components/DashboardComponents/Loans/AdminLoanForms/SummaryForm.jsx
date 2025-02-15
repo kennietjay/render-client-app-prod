@@ -499,14 +499,14 @@ function SummaryForm({ prevStep, formData, onSubmit, closeModal }) {
                     >
                       Edit
                     </button>
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className={styles.formNavBtn}
+                    >
+                      Submit
+                    </button>
                   </div>
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className={styles.formNavBtn}
-                  >
-                    Submit
-                  </button>
                 </div>
               </div>
             </form>

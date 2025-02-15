@@ -191,12 +191,12 @@ function Bio() {
               )}
 
               <div className={styles.bioInfoHeading}>
-                <button
+                {/* <button
                   className={styles.edit}
                   onClick={() => handleModeChange("edit")}
                 >
                   Edit
-                </button>
+                </button> */}
               </div>
             </div>
           ) : (

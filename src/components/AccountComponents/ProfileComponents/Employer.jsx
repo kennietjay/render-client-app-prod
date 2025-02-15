@@ -259,18 +259,18 @@ function Employer() {
                     </div>
 
                     <div className={styles.bioInfoHeading}>
-                      <button
+                      {/* <button
                         className={styles.edit}
                         onClick={() => handleModeChange("edit")}
                       >
                         {mode.employer ? "View" : <span>Edit</span>}
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </div>
               ) : (
                 <div>
-                  <div className={styles.addBtns}></div>
+                  <div className={styles.addBtns} disabled></div>
                 </div>
               )}
             </div>

@@ -146,7 +146,7 @@ function NewLoans({ sortedLoans, onViewLoan }) {
             <th>Type</th>
             <th>Status</th>
             <th>Payment</th>
-            <th className={styles.view}>Action</th>
+            {/* <th className={styles.view}>Action</th> */}
           </tr>
         </thead>
 
@@ -159,12 +159,12 @@ function NewLoans({ sortedLoans, onViewLoan }) {
                 <td>{loan.loan_type}</td>
                 <td>{loan.status}</td>
                 <td>{loan.payment ? `${loan.payment}` : "$0"}</td>
-                <td
+                {/* <td
                   onClick={() => onViewLoan(loan)}
                   className={`${styles.view} ${styles.viewActions}`}
                 >
                   <i className="fa-solid fa-ellipsis-vertical"></i>
-                </td>
+                </td> */}
               </tr>
             ))
           ) : (

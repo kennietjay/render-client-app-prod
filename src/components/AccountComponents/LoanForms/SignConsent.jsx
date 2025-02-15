@@ -1,6 +1,21 @@
 import React, { useEffect, useState } from "react";
 // import styles from "./LoanApplication.module.css";
 import styles from "../../../components/DashboardComponents/Loans/LoanPayment.module.css";
+import { handleDateInput } from "../../../../utils/dateUtils";
+
+//
+const convertToDBFormat = (date) => {
+  if (!date) return null; // ✅ Ensure we return null instead of "Invalid date"
+
+  const parts = date.split("-");
+  if (parts.length !== 3) return null; // ✅ Prevent sending invalid data
+
+  const [day, month, year] = parts;
+  if (!day || !month || !year) return null;
+
+  // ✅ Ensure correct format: YYYY-MM-DD
+  return `${year}-${month}-${day}`;
+};
 
 function SignConsent({
   prevStep,
@@ -10,6 +25,7 @@ function SignConsent({
   handleFormData,
 }) {
   const [consentData, setConsentData] = useState(formData);
+  const [error, setError] = useState(null);
 
   // Update consentData whenever formData changes
   useEffect(() => {
@@ -19,24 +35,48 @@ function SignConsent({
   const handleInputChange = (e) => {
     const { name, type, value } = e.target;
 
-    if (type === "checkbox") {
-      // Checkbox handling for string value instead of array
+    if (name === "submission_date") {
+      // ✅ Allow user to type freely without immediate validation
+      setConsentData((prev) => ({ ...prev, [name]: value }));
+    } else if (type === "checkbox") {
       setConsentData((prevData) => ({
         ...prevData,
         [name]: e.target.checked ? value : "",
       }));
-    } else if (type === "radio") {
-      // Radio button handling for Yes/No
-      setConsentData({ ...consentData, [name]: value });
     } else {
-      // Other inputs
       setConsentData({ ...consentData, [name]: value });
     }
   };
 
+  // ✅ Validate date when the user leaves the field
+  const handleDateBlur = (e) => {
+    handleDateInput(e, setError, setConsentData);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleFormData({ consent: consentData });
+
+    // ✅ Convert date to correct format
+    const formattedSubmissionDate = convertToDBFormat(
+      consentData.submission_date
+    );
+
+    console.log(formattedSubmissionDate);
+
+    // ✅ Validate that the date conversion worked
+    if (
+      !formattedSubmissionDate ||
+      formattedSubmissionDate === "Invalid date"
+    ) {
+      setError("Please enter a valid date in the format DD-MM-YYYY.");
+      return;
+    }
+
+    // ✅ Pass the correctly formatted date to the next step
+    handleFormData({
+      consent: { ...consentData, submission_date: formattedSubmissionDate },
+    });
+
     nextStep();
   };
 
@@ -98,11 +138,13 @@ function SignConsent({
             <div className={styles.inputControl}>
               <label>Today&apos;s Date:</label>
               <input
-                type="date"
+                type="text"
                 id="submission_date"
                 name="submission_date"
+                placeholder="dd-mm-yyyy"
                 value={consentData.submission_date}
-                onChange={handleInputChange}
+                onChange={handleInputChange} // ✅ Allow typing
+                onBlur={handleDateBlur} // ✅ Validate on blur
               />
             </div>
           </div>

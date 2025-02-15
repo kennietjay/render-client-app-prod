@@ -31,6 +31,12 @@
   position: relative;
 }
 
+.closeModalBtn {
+  position: absolute;
+  top: 0.5rem;
+  right: 1.5rem;
+}
+
 /* Form */
 .contactDetails {
   display: flex;
