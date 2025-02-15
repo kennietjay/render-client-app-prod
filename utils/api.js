@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-
 const api = axios.create({
   baseURL: BASE_URL,
 });
@@ -20,7 +19,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401 || error.response?.status === 403) {
-      alert("Session expired. Please log in again.");
+      // alert("Session expired. Please log in again.");
       localStorage.removeItem("accessToken");
       //   window.location.href = "/signin";
     }

@@ -5,6 +5,7 @@ export default defineConfig({
   base: "/",
   // Adjust if hosted in a subdirectory
   plugins: [react()],
+  root: ".",
   optimizeDeps: {
     include: ["jwt-decode", "react-to-print"], // Pre-bundle jwt-decode for better performance
   },

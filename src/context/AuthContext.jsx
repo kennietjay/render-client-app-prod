@@ -74,33 +74,33 @@ const AuthProvider = ({ children }) => {
   }, [navigate]);
 
   //
-  const autoLogoutOnTokenExpiration = useCallback(() => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      console.warn("🚨 No access token found, logging out user...");
-      signoutUser();
-      return;
-    }
-
-    try {
-      const decoded = jwtDecode(token);
-      if (decoded.exp * 1000 < Date.now()) {
-        console.warn("🚨 Access token expired, logging out...");
-        signoutUser();
-      }
-    } catch (err) {
-      console.error("❌ Token decoding failed:", err);
-      signoutUser();
-    }
-  }, [signoutUser]);
-
-  // Function to automatically logout user on token expiration
   // const autoLogoutOnTokenExpiration = useCallback(() => {
   //   const token = localStorage.getItem("accessToken");
-  //   if (!token || !checkTokenValidity(token)) {
+  //   if (!token) {
+  //     console.warn("🚨 No access token found, logging out user...");
+  //     signoutUser();
+  //     return;
+  //   }
+
+  //   try {
+  //     const decoded = jwtDecode(token);
+  //     if (decoded.exp * 1000 < Date.now()) {
+  //       console.warn("🚨 Access token expired, logging out...");
+  //       signoutUser();
+  //     }
+  //   } catch (err) {
+  //     console.error("❌ Token decoding failed:", err);
   //     signoutUser();
   //   }
   // }, [signoutUser]);
+
+  // Function to automatically logout user on token expiration
+  const autoLogoutOnTokenExpiration = useCallback(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!token || !checkTokenValidity(token)) {
+      signoutUser();
+    }
+  }, [signoutUser]);
 
   useEffect(() => {
     // Function to reset the inactivity timer
@@ -216,6 +216,23 @@ const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   }, [signoutUser]);
+
+  // const fetchUserProfile = useCallback(async () => {
+  //   try {
+  //     const accessToken = localStorage.getItem("accessToken");
+
+  //     const response = await api.get(`${BASE_URL}/user/profile`, {
+  //       headers: { Authorization: `Bearer ${accessToken}` },
+  //     });
+  //     setUser(response.data);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Fetch profile error:", error.response?.data || error);
+  //     throw new Error(error.response?.data?.msg || "Failed to fetch profile");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }, []);
 
   useEffect(() => {
     fetchUserProfile(); // Fetch user when the provider mounts
