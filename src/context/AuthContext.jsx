@@ -389,6 +389,21 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  //   // Get a user by ID
+  const getUserByEmailOrPhone = useCallback(async (identifier) => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await api.get(`${BASE_URL}/user/search/${identifier}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error("Get user by ID error:", error.response?.data || error);
+      return error.response?.data?.msg || "Failed to fetch user";
+    }
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -396,6 +411,7 @@ const AuthProvider = ({ children }) => {
         allUsers,
         loading,
         isAuthenticated,
+        getUserByEmailOrPhone,
 
         createUser,
         signinUser,
