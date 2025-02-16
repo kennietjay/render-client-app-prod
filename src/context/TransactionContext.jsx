@@ -49,7 +49,7 @@ function TransactionProvider({ children }) {
         }
       );
 
-      console.log(response.data.loan);
+      // console.log(response.data.loan);
 
       // setLoan(response?.data?.loan || null);
       return response?.data?.loan;
@@ -60,36 +60,6 @@ function TransactionProvider({ children }) {
       setLoading(false);
     }
   }, []);
-
-  // const getPaymentsByLoanOrCustomerId = useCallback(async (id) => {
-  //   setLoading(true);
-  //   // const id = "LN0001";
-
-  //   console.log("Searching payments for ID:", id); // ✅ Debugging log
-
-  //   try {
-  //     const response = await api.get(`${BASE_URL}/transactions/search/${id}`, {
-  //       headers: getHeaders(),
-  //     });
-
-  //     console.log("Full API Response:", response); // ✅ Debugging log
-
-  //     if (!response || !response?.data) {
-  //       throw new Error("Invalid API response. No data received.");
-  //     }
-
-  //     // ✅ Ensure we return the full data
-  //     return response?.data.payments;
-  //   } catch (error) {
-  //     console.error("API Error:", error.response?.data || error.message);
-
-  //     throw new Error(
-  //       error.response?.data?.message || "Failed to fetch payments."
-  //     );
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }, []);
 
   return (
     <TransactionContext.Provider

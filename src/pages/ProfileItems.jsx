@@ -44,8 +44,8 @@ const ChangePassword = ({ loading, isInnerModalOpen, closeInnerModal }) => {
   const [success, setSuccess] = useState(null);
 
   const [formData, setFormData] = useState({
-    password: "password123",
-    confirm_password: "password123",
+    password: "",
+    confirm_password: "",
   });
 
   //   const navigate = useNavigate();
@@ -74,7 +74,7 @@ const ChangePassword = ({ loading, isInnerModalOpen, closeInnerModal }) => {
     const newPasswordData = {
       password: formData.password,
     };
-    console.log(formData);
+    // console.log(formData);
 
     const response = await changePassword(newPasswordData);
     if (response.error) {

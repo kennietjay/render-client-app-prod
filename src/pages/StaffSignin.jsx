@@ -12,7 +12,7 @@ function StaffSignin(props) {
   const [success, setSuccess] = useState(null);
   const [formData, setFormData] = useState({
     email: "",
-    password: "password123",
+    password: "",
   });
   const [key, setKey] = useState(0); // Use key to re-render
   const location = useLocation();

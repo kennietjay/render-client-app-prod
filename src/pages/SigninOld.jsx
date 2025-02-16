@@ -11,7 +11,7 @@ function SignInOld(props) {
   const [success, setSuccess] = useState(null);
   const [formData, setFormData] = useState({
     email: "",
-    password: "password123",
+    password: "",
   });
 
   const handleChange = (e) => {

@@ -49,7 +49,7 @@ function SignIn(props) {
       email: formattedEmail,
     };
 
-    console.log("Formatted Form Data: ", finalFormData);
+    // console.log("Formatted Form Data: ", finalFormData);
 
     const passwordResetEmail = {
       email: finalFormData.email,
@@ -76,7 +76,7 @@ function SignIn(props) {
         }, 5000); // Redirect after 3 seconds
       }
 
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       setError(error.message);
     } finally {

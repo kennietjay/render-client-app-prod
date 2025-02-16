@@ -100,33 +100,33 @@ const VisionMission = () => {
 
 const teamMember = [
   {
-    name: "John Doe",
+    name: "Patrick Goba",
     role: "CEO & Founder",
-    image: "https://via.placeholder.com/150",
+    // image: "https://via.placeholder.com/150",
     bio: "John has over 10 years of experience in the financial sector and is the visionary behind Easy Life Microfinance.",
   },
   {
-    name: "Jane Smith",
+    name: "Elizabeth Koroma",
     role: "Operations Manager",
-    image: "https://via.placeholder.com/150",
+    // image: "https://via.placeholder.com/150",
     bio: "Jane ensures that the day-to-day operations run smoothly, keeping our customers at the heart of every decision.",
   },
   {
     name: "Mike Brown",
     role: "Loan Officer",
-    image: "https://via.placeholder.com/150",
+    // image: "https://via.placeholder.com/150",
     bio: "Mike specializes in providing tailored loan solutions to help customers achieve their financial goals.",
   },
   {
     name: "Emily White",
     role: "Customer Support Specialist",
-    image: "https://via.placeholder.com/150",
+    // image: "https://via.placeholder.com/150",
     bio: "Emily is dedicated to providing exceptional support and ensuring a seamless customer experience.",
   },
   {
     name: "Massah Mustapha",
     role: "Cashier",
-    image: "https://via.placeholder.com/150",
+    // image: "https://via.placeholder.com/150",
     bio: "Massah is dedicated to providing exceptional support and ensuring a seamless customer experience.",
   },
 ];
@@ -142,11 +142,11 @@ const MeetTheTeam = () => {
         <div className={styles.teamGrid}>
           {teamMember?.map((member, index) => (
             <div key={index} className={styles.card}>
-              <img
+              {/* <img
                 src={member.image}
                 alt={member.name}
                 className={styles.image}
-              />
+              /> */}
               <h4 className={styles.name}>{member.name}</h4>
               <p className={styles.role}>{member.role}</p>
               <p className={styles.bio}>{member.bio}</p>

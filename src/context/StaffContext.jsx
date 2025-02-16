@@ -36,7 +36,7 @@ export const StaffProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-  console.log(BASE_URL);
+  // console.log(BASE_URL);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -215,7 +215,7 @@ export const StaffProvider = ({ children }) => {
         }
       );
 
-      console.log(response?.data?.permissions);
+      // console.log(response?.data?.permissions);
 
       return response?.data?.permissions;
     } catch (error) {

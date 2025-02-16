@@ -137,8 +137,6 @@ const AuthProvider = ({ children }) => {
     try {
       const response = await api.post(`${BASE_URL}/user/signin`, credentials);
 
-      console.log("BASE_URL:", import.meta.env.VITE_BACKEND_URL);
-
       const { accessToken, refreshToken } = response.data;
 
       // Decode and verify role
@@ -150,9 +148,6 @@ const AuthProvider = ({ children }) => {
       // Store tokens and decode user info
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-
-      console.log("Access Token:", accessToken);
-      console.log("Refresh Token:", refreshToken);
 
       // const decoded = jwtDecode(accessToken);
       setUser(decoded);
@@ -196,31 +191,13 @@ const AuthProvider = ({ children }) => {
     }
   }, [signoutUser]);
 
-  // const fetchUserProfile = useCallback(async () => {
-  //   try {
-  //     const accessToken = localStorage.getItem("accessToken");
-
-  //     const response = await api.get(`${BASE_URL}/user/profile`, {
-  //       headers: { Authorization: `Bearer ${accessToken}` },
-  //     });
-  //     setUser(response.data);
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error("Fetch profile error:", error.response?.data || error);
-  //     throw new Error(error.response?.data?.msg || "Failed to fetch profile");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }, []);
-
+  //
   useEffect(() => {
     fetchUserProfile(); // Fetch user when the provider mounts
   }, [fetchUserProfile]);
 
   // Register a regular user
   const createUser = async (userData) => {
-    console.log(userData);
-
     try {
       setLoading(true);
       const response = await api.post(`${BASE_URL}/user/signup`, userData);
@@ -328,15 +305,15 @@ const AuthProvider = ({ children }) => {
       const token = localStorage.getItem("accessToken");
       const url = `${BASE_URL}/user/${userId}/update-user`;
 
-      console.log("Updating User with URL:", url);
-      console.log("Request Headers:", { Authorization: `Bearer ${token}` });
-      console.log("Updated User Data:", userData);
+      // console.log("Updating User with URL:", url);
+      // console.log("Request Headers:", { Authorization: `Bearer ${token}` });
+      // console.log("Updated User Data:", userData);
 
       const response = await api.put(url, userData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log("Update User Response:", response.data);
+      // console.log("Update User Response:", response.data);
 
       const updatedUser = response.data.updatedUser || response.data;
       setUser((prevUser) => ({ ...prevUser, ...updatedUser }));

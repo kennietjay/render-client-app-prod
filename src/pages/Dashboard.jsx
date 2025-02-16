@@ -261,7 +261,7 @@ const Dashboard = () => {
   const handleApproval = (approvalData) => {
     setActiveSection("loan-approval");
     setSelectedLoan(approvalData); // Pass the selected loan data
-    console.log("Approval data passed:", approvalData); // Debugging log
+    // console.log("Approval data passed:", approvalData); // Debugging log
   };
 
   useEffect(() => {}, [selectedCustomer, selectedStaff]);
@@ -446,7 +446,7 @@ function DashboardMain({
   // ✅ Update UI after editing a user
   const updateUserData = async (updatedUser) => {
     if (!updatedUser || !updatedUser?.id) {
-      console.error("🚨 Invalid updated user data:", updatedUser);
+      // console.error("🚨 Invalid updated user data:", updatedUser);
       return;
     }
 

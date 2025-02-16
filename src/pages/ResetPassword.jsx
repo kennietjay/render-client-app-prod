@@ -13,8 +13,8 @@ function SignIn(props) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [formData, setFormData] = useState({
-    password: "password123",
-    confirm_password: "password123",
+    password: "",
+    confirm_password: "",
   });
 
   const handleChange = (e) => {

@@ -11,12 +11,12 @@ function Signup(props) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [formData, setFormData] = useState({
-    first_name: "Ama",
-    last_name: "Doe",
-    email: "elmf.sl24@gmail.com",
-    phone: "076456789",
-    password: "password123",
-    confirm_password: "password123",
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirm_password: "",
   });
 
   const handleChange = (e) => {
@@ -86,8 +86,6 @@ function Signup(props) {
       email: formattedEmail,
     };
 
-    console.log("Formatted Form Data: ", finalFormData);
-
     const newUser = {
       first_name: finalFormData.first_name,
       last_name: finalFormData.last_name,
@@ -120,87 +118,6 @@ function Signup(props) {
       setSuccess(null);
     }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (
-  //     !formData.first_name ||
-  //     !formData.last_name ||
-  //     !formData.email ||
-  //     !formData.phone ||
-  //     !formData.password ||
-  //     !formData.confirm_password
-  //   ) {
-  //     setError("All fields are required");
-  //     return;
-  //   }
-
-  //   if (formData.password !== formData.confirm_password) {
-  //     setError("Passwords do not match.");
-  //     return;
-  //   }
-
-  //   if (!isValidEmailFormat(formData.email)) {
-  //     setError("Please enter a valid email address.");
-  //     return;
-  //   }
-
-  //   if (!isRecognizedEmailDomain(formData.email)) {
-  //     setError(
-  //       "Please use an email from recognized domains like Gmail, Yahoo, or .org domains."
-  //     );
-  //     return;
-  //   }
-
-  //   const formattedPhone = formatPhoneNumber(formData.phone);
-  //   if (!formattedPhone) {
-  //     setError("Please enter a valid Sierra Leone phone number.");
-  //     return;
-  //   }
-
-  //   // Format the first and last names to capitalize each part (including hyphenated names)
-  //   const formattedFirstName = capitalizeName(formData.first_name);
-  //   const formattedLastName = capitalizeName(formData.last_name);
-
-  //   // Format email and username to lowercase
-  //   const formattedEmail = formData.email.toLowerCase();
-
-  //   const finalFormData = {
-  //     ...formData,
-  //     phone: formattedPhone,
-  //     first_name: formattedFirstName,
-  //     last_name: formattedLastName,
-  //     email: formattedEmail,
-  //   };
-
-  //   console.log("Formatted Form Data: ", finalFormData);
-
-  //   const newUser = {
-  //     first_name: finalFormData.first_name,
-  //     last_name: finalFormData.last_name,
-  //     email: finalFormData.email,
-  //     phone: finalFormData.phone,
-  //     password: finalFormData.password,
-  //   };
-
-  //   try {
-  //     // Save the final formatted data
-  //     const response = await createUser(newUser);
-
-  //     setFormData({
-  //       first_name: "",
-  //       last_name: "",
-  //       email: "",
-  //       phone: "",
-  //       password: "password123",
-  //     });
-  //     setSuccess(response.msg);
-  //     setError("");
-  //   } catch (error) {
-  //     setError(error);
-  //   }
-  // };
 
   return (
     <>

@@ -17,7 +17,7 @@ function EmployerProvider({ children }) {
 
   const handleError = (error) => {
     const message = error.response?.data?.message || error.message;
-    console.error("Employer API Error:", message);
+    // console.error("Employer API Error:", message);
     return message;
   };
 

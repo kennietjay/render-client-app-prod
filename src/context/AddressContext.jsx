@@ -65,7 +65,7 @@ function AddressProvider({ children }) {
         }
       );
 
-      console.log("Fetched Address:", response.data); // Debug log
+      // console.log("Fetched Address:", response.data); // Debug log
       setAddress(response.data);
       return response.data;
     } catch (err) {
@@ -78,9 +78,9 @@ function AddressProvider({ children }) {
 
   // Update customer address details
   const updateAddress = async (updatedAddress) => {
-    console.log("Updating Address:", {
-      updatedAddress,
-    });
+    // console.log("Updating Address:", {
+    //   updatedAddress,
+    // });
 
     setLoading(true);
     try {

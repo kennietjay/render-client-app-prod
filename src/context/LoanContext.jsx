@@ -34,7 +34,7 @@ function LoanProvider({ children }) {
 
   // Create a new loan
   const createLoan = async (loanData) => {
-    console.log("Loan Data (before sending):", loanData);
+    // console.log("Loan Data (before sending):", loanData);
 
     setLoading(true);
     try {
@@ -42,7 +42,7 @@ function LoanProvider({ children }) {
         headers: getHeaders(),
       });
 
-      console.log("Loan Created Successfully:", response.data);
+      // console.log("Loan Created Successfully:", response.data);
       setLoan(response.data.loan);
 
       await getLoans();
@@ -127,9 +127,9 @@ function LoanProvider({ children }) {
         }
       );
 
-      console.log(response?.data?.loans);
+      // console.log(response?.data?.loans);
 
-      console.log("Response Data:", response?.data);
+      // console.log("Response Data:", response?.data);
 
       if (response?.data?.loans) {
         setCustomerLoans(response.data.loans);
@@ -152,7 +152,7 @@ function LoanProvider({ children }) {
 
   // Get a single loan by ID
   const getLoanById = useCallback(async (loanId) => {
-    console.log("Fetching loan by ID:", loanId);
+    // console.log("Fetching loan by ID:", loanId);
 
     setLoading(true);
     try {
@@ -160,7 +160,7 @@ function LoanProvider({ children }) {
         headers: getHeaders(),
       });
 
-      console.log(response.data.loan);
+      // console.log(response.data.loan);
 
       setLoan(response?.data?.loan || null);
       return response?.data?.loan;
@@ -190,7 +190,7 @@ function LoanProvider({ children }) {
 
   // Update an existing loan
   const updateLoan = async (loanId, updatedData, customerId) => {
-    console.log(loanId, customerId);
+    // console.log(loanId, customerId);
 
     setLoading(true);
     try {
@@ -222,7 +222,7 @@ function LoanProvider({ children }) {
         }
       );
 
-      console.log("First Review Response:", response.data);
+      // console.log("First Review Response:", response.data);
 
       await getLoans();
       setLoans(response?.data?.loans);
@@ -238,9 +238,9 @@ function LoanProvider({ children }) {
   const secondReview = async (loanId, customerId, reviewedData) => {
     setLoading(true);
 
-    console.log("Loan ID:", loanId);
-    console.log("Customer ID:", customerId);
-    console.log("Reviewed Data:", reviewedData);
+    // console.log("Loan ID:", loanId);
+    // console.log("Customer ID:", customerId);
+    // console.log("Reviewed Data:", reviewedData);
 
     try {
       // Correct the URL construction
@@ -263,14 +263,14 @@ function LoanProvider({ children }) {
 
   // Approve loan
   const approveLoan = async (approvalData) => {
-    console.log(approvalData);
+    // console.log(approvalData);
 
     setLoading(true);
 
     try {
-      console.log("Loan ID:", approvalData.loanId);
-      console.log("Customer ID:", approvalData.customerId);
-      console.log("Approval Data:", approvalData);
+      // console.log("Loan ID:", approvalData.loanId);
+      // console.log("Customer ID:", approvalData.customerId);
+      // console.log("Approval Data:", approvalData);
 
       const response = await api.patch(
         `${BASE_URL}/loans/${approvalData.customerId}/approve/${approvalData.loanId}`,
@@ -290,7 +290,7 @@ function LoanProvider({ children }) {
 
   // Reject loan
   const rejectLoan = async (updatedFormData) => {
-    console.log(updatedFormData);
+    // console.log(updatedFormData);
 
     setLoading(true);
     try {
@@ -312,7 +312,7 @@ function LoanProvider({ children }) {
 
   // Cancel loan
   const cancelLoan = async (updatedFormData) => {
-    console.log(updatedFormData);
+    // console.log(updatedFormData);
 
     setLoading(true);
     try {
@@ -334,7 +334,7 @@ function LoanProvider({ children }) {
 
   // Close loan
   const closeLoan = async (updatedFormData) => {
-    console.log(updatedFormData);
+    // console.log(updatedFormData);
 
     setLoading(true);
     try {

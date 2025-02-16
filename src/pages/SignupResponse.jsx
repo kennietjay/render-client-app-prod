@@ -16,8 +16,6 @@ function SignupResponse({
     openModal();
   };
 
-  console.log(newUser);
-
   return (
     <SmallModal isOpen={isSignupResponse}>
       <div className={styles.responseContainer}>

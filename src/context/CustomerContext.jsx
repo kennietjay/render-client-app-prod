@@ -27,7 +27,7 @@ const CustomerProvider = ({ children }) => {
       return;
     }
 
-    console.log("Fetching customer for user ID:", user.id);
+    // console.log("Fetching customer for user ID:", user.id);
 
     setLoading(true);
     try {
@@ -45,7 +45,7 @@ const CustomerProvider = ({ children }) => {
     } catch (err) {
       const message = err.response?.data?.message || err.message;
       setError(message);
-      console.error("Customer API Error:", message);
+      // console.error("Customer API Error:", message);
       setCustomer(null); // Reset customer data on error
       return null;
     } finally {
@@ -65,7 +65,7 @@ const CustomerProvider = ({ children }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log(response);
+      // console.log(response);
 
       setCustomers(response?.data);
       setError(null); // Clear error if successful
@@ -102,7 +102,7 @@ const CustomerProvider = ({ children }) => {
     } catch (err) {
       const message = err.response?.data?.message || err.message;
       setError(message);
-      console.error("Customer Update API Error:", message);
+      // console.error("Customer Update API Error:", message);
       return message;
     } finally {
       setLoading(false);

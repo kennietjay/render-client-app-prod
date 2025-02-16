@@ -17,7 +17,7 @@ function BusinessProvider({ children }) {
 
   const handleError = (error) => {
     const message = error.response?.data?.message || error.message;
-    console.error("Business API Error:", message);
+    // console.error("Business API Error:", message);
     return message;
   };
 

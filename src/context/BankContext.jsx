@@ -16,7 +16,7 @@ function BankProvider({ children }) {
 
   const handleError = (error) => {
     const message = error.response?.data?.message || error.message;
-    console.error("Bank API Error:", message);
+    // console.error("Bank API Error:", message);
     return message;
   };
 

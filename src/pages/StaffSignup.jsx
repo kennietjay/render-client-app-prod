@@ -10,16 +10,16 @@ function StaffSignup({ isModalOpen, closeModal }) {
   const { createStaff, error, loading } = useAuth();
   const [inputError, setInputError] = useState();
   const [formData, setFormData] = useState({
-    first_name: "Ama",
-    last_name: "Doe",
+    first_name: "",
+    last_name: "",
     middle_name: "",
-    gender: "Male",
-    date_of_birth: "2001-09-11",
-    email: "elmf.sl24@gmail.com",
-    phone: "076600701",
+    gender: "",
+    date_of_birth: "",
+    email: "",
+    phone: "",
     role_id: "",
-    password: "password123",
-    confirm_password: "password123",
+    password: "",
+    confirm_password: "",
   });
 
   const handleChange = (e) => {
@@ -119,7 +119,7 @@ function StaffSignup({ isModalOpen, closeModal }) {
       middle_name: formattedMiddleName,
     };
 
-    console.log("Formatted Form Data: ", finalFormData);
+    // console.log("Formatted Form Data: ", finalFormData);
 
     const newUser = {
       first_name: finalFormData.first_name,
@@ -147,8 +147,8 @@ function StaffSignup({ isModalOpen, closeModal }) {
         email: "",
         phone: "",
         role_id: "",
-        password: "password123",
-        confirm_password: "password123",
+        password: "",
+        confirm_password: "",
       });
 
       setInputError("");
