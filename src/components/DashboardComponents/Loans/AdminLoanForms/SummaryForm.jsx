@@ -57,7 +57,7 @@ function SummaryForm({
     // Fetch the staff ID associated with the logged-in user
     const fetchStaffId = async () => {
       const staffProfile = await getStaffProfile();
-      console.log(staffProfile);
+      // console.log(staffProfile);
       setLoading(true);
       try {
         if (staffProfile?.id) {

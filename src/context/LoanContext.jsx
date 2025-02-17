@@ -222,8 +222,6 @@ function LoanProvider({ children }) {
         }
       );
 
-      // console.log("First Review Response:", response.data);
-
       await getLoans();
       setLoans(response?.data?.loans);
 

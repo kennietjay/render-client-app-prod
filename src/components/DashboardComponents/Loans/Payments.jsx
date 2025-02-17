@@ -8,6 +8,34 @@ import { useTransaction } from "../../../context/TransactionContext";
 import { useStaff } from "../../../context/StaffContext";
 import { Alert } from "react-bootstrap";
 
+//Calculate total outstanding
+function calculateOutstandingBalance(loan, payments = []) {
+  if (!loan || !loan?.loan_id) return 0;
+  // Filter payments for this loan ID only
+  const loanPayments = payments.filter(
+    (payment) => payment?.loan_id === loan.loan_id
+  );
+  // Calculate total paid for this loan
+  const totalPaid = loanPayments.reduce(
+    (sum, payment) => sum + parseFloat(payment?.amount || 0),
+    0
+  );
+  // Calculate the outstanding balance
+  const outstandingBalance = parseFloat(loan?.total_amount || 0) - totalPaid;
+
+  return Math.max(outstandingBalance, 0).toFixed(2);
+}
+
+//Calculate total amount paid
+const calculateTotalAmountPaid = (payments, loanId) => {
+  if (!loanId || !Array.isArray(payments)) return 0;
+
+  return payments
+    .filter((payment) => payment?.loan_id === loanId) // ✅ Filter payments by loan ID
+    .reduce((total, payment) => total + parseFloat(payment?.amount || 0), 0); // ✅ Sum amounts
+};
+
+//
 function LoanPayments() {
   const { getLoanById, recordPayment } = useLoan();
   const { getPayments, payments } = useTransaction();
@@ -55,7 +83,7 @@ function LoanPayments() {
   // Fetch loan details on search
   const fetchLoanDetails = useCallback(
     async (loanId) => {
-      if (!loanId) return;
+      if (!loanId) return null;
 
       setLoading(true);
 
@@ -63,7 +91,6 @@ function LoanPayments() {
         const staffProfile = await getStaffProfile();
         const details = await getLoanById(loanId);
 
-        // Set staff ID in payment data
         if (staffProfile?.id) {
           setPaymentData((prevData) => ({
             ...prevData,
@@ -73,22 +100,24 @@ function LoanPayments() {
           console.error("Failed to fetch staff profile:", staffProfile);
         }
 
-        // Set loan details if found
         if (details && details.loan_id) {
           setLoanDetails(details);
           setPaymentData((prevData) => ({
             ...prevData,
             loan_id: loanId,
           }));
-          setError(null); // Clear previous errors
-          setSearchError(""); // Clear search errors
+          setError(null);
+          setSearchError("");
+          return details; // 🔴 Make sure to return the details
         } else {
           setLoanDetails(null);
-          setError("Loan not found that match the ID entered");
+          setError("Loan not found for the entered ID.");
+          return null;
         }
       } catch (error) {
         setSearchError("Loan ID not found. Please try again.");
         setLoanDetails(null);
+        return null;
       } finally {
         setLoading(false);
       }
@@ -102,23 +131,10 @@ function LoanPayments() {
     return () => debouncedFetchLoanDetails.current.cancel();
   }, [fetchLoanDetails]);
 
-  // Handle loan search
-  const handleLoanSearch = async () => {
-    setSearchError("");
-
-    if (!paymentData?.loan_id) {
-      setSearchError("Please enter a Loan ID.");
-      setError("Please enter a Loan ID.");
-      return;
-    }
-
-    await fetchLoanDetails(paymentData?.loan_id); // Fetch loan details
-  };
-
   // Re-fetch loan details and payments when fetchTrigger changes
   useEffect(() => {
     if (paymentData?.loan_id) {
-      getPayments();
+      getPayments(paymentData?.loan_id);
     }
   }, [fetchTrigger, getPayments, paymentData?.loan_id]);
 
@@ -146,40 +162,31 @@ function LoanPayments() {
     }
 
     if (
-      (loanDetails?.status == "applied" ||
-        loanDetails?.status == "processing") &&
+      (loanDetails?.status === "applied" ||
+        loanDetails?.status === "processing") &&
       !loanDetails?.approval_date
     ) {
       setError("Loan has not been approved or processed.");
       return;
     }
 
-    if (loanDetails?.status == "processed" && !loanDetails?.approval_date) {
+    if (loanDetails?.status === "processed" && !loanDetails?.approval_date) {
       setError("Loan is not approved.");
       return;
     }
 
-    if (loanDetails?.status == "paid" && loanDetails.balance_after === 0) {
+    if (loanDetails?.status === "paid" && loanDetails.balance_after === 0) {
       setError("No further payment to process, this loan is fully paid.");
       return;
     }
 
-    if (loanDetails?.status == "canceled") {
-      setError("Cannot process payment, this loan is canceled.");
-      return;
-    }
-
-    if (loanDetails?.status == "closed") {
-      setError("Cannot process payment, this loan is closed.");
-      return;
-    }
-
-    if (loanDetails?.status == "rejected") {
-      setError("Cannot process payment, this loan was rejected.");
+    if (["canceled", "closed", "rejected"].includes(loanDetails?.status)) {
+      setError(`Cannot process payment, this loan is ${loanDetails?.status}.`);
       return;
     }
 
     setLoading(true);
+
     const newPayment = {
       ...paymentData,
       customer_id: loanDetails?.customer_id,
@@ -188,19 +195,14 @@ function LoanPayments() {
     try {
       const response = await recordPayment(newPayment, paymentData?.loan_id);
 
-      if (response?.ok) {
+      // ✅ Fix: Check if response contains an actual success flag
+      if (response?.success) {
         setSuccess("Payment recorded successfully!");
 
-        // Re-fetch loan details and payments
-        const updatedLoanDetails = await fetchLoanDetails(paymentData?.loan_id);
+        // ✅ Re-fetch loan details after successful payment
         await getPayments();
 
-        // Update local state with the latest data
-        if (updatedLoanDetails) {
-          setLoanDetails(updatedLoanDetails);
-        }
-
-        // Reset form fields
+        // ✅ Reset Form Fields
         setPaymentData({
           loan_id: paymentData?.loan_id,
           amount: "",
@@ -210,11 +212,13 @@ function LoanPayments() {
           staff_id: paymentData?.staff_id,
         });
 
-        // Trigger data refresh
+        // ✅ Trigger Data Refresh
         setFetchTrigger((prev) => !prev);
       } else {
-        setError(response?.message || "Failed to record payment.");
+        setError(response?.message || "Failed to process payment.");
       }
+
+      //
     } catch (error) {
       setError(error?.message || "An error occurred while processing payment.");
     } finally {
@@ -222,25 +226,29 @@ function LoanPayments() {
     }
   };
 
-  // Calculate outstanding balance
+  //Calculate outstanding balance
   const outstandingBalance = calculateOutstandingBalance(loanDetails, payments);
 
-  // Find the payment with the highest ID
-  const latestPayment = payments?.length
-    ? [...payments].sort((a, b) => new Date(b.date) - new Date(a.date))[0]
-    : null;
+  //Total amount paid
+  const totalAmountPaid = calculateTotalAmountPaid(
+    payments,
+    loanDetails?.loan_id
+  );
 
-  // Function to calculate total amount paid
-  const calculateTotalAmountPaid = (payments) => {
-    // Provide an initial value of 0 to handle empty arrays
-    return payments.reduce((total, payment) => {
-      // Convert the amount to a number and add it to the total
-      return total + parseFloat(payment.amount);
-    }, 0); // Initial value is 0
-  };
+  // Get payments only for the selected loan ID
+  const filteredPayments = payments?.filter(
+    (payment) =>
+      String(payment?.loan_id).trim() === String(loanDetails?.loan_id).trim()
+  );
 
-  // Example usage
-  const totalAmountPaid = calculateTotalAmountPaid(payments);
+  // Get the latest payment based on the highest payment ID
+  const latestPayment =
+    filteredPayments?.sort((a, b) => Number(b.id) - Number(a.id))[0] || null; // ✅ Sort by highest numeric ID
+
+  // console.log("Filtered Payments:", filteredPayments);
+  // console.log("Latest Payment by Payment ID:", latestPayment);
+
+  //
   return (
     <>
       {!loanDetails && loading ? (
@@ -252,8 +260,18 @@ function LoanPayments() {
               <h4 className={styles.title}>Loan Payment Form</h4>
 
               {/* {success && <Alert variant="success">{success}</Alert>} */}
-              {success && <Alert variant="success">{success}</Alert>}
-              {error && <Alert variant="warning">{error}</Alert>}
+
+              {success && (
+                <Alert variant="success" className="warning">
+                  {success}
+                </Alert>
+              )}
+
+              {error && (
+                <Alert variant="warning" className="warning">
+                  {error}
+                </Alert>
+              )}
 
               {/* Loan ID Input with Search */}
               <div className={styles.inputControl}>
@@ -268,13 +286,6 @@ function LoanPayments() {
                     onChange={handleInputChange}
                     required
                   />
-                  <button
-                    type="button"
-                    className={styles.searchButton}
-                    onClick={handleLoanSearch}
-                  >
-                    Search
-                  </button>
                 </div>
                 {searchError && (
                   <p className={styles.errorText}>{searchError}</p>
@@ -308,7 +319,8 @@ function LoanPayments() {
                   </p>
 
                   <p>
-                    <strong>Total To-Date:</strong> NLe {totalAmountPaid}
+                    <strong>Total To-Date:</strong> NLe
+                    {totalAmountPaid}
                   </p>
                 </div>
               )}
@@ -370,28 +382,7 @@ function LoanPayments() {
 
 export default LoanPayments;
 
-// Calculate outstanding balance
-function calculateOutstandingBalance(loan, payments) {
-  if (!loan) return 0;
-
-  // Filter payments for the specific loan ID
-  const loanPayments = payments?.filter(
-    (payment) => payment?.loan_id === loan?.loan_id
-  );
-
-  // Calculate the total paid amount
-  const totalPaid = loanPayments?.reduce(
-    (sum, payment) => sum + parseFloat(payment?.amount || 0),
-    0
-  );
-
-  // Calculate the outstanding balance
-  const outstandingBalance = parseFloat(loan?.total_amount || 0) - totalPaid;
-
-  // Ensure the balance cannot go below zero
-  return Math.max(outstandingBalance, 0).toFixed(2);
-}
-
+//
 //
 // import React, { useCallback, useEffect, useRef, useState } from "react";
 // import styles from "./LoanPayment.module.css";

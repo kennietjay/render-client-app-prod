@@ -82,8 +82,11 @@ const LoanTable = ({
     return map;
   }, {});
 
-  // console.log("Payment Map:", paymentMap);
   //
+
+  // Totol amount paid
+  const totalPaidMap = calculateTotalPaid(searchResults, localPayments);
+  // console.log("Total Amount Paid Per Loan:", totalPaidMap);
 
   return (
     <>
@@ -104,8 +107,9 @@ const LoanTable = ({
                 <th className={styles.tableHeadCell}>Approved</th>
                 <th className={styles.tableHeadCell}>Date</th>
                 <th className={styles.tableHeadCell}>Loan</th>
+                <th className={styles.tableHeadCell}>Total Paid</th>
+                <th className={styles.tableHeadCell}>Last Payment</th>
                 <th className={styles.tableHeadCell}>Balance</th>
-                <th className={styles.tableHeadCell}>Payment</th>
                 <th className={styles.tableHeadCell}>View</th>
               </tr>
             </thead>
@@ -125,7 +129,7 @@ const LoanTable = ({
                 const {
                   formattedDate: submissionDate,
                   formattedTime: submissionTime,
-                } = formatDateAndTime(loan?.submission_date);
+                } = formatDateAndTime(loan?.createdAt);
 
                 //
                 // Retrieve the latest payment details from the mapping
@@ -151,7 +155,7 @@ const LoanTable = ({
                       {(
                         <div className={styles.approvalDate}>
                           <div className={styles.date}>{submissionDate}</div>
-                          {/* <div className={styles.time}>{submissionTime}</div> */}
+                          <div className={styles.time}>{submissionTime}</div>
                         </div>
                       ) || "N/A"}
                     </td>
@@ -213,15 +217,23 @@ const LoanTable = ({
                         : "N/A"}
                     </td>
 
-                    {/* Display the latest payment balance_after */}
                     <td className={styles.tableCell}>
-                      {balance_after
-                        ? `NLe ${balance_after?.toLocaleString()}`
+                      {totalPaidMap[loan.loan_id]
+                        ? `NLe ${parseFloat(
+                            totalPaidMap[loan.loan_id]
+                          ).toLocaleString()}`
                         : "NLe 0"}
                     </td>
 
                     <td className={styles.tableCell}>
                       {amount ? `NLe ${amount?.toLocaleString()}` : `NLe 0`}
+                    </td>
+
+                    {/* Display the latest payment balance_after */}
+                    <td className={styles.tableCell}>
+                      {balance_after
+                        ? `NLe ${balance_after?.toLocaleString()}`
+                        : "NLe 0"}
                     </td>
 
                     <td className={styles.tableCell}>
@@ -444,4 +456,51 @@ function ManageLoan({
       </SideBar>
     </div>
   );
+}
+
+//
+function calculateOutstandingBalances(loans, payments = []) {
+  if (!Array.isArray(loans) || loans.length === 0) return {};
+
+  return loans.reduce((acc, loan) => {
+    // Filter payments for this specific loan ID
+    const loanPayments = payments.filter(
+      (payment) => String(payment?.loan_id) === String(loan.loan_id)
+    );
+
+    // Calculate total paid for this loan
+    const totalPaid = loanPayments.reduce(
+      (sum, payment) => sum + parseFloat(payment?.amount || 0),
+      0
+    );
+
+    // Calculate outstanding balance
+    const outstandingBalance = parseFloat(loan?.total_amount || 0) - totalPaid;
+
+    // Store result in a map
+    acc[loan.loan_id] = Math.max(outstandingBalance, 0).toFixed(2); // Ensure no negative values
+    return acc;
+  }, {});
+}
+
+//
+function calculateTotalPaid(loans, payments = []) {
+  if (!Array.isArray(loans) || loans.length === 0) return {};
+
+  return loans.reduce((acc, loan) => {
+    // Filter payments for this specific loan ID
+    const loanPayments = payments.filter(
+      (payment) => String(payment?.loan_id) === String(loan.loan_id)
+    );
+
+    // Calculate total paid for this loan
+    const totalPaid = loanPayments.reduce(
+      (sum, payment) => sum + parseFloat(payment?.amount || 0),
+      0
+    );
+
+    // Store total paid in a map
+    acc[loan.loan_id] = totalPaid.toFixed(2);
+    return acc;
+  }, {});
 }

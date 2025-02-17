@@ -43,14 +43,9 @@ function Loans({
     }
   }, [success, error]);
 
-  // useState(() => {
-  //   console.log("Reloaded... ");
-  //   setAllLoans(loanData);
-  // }, [loanData]);
-
   useEffect(() => {
     if (loanData) {
-      console.log("Updating loan list:", loanData);
+      console.log("Updating loan list:");
       setAllLoans([...loanData]); // Spread to force re-render
     }
   }, [loanData]);

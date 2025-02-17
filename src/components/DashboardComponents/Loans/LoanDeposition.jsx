@@ -33,7 +33,6 @@ const LoanList = ({ loans }) => {
     "closed",
     "canceled",
     "paying",
-    "paid",
     "processed"
   );
 
