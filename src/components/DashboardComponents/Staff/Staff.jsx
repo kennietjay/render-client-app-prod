@@ -23,19 +23,19 @@ function Staff({
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [formData, setFormData] = useState({
-    first_name: "Amara",
-    last_name: "Tamia",
-    middle_name: "T",
-    gender: "Male",
-    date_of_birth: "12-12-2000",
-    email: "kennie4tamia@gmail.com",
-    phone: "076234567",
-    second_phone: "076234567",
-    role_id: "7",
-    department: "Management",
-    employment_date: "08-01-2024",
-    password: "password",
-    confirm_password: "password",
+    first_name: "",
+    last_name: "",
+    middle_name: "",
+    gender: "",
+    date_of_birth: "",
+    email: "",
+    phone: "",
+    second_phone: "",
+    role_id: "",
+    department: "",
+    employment_date: "",
+    password: "",
+    confirm_password: "",
   });
 
   // Automatically dismiss alerts after 30 seconds
@@ -168,8 +168,6 @@ function Staff({
       ...finalFormData,
       role_id: parseInt(formData.role_id, 10),
     };
-
-    console.log("New User:", newUser);
 
     // Submit to backend
     setLoading(true);

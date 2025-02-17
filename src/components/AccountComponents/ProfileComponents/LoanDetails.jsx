@@ -147,8 +147,6 @@ function LoanDetails({
       return;
     }
 
-    console.log(formData);
-
     try {
       setLoading(true);
       const updatedLoan = await updateLoan(loan?.loan_id, formData, customerId);

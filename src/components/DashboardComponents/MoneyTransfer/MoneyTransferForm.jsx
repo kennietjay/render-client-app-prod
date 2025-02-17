@@ -10,22 +10,22 @@ const MoneyTransferForm = ({ onSuccess, isSmallModalOpen, closeModal }) => {
   const { createTransfer } = useTransfer();
   const { getStaffProfile } = useStaff();
   const [formData, setFormData] = useState({
-    transfer_pin: "23423232",
-    transfer_medium: "Ria",
-    amount: "100",
-    foreign_currency: "Dollar",
-    local_currency: "2430",
-    transfer_date: "12/17/2024",
-    sender_name: "Amara Jay",
-    sender_country: "USA",
-    sender_city: "Reston",
-    sender_phone: "5718972041",
-    sender_email: "test@gmail",
-    receiver_name: "John Ama",
-    receiver_country: "Sierra Leone",
-    receiver_city: "Kenema",
-    receiver_phone: "076889768",
-    receiver_email: "test@gmail.com",
+    transfer_pin: "",
+    transfer_medium: "",
+    amount: "",
+    foreign_currency: "",
+    local_currency: "",
+    transfer_date: "",
+    sender_name: "",
+    sender_country: "",
+    sender_city: "",
+    sender_phone: "",
+    sender_email: "",
+    receiver_name: "",
+    receiver_country: "",
+    receiver_city: "",
+    receiver_phone: "",
+    receiver_email: "",
   });
 
   const [loading, setLoading] = useState(false);

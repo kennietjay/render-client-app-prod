@@ -12,15 +12,15 @@ function UserSignup({ isSignupOpen, openModal, onSubmit, closeSignup }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [formData, setFormData] = useState({
-    first_name: "Adam",
-    middle_name: "J",
-    last_name: "Doe",
-    email: "elmf.sl24@gmail.com",
-    gender: "male",
-    date_of_birth: "12-23-2000",
-    phone: "076456789",
-    password: "password123",
-    confirm_password: "password123",
+    first_name: "",
+    middle_name: "",
+    last_name: "",
+    email: "",
+    gender: "",
+    date_of_birth: "",
+    phone: "",
+    password: "",
+    confirm_password: "",
   });
 
   // Format date for input[type="date"]
@@ -128,8 +128,6 @@ function UserSignup({ isSignupOpen, openModal, onSubmit, closeSignup }) {
       date_of_birth: formatDateToInput(formData.date_of_birth),
     };
 
-    console.log("Formatted Form Data: ", finalFormData);
-
     const newUser = {
       first_name: finalFormData.first_name,
       last_name: finalFormData.last_name,
@@ -145,7 +143,6 @@ function UserSignup({ isSignupOpen, openModal, onSubmit, closeSignup }) {
       // Save the final formatted data
       const response = await createUser(newUser);
 
-      console.log(newUser);
       if (onSubmit) {
         onSubmit(response);
       }
@@ -158,7 +155,7 @@ function UserSignup({ isSignupOpen, openModal, onSubmit, closeSignup }) {
         gender: "",
         date_of_birth: "",
         phone: "",
-        password: "password123",
+        password: "",
       });
       //   setSuccess(response.msg);
       setError("");

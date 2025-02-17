@@ -148,7 +148,7 @@ const ViewStaff = ({
       ...updatedUser,
     };
 
-    console.log("Updated Staff Data:", comnbinedData);
+    // console.log("Updated Staff Data:", comnbinedData);
 
     try {
       const response = await updateStaff(staff.id, comnbinedData);
@@ -164,7 +164,7 @@ const ViewStaff = ({
   const handleRoleChange = async (e) => {
     e.preventDefault();
 
-    console.log(selectedRole);
+    // console.log(selectedRole);
 
     try {
       const response = await updateRole(staff?.id, selectedRole);

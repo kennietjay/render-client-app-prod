@@ -4,8 +4,6 @@ import api from "../../utils/api"; // ✅ Import global API interceptor
 // Dynamically set BASE_URL based on the environment
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
-// const BASE_URL = "https://render-server-app.onrender.com";
-
 const AddressContext = createContext();
 
 const getAuthToken = () => localStorage.getItem("accessToken");
@@ -78,10 +76,6 @@ function AddressProvider({ children }) {
 
   // Update customer address details
   const updateAddress = async (updatedAddress) => {
-    // console.log("Updating Address:", {
-    //   updatedAddress,
-    // });
-
     setLoading(true);
     try {
       const token = getAuthToken();

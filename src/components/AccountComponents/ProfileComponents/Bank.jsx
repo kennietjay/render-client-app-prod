@@ -83,7 +83,6 @@ function Bank() {
   };
 
   const handleModeChange = (newMode) => {
-    console.log("Changing mode to:", newMode);
     if (newMode === "edit" && bankData) {
       setOriginalFormData(bankFormData); // Save the current form data as original
     }

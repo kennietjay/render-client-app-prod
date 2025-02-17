@@ -96,7 +96,6 @@ function Employer({ employer, customer, onUpdate }) {
   };
 
   const handleModeChange = (newMode) => {
-    console.log("Changing mode to:", newMode);
     if (newMode === "edit" && employerData) {
       setOriginalFormData(employerFormData); // Save the current form data as original
     }
@@ -125,8 +124,6 @@ function Employer({ employer, customer, onUpdate }) {
 
     const customerId = customer.customer_id; // Ensure this is correct
     const updatedEmployer = { ...employerFormData, customerId };
-
-    console.log("Submitting employer update:", updatedEmployer);
 
     try {
       const response = await updateEmployer(updatedEmployer);

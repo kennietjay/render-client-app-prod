@@ -41,12 +41,6 @@ const DualLineChart = ({ loans }) => {
   const chartWidth = 600; // Chart width
   const pointSpacing = chartWidth / (months.length - 1); // Space between points
 
-  // const maxValue = 50000; // Max value for vertical axis
-  // const minValue = 0; // Min value for vertical axis
-  // const chartHeight = 200; // Height of the chart
-  // const chartWidth = 600; // Width of the chart
-  // const pointSpacing = chartWidth / (months.length - 1); // Space between points
-
   return (
     <div className={`${styles.chartContainer} `}>
       {/* Chart Title */}

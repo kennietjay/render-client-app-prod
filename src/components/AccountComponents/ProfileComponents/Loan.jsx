@@ -33,12 +33,12 @@ function Loan() {
     monthly_salary: "",
     salary_in_words: "test",
     interest_rate: "",
-    co_debtor: "Mariama Jalloh",
-    co_debtor_relation: "Sister",
-    prior_loan_history: "no",
-    loaned_with_easylife: "no",
-    owe_arrears_elsewhere: "no",
-    status: "applied",
+    co_debtor: "",
+    co_debtor_relation: "",
+    prior_loan_history: "",
+    loaned_with_easylife: "",
+    owe_arrears_elsewhere: "",
+    status: "",
   });
 
   useEffect(() => {

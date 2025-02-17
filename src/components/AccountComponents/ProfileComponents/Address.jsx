@@ -104,8 +104,6 @@ function Addresss() {
       // Call the API to update the address
       const response = await updateAddress(updatedAddress);
 
-      console.log("API response:", response);
-
       // Update local state
       setContact(response);
       setContactFormData({
@@ -130,55 +128,6 @@ function Addresss() {
       setLoading(false);
     }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!contactFormData || !customer?.customer_id || !addressId) {
-  //     setError("Required data is missing for updating the address.");
-  //     return;
-  //   }
-
-  //   try {
-  //     setLoading(true);
-  //     console.log("Submitting form with data:", contactFormData);
-
-  //     if (mode === "edit" && !hasDataChanged()) {
-  //       setWarning("No changes detected. Update skipped.");
-  //       setMode("view");
-  //       return;
-  //     }
-
-  //     const updatedAddress = {
-  //       ...contactFormData,
-  //       customerId: customer?.customer_id,
-  //     };
-
-  //     const response = await updateAddress(
-  //       updatedAddress
-  //       // addressId,
-  //     );
-
-  //     console.log("API response:", response);
-  //     setContact(response); // Update local state with the new data
-  //     setContactFormData({
-  //       address: response.address,
-  //       city: response.city,
-  //       chiefdom: response.chiefdom,
-  //       district: response.district,
-  //       section: response.section,
-  //     });
-
-  //     setSuccess("Address updated successfully!");
-  //     setMode("view"); // Switch back to view mode
-  //     await getAddress();
-  //   } catch (error) {
-  //     console.error("Error updating address:", error.message);
-  //     setError(error.response?.data?.message || "Failed to update address.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
     <>

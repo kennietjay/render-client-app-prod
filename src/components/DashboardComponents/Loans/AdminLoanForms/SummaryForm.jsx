@@ -108,35 +108,6 @@ function SummaryForm({
     closeModal();
   };
 
-  // onSubmit function to handle form submission
-  // onSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const newLoan = {
-  //     ...formData,
-  //     staff_id: staff.id,
-  //   };
-
-  //   try {
-  //     setLoading(true);
-  //     // console.log(newLoan, staff);
-  //     const response = await createLoan(newLoan);
-
-  //     if (response.ok) {
-  //       setSuccess("Loan created successfully.");
-  //       console.log(response?.msg);
-  //       setFormData("");
-  //     }
-  //     //
-  //   } catch (error) {
-  //     console.error("Error submitting form", error);
-  //     setError(error?.msg);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  //   closeModal();
-  // };
-
   return (
     <>
       {loading ? (

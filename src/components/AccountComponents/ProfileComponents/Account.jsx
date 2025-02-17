@@ -33,8 +33,6 @@ const ProfileHome = () => {
 
   const customerId = customer?.customer_id;
 
-  console.log(customerId);
-
   // Auto-fetch user profile on load if necessary
   useEffect(() => {
     setLoading(true);
@@ -106,10 +104,6 @@ const ProfileHome = () => {
     getLoanById,
     getLoans,
   ]);
-
-  console.log(customerLoans, customer?.customer_id);
-
-  console.log(loan, customer?.customer_id);
 
   return (
     <>

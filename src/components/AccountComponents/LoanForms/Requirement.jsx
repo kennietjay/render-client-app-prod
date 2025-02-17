@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import styles from "../../../components/DashboardComponents/Loans/LoanPayment.module.css";
 
 function LoanRequirement({ nextStep, closeModal, formData }) {
-  //   const [requirementData, setRequirementData] = useState(formData);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     nextStep();

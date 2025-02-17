@@ -15,13 +15,10 @@ function SummaryForm({ prevStep, formData, onSubmit, closeModal }) {
   // Ref for the component to print
   const componentRef = useRef(); // Create the ref
 
-  // Print function
-
   useEffect(() => {
     // Fetch the staff ID associated with the logged-in user
     const fetchStaffId = async () => {
       const staffProfile = await getStaffProfile();
-      console.log(staffProfile);
       setLoading(true);
       try {
         if (staffProfile?.id) {
@@ -50,7 +47,6 @@ function SummaryForm({ prevStep, formData, onSubmit, closeModal }) {
 
     try {
       setLoading(true);
-      console.log(newLoan, staff);
       await createLoan(newLoan);
     } catch (error) {
       console.error("Error submitting form", error);

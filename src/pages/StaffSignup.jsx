@@ -31,11 +31,6 @@ function StaffSignup({ isModalOpen, closeModal }) {
     }
   };
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
-
   // Function to capitalize each part of a name (including hyphenated names)
   const capitalizeName = (name) => {
     return name

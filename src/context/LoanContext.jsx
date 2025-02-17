@@ -118,7 +118,6 @@ function LoanProvider({ children }) {
 
   // Get loans by customer ID
   const getLoansByCustomerId = useCallback(async (customerId) => {
-    console.log(customerId);
     setLoading(true);
     try {
       const response = await api.get(
@@ -239,10 +238,6 @@ function LoanProvider({ children }) {
   const secondReview = async (loanId, customerId, reviewedData) => {
     setLoading(true);
 
-    // console.log("Loan ID:", loanId);
-    // console.log("Customer ID:", customerId);
-    // console.log("Reviewed Data:", reviewedData);
-
     try {
       // Correct the URL construction
       const response = await api.patch(
@@ -264,15 +259,9 @@ function LoanProvider({ children }) {
 
   // Approve loan
   const approveLoan = async (approvalData) => {
-    // console.log(approvalData);
-
     setLoading(true);
 
     try {
-      // console.log("Loan ID:", approvalData.loanId);
-      // console.log("Customer ID:", approvalData.customerId);
-      // console.log("Approval Data:", approvalData);
-
       const response = await api.patch(
         `${BASE_URL}/loans/${approvalData.customerId}/approve/${approvalData.loanId}`,
         approvalData,
@@ -291,8 +280,6 @@ function LoanProvider({ children }) {
 
   // Reject loan
   const rejectLoan = async (updatedFormData) => {
-    // console.log(updatedFormData);
-
     setLoading(true);
     try {
       const response = await api.patch(
@@ -300,7 +287,6 @@ function LoanProvider({ children }) {
         updatedFormData,
         { headers: getHeaders() }
       );
-      // setLoan(response.data.loan);
 
       await getLoans();
       return { success: response.data };
@@ -313,8 +299,6 @@ function LoanProvider({ children }) {
 
   // Cancel loan
   const cancelLoan = async (updatedFormData) => {
-    // console.log(updatedFormData);
-
     setLoading(true);
     try {
       const response = await api.patch(
@@ -322,7 +306,6 @@ function LoanProvider({ children }) {
         updatedFormData,
         { headers: getHeaders() }
       );
-      // setLoan(response.data.loan);
 
       await getLoans();
       return { success: response.data };
@@ -335,8 +318,6 @@ function LoanProvider({ children }) {
 
   // Close loan
   const closeLoan = async (updatedFormData) => {
-    // console.log(updatedFormData);
-
     setLoading(true);
     try {
       const response = await api.patch(
@@ -344,7 +325,6 @@ function LoanProvider({ children }) {
         updatedFormData,
         { headers: getHeaders() }
       );
-      // setLoan(response.data.loan);
 
       await getLoans();
       return { success: response.data };

@@ -14,15 +14,15 @@ function AddUser({ isAddUserOpen, onSubmit, closeAddUser, addUser }) {
 
   // Initialize form fields with default values
   const [formData, setFormData] = useState({
-    first_name: "Ama",
+    first_name: "",
     middle_name: "",
-    last_name: "Doe",
+    last_name: "",
     email: "",
-    gender: "Male",
-    date_of_birth: "23-10-1984",
-    phone: "076860509",
-    password: "password",
-    confirm_password: "password",
+    gender: "",
+    date_of_birth: "",
+    phone: "",
+    password: "",
+    confirm_password: "",
   });
 
   // ✅ Handle Input Change (Prevent Date Format Issues)

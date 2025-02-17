@@ -52,15 +52,6 @@ const UsersTable = ({ users, addUser, updateUserData, removeUser }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  //
-  // const openModal = () => {
-  //   setIsModalOpen(true);
-  // };
-
-  // const closeModal = () => {
-  //   setIsModalOpen(false);
-  // };
-
   return (
     <>
       <div className={styles.tableWrapper}>

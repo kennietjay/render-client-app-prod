@@ -102,8 +102,6 @@ function Addresss({ address, customer, onUpdate }) {
       // Call the API to update the address
       const response = await updateAddress(updatedAddress);
 
-      console.log("API response:", response);
-
       // Update local state
       setContact(response);
       setContactFormData({

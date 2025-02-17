@@ -75,10 +75,6 @@ function StatsOverview({ customers, loans, transfers }) {
     setPendingCount(filteredLoans.length);
   }, [loans]);
 
-  // Calculate totals for both foreign and local currencies
-  // const totalForeignCurrency = calculateTotalTransferAmount(
-  //   transfers,
-  //   "amount"
   // );
   const totalLocalCurrency = calculateTotalTransferAmount(
     transfers,

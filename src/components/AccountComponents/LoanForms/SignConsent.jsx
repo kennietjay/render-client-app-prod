@@ -61,8 +61,6 @@ function SignConsent({
       consentData.submission_date
     );
 
-    console.log(formattedSubmissionDate);
-
     // ✅ Validate that the date conversion worked
     if (
       !formattedSubmissionDate ||

@@ -13,8 +13,6 @@ const StaffContext = createContext();
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
-// const BASE_URL = "https://render-server-cawz.onrender.com";
-
 // Check token validity based on expiration
 const checkTokenValidity = (token) => {
   try {
@@ -85,10 +83,6 @@ export const StaffProvider = ({ children }) => {
       throw error;
     }
   }, []);
-
-  // useEffect(() => {
-  //   getAllStaff();
-  // }, [getAllStaff]);
 
   // Assign a role to a staff member
   const assignRole = useCallback(async (staffId, roleId) => {
@@ -322,9 +316,6 @@ export const StaffProvider = ({ children }) => {
       const response = await axios.get(`${BASE_URL}/staff/profile`, {
         headers: getAuthHeaders(),
       });
-
-      console.log("Received response from /profile:", response.data); // Log the full response
-
       setStaffProfile(response?.data);
       return response.data;
     } catch (error) {
