@@ -71,7 +71,7 @@ function LoanApplication({ isModalOpen, closeModal }) {
       prior_loan_history: "",
       loaned_with_easylife: "",
       owe_arrears_elsewhere: "",
-      status: "",
+      status: "applied",
     },
 
     bank: {
