@@ -112,7 +112,7 @@ function CustomerForm({
             <h4>Customer Information</h4>
 
             {error && (
-              <Alert variant="error" className="warning">
+              <Alert variant="warning" className="warning">
                 {error}
               </Alert>
             )}

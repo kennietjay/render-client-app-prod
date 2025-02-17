@@ -85,15 +85,7 @@ function AddUser({ isAddUserOpen, onSubmit, closeAddUser, addUser }) {
       return;
     }
 
-    const formattedPhone = formatPhoneNumber(formData.phone);
-    if (!formattedPhone) {
-      setError("Enter a valid Sierra Leone phone number.");
-      return;
-    }
-
-    // ✅ Convert date format before sending
     const formattedDOB = convertToDBFormat(formData.date_of_birth);
-
     if (!formattedDOB) {
       setError("Invalid date format. Use DD-MM-YYYY.");
       return;
@@ -101,23 +93,18 @@ function AddUser({ isAddUserOpen, onSubmit, closeAddUser, addUser }) {
 
     const formattedData = {
       ...formData,
-      date_of_birth: formattedDOB, // ✅ Ensure correct format is sent
+      date_of_birth: formattedDOB,
       first_name: capitalizeName(formData.first_name),
       last_name: capitalizeName(formData.last_name),
-      middle_name: capitalizeName(formData.middle_name || ""),
-      gender: capitalizeName(formData.gender || ""),
       email: formData.email.toLowerCase(),
-      phone: formattedPhone,
     };
 
     try {
       const response = await createUser(formattedData);
+
       if (response.success) {
-        if (onSubmit) onSubmit(response);
-
-        addUser();
-
-        // Reset form and display success message
+        setSuccess(response.success);
+        setError(null);
         setFormData({
           first_name: "",
           middle_name: "",
@@ -129,15 +116,12 @@ function AddUser({ isAddUserOpen, onSubmit, closeAddUser, addUser }) {
           password: "",
           confirm_password: "",
         });
-        closeAddUser(); // Close modal
-
-        setSuccess("User created successfully!");
-        setError(null);
+        closeAddUser();
       } else {
-        setError(response.msg);
+        setError(response.error || "Something went wrong.");
       }
     } catch (error) {
-      setError(error?.msg || "An error occurred while creating the user.");
+      setError(error.message || "An unexpected error occurred.");
     }
   };
 
@@ -327,3 +311,91 @@ const isRecognizedEmailDomain = (email) => {
   const domain = email.split("@")[1];
   return recognizedEmailDomains.includes(domain) || domain.endsWith(".org");
 };
+
+// const handleSubmit = async (e) => {
+//   e.preventDefault();
+
+//   if (
+//     !formData.first_name ||
+//     !formData.last_name ||
+//     !formData.email ||
+//     !formData.phone ||
+//     !formData.date_of_birth ||
+//     !formData.gender ||
+//     !formData.password ||
+//     !formData.confirm_password
+//   ) {
+//     setError("All fields are required.");
+//     return;
+//   }
+
+//   if (formData.password !== formData.confirm_password) {
+//     setError("Passwords do not match.");
+//     return;
+//   }
+
+//   if (!isValidEmailFormat(formData.email)) {
+//     setError("Enter a valid email address.");
+//     return;
+//   }
+
+// if (!isRecognizedEmailDomain(formData.email)) {
+//   setError("Use a recognized email domain (Gmail, Yahoo, Outlook, etc.).");
+//   return;
+// }
+
+//   const formattedPhone = formatPhoneNumber(formData.phone);
+//   if (!formattedPhone) {
+//     setError("Enter a valid Sierra Leone phone number.");
+//     return;
+//   }
+
+//   // ✅ Convert date format before sending
+//   const formattedDOB = convertToDBFormat(formData.date_of_birth);
+
+//   if (!formattedDOB) {
+//     setError("Invalid date format. Use DD-MM-YYYY.");
+//     return;
+//   }
+
+//   const formattedData = {
+//     ...formData,
+//     date_of_birth: formattedDOB, // ✅ Ensure correct format is sent
+//     first_name: capitalizeName(formData.first_name),
+//     last_name: capitalizeName(formData.last_name),
+//     middle_name: capitalizeName(formData.middle_name || ""),
+//     gender: capitalizeName(formData.gender || ""),
+//     email: formData.email.toLowerCase(),
+//     phone: formattedPhone,
+//   };
+
+//   try {
+//     const response = await createUser(formattedData);
+
+//     if (response.success) {
+//       if (onSubmit) onSubmit(response);
+
+//       addUser();
+//       // Reset form and display success message
+//       setFormData({
+//         first_name: "",
+//         middle_name: "",
+//         last_name: "",
+//         email: "",
+//         gender: "",
+//         date_of_birth: "",
+//         phone: "",
+//         password: "",
+//         confirm_password: "",
+//       });
+//       closeAddUser(); // Close modal
+
+//       setSuccess("User created successfully!");
+//       setError(null);
+//     } else {
+//       setError(response.msg);
+//     }
+//   } catch (error) {
+//     setError(error?.msg || "An error occurred while creating the user.");
+//   }
+// };

@@ -16,7 +16,14 @@
   display: flex;
   flex-direction: column;
   gap: 1.8rem;
+  position: relative;
 }
+
+/* .printButton {
+  position: absolute;
+  top: 5rem;
+  right: 0;
+} */
 
 .formContainer h4 {
   margin-top: 2rem;

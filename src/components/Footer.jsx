@@ -35,7 +35,7 @@ function Footer() {
             <ul>
               <li>Kenema Shopping Plaza, Kenema, Sierra Leone.</li>
               <li>Phone: +232 76 726824</li>
-              <li>Email: patrickgoba2011@gmail.com</li>
+              <li>Email: elmf.sl24@gmail.com</li>
             </ul>
           </div>
 

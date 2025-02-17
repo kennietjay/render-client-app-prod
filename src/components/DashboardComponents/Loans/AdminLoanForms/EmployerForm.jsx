@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 // import styles from "./LoanApplication.module.css";
 import styles from "../LoanPayment.module.css";
+import { Alert } from "react-bootstrap";
 
 function EmployerForm({
   formData,
@@ -30,6 +31,7 @@ function EmployerForm({
           X
         </button>
         <h4>Employment Information</h4>
+
         <div className={styles.sectionMargin}>
           <div className={styles.inputLayout}>
             <div className={styles.inputControl}>

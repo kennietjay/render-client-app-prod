@@ -202,10 +202,10 @@ const AuthProvider = ({ children }) => {
       setLoading(true);
       const response = await api.post(`${BASE_URL}/user/signup`, userData);
       setUser(response.data);
-      // navigate("/user/signin");
       return { success: response.data?.msg };
     } catch (error) {
-      return { error: error.response?.data?.msg || error?.message };
+      console.error("❌ API Error:", error.response?.data || error.message);
+      return { error: error.response?.data?.msg || "An error occurred." };
     } finally {
       setLoading(false);
     }
@@ -260,7 +260,7 @@ const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error(
         "Change password error:",
-        error.response?.data || error.message
+        error.response?.data || error.msg
       );
       return {
         error: error.response?.data?.msg || "Failed to change password",
@@ -319,12 +319,9 @@ const AuthProvider = ({ children }) => {
       setUser((prevUser) => ({ ...prevUser, ...updatedUser }));
 
       await getAllUsers();
-      return { success: true, message: "User details updated successfully" };
+      return { success: true, msg: "User details updated successfully" };
     } catch (error) {
-      console.error(
-        "Update User Error:",
-        error.response?.data || error.message
-      );
+      console.error("Update User Error:", error.response?.data || error.msg);
 
       const errorMessage = error.response?.data?.msg || "Failed to update user";
       return { success: false, message: errorMessage };

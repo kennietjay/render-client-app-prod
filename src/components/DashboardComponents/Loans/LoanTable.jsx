@@ -151,7 +151,7 @@ const LoanTable = ({
                       {(
                         <div className={styles.approvalDate}>
                           <div className={styles.date}>{submissionDate}</div>
-                          <div className={styles.time}>{submissionTime}</div>
+                          {/* <div className={styles.time}>{submissionTime}</div> */}
                         </div>
                       ) || "N/A"}
                     </td>

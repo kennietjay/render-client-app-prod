@@ -43,13 +43,14 @@ function LoanProvider({ children }) {
       });
 
       // console.log("Loan Created Successfully:", response.data);
-      setLoan(response.data.loan);
+      setLoan(response?.data?.loan);
 
       await getLoans();
-      return response.data;
-    } catch (err) {
-      console.error("Error creating loan:", err.response?.data || err.message);
-      return handleError(err);
+
+      return { success: response?.data?.msg };
+    } catch (error) {
+      console.error("❌ API Error:", error.response?.data || error?.message);
+      return { error: error.response?.data?.msg || "An error occurred." };
     } finally {
       setLoading(false);
     }
@@ -79,7 +80,7 @@ function LoanProvider({ children }) {
         setLoans(response.data.loans);
       }
     } catch (error) {
-      console.error("Error fetching loans:", error.message);
+      console.error("Error fetching loans:", error.msg);
     } finally {
       setLoading(false);
     }
@@ -165,7 +166,7 @@ function LoanProvider({ children }) {
       setLoan(response?.data?.loan || null);
       return response?.data?.loan;
     } catch (err) {
-      console.error("Error fetching loan by ID:", err.message);
+      console.error("Error fetching loan by ID:", err.msg);
       return null;
     } finally {
       setLoading(false);
@@ -388,9 +389,9 @@ function LoanProvider({ children }) {
     } catch (error) {
       console.error(
         "Error recording transaction:",
-        error.response?.data || error.message
+        error.response?.data || error.msg
       );
-      return error.response?.data || error.message;
+      return error.response?.data || error.msg;
     }
   };
 

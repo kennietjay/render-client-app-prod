@@ -85,7 +85,7 @@ const ContactInfo = () => {
             <i className="fa-regular fa-envelope"></i>
           </div>
           <div>
-            <strong>Email:</strong> patrickgoba2011@gmail.com
+            <strong>Email:</strong> elmf.sl24@gmail.com
           </div>
         </div>
       </div>

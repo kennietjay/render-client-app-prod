@@ -122,7 +122,7 @@ const ContactInfo = () => {
       </p>
       <ul>
         <li>
-          <strong>Email:</strong> support@easylifsl.com
+          <strong>Email:</strong> elmf.sl24@gmail.com
         </li>
         <li>
           <strong>Phone:</strong> +232 76 726824

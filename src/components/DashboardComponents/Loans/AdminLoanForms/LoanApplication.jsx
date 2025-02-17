@@ -12,7 +12,14 @@ import SignConsent from "./SignConsent";
 import CustomerInformation from "./CustomerForm";
 import AddressInformation from "./AddressForm";
 
-function LoanApplication({ isModalOpen, closeModal }) {
+function LoanApplication({
+  isModalOpen,
+  closeModal,
+  error,
+  setError,
+  success,
+  setSuccess,
+}) {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     customer: {
@@ -106,7 +113,7 @@ function LoanApplication({ isModalOpen, closeModal }) {
       consent: "",
       full_name: "Hannah Kamara",
       applicant_initial: "HK",
-      submission_date: "10-18-2025",
+      submission_date: "16-02-2025",
     },
   });
 
@@ -130,8 +137,12 @@ function LoanApplication({ isModalOpen, closeModal }) {
   };
 
   return (
-    <div className={styles.loanApplicationForm}>
-      <Modal isOpen={isModalOpen} onClick={handleCloseModal}>
+    <Modal
+      isOpen={isModalOpen}
+      onClick={handleCloseModal}
+      className={styles.mainModalBg}
+    >
+      <div className={styles.loanApplicationForm}>
         <div>
           {step === 1 && (
             <Requirement
@@ -228,11 +239,15 @@ function LoanApplication({ isModalOpen, closeModal }) {
               prevStep={prevStep}
               formData={{ ...formData }}
               onSubmit={closeModal} // Handle submission here
+              error={error}
+              setError={setError}
+              setSuccess={setSuccess}
+              setFormData={setFormData}
             />
           )}
         </div>
-      </Modal>
-    </div>
+      </div>
+    </Modal>
   );
 }
 

@@ -5,6 +5,7 @@ import LoanTable from "./LoanTable";
 import LoanApplication from "./AdminLoanForms/LoanApplication";
 import SignupResponse from "../../../pages/SignupResponse";
 import AddUser from "../../AddUser";
+import { Alert } from "react-bootstrap";
 
 function Loans({
   loanData,
@@ -29,9 +30,29 @@ function Loans({
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useState(() => {
-    console.log("Reloaded... ");
-    setAllLoans(loanData);
+  // Automatically dismiss alerts after 5 seconds
+  useEffect(() => {
+    if (success || error) {
+      console.log("Displaying Alert:", success || error);
+      const timer = setTimeout(() => {
+        setSuccess(null);
+        setError(null);
+      }, 5000); // 5 seconds
+
+      return () => clearTimeout(timer); // Cleanup timeout
+    }
+  }, [success, error]);
+
+  // useState(() => {
+  //   console.log("Reloaded... ");
+  //   setAllLoans(loanData);
+  // }, [loanData]);
+
+  useEffect(() => {
+    if (loanData) {
+      console.log("Updating loan list:", loanData);
+      setAllLoans([...loanData]); // Spread to force re-render
+    }
   }, [loanData]);
 
   // console.log(allLoans);
@@ -50,27 +71,6 @@ function Loans({
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
-  // const openSignup = () => {
-  //   setIsSigupOpen(true);
-  // };
-  // const closeSignup = () => setIsSigupOpen(false);
-
-  //
-  // const handleSignupSubmit = (response, newUser) => {
-  //   console.log(newUser);
-
-  //   if (response.success) {
-  //     setSignupResponse(true);
-  //     setCreatedUser(newUser);
-  //     closeSignup();
-  //     // setSuccess(true);
-
-  //     getAllUsers();
-  //   } else {
-  //     setError(response.error || "Signup failed.");
-  //   }
-  // };
 
   const closeResponse = () => {
     setSignupResponse(false);
@@ -96,6 +96,19 @@ function Loans({
               </div>
             </div>
 
+            {success && (
+              <Alert variant="success" className="warning">
+                {success}
+              </Alert>
+            )}
+
+            {error && (
+              <Alert variant="warning" className="warning">
+                {error}
+              </Alert>
+            )}
+
+            {/*  */}
             <div>
               <SearchBar
                 searchText={searchText}
@@ -111,10 +124,15 @@ function Loans({
                 handleApproval={handleApproval}
               />
             </div>
+
             <LoanApplication
               closeModal={closeModal}
               isModalOpen={isModalOpen}
               setIsModalOpen={setIsModalOpen}
+              error={error}
+              success={success}
+              setError={setError}
+              setSuccess={setSuccess}
             />
             <AddUser
               isAddUserOpen={isAddUserOpen}

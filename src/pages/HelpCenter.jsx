@@ -99,7 +99,7 @@ const ContactSupport = () => {
       </p>
       <ul>
         <li>
-          <strong>Email:</strong> support@easylifesl.com
+          <strong>Email:</strong> elmf.sl24@gmail.com
         </li>
         <li>
           <strong>Phone:</strong> +232-123-4567

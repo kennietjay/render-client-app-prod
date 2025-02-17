@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 // import styles from "./LoanApplication.module.css";
 import styles from "../LoanPayment.module.css";
 import LoadingSpinner from "../../../LoadingSpinner";
+import { Alert } from "react-bootstrap";
 
 function AddressForm({
   formData,
@@ -42,6 +43,7 @@ function AddressForm({
               X
             </button>
             <h4>Customer Address</h4>
+
             <div className={styles.sectionMargin}>
               <div className={styles.sectionMargin}>
                 <div className={styles.inputControl}>

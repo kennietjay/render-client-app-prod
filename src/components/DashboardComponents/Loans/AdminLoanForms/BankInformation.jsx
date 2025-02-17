@@ -2,6 +2,7 @@ import React, { useState } from "react";
 // import styles from "./LoanApplication.module.css";
 import styles from "../LoanPayment.module.css";
 import LoadingSpinner from "../../../LoadingSpinner";
+import { Alert } from "react-bootstrap";
 
 function BankInformation({
   nextStep,
@@ -38,6 +39,7 @@ function BankInformation({
               X
             </button>
             <h4>Bank and Account Information</h4>
+
             <div className={styles.sectionMargin}>
               <div className={styles.inputLayout}>
                 <div className={styles.inputControl}>

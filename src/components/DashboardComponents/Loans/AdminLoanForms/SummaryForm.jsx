@@ -1,16 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./LoanApplication.module.css";
 import LoadingSpinner from "../../../LoadingSpinner";
-import { useReactToPrint } from "react-to-print";
 
 import { useLoan } from "../../../../context/LoanContext";
 import { capitalizeWords } from "../../../../../utils/capitalizeWords";
 import { useStaff } from "../../../../context/StaffContext";
+import { Alert } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-function SummaryForm({ prevStep, formData, onSubmit, closeModal }) {
+function SummaryForm({
+  prevStep,
+  formData,
+  onSubmit,
+  closeModal,
+  inputError,
+  setError,
+  setSuccess,
+  error,
+  setFormData,
+}) {
   const [staff, setStaff] = useState(null);
   const { getStaffProfile } = useStaff();
-  const { createLoan, error } = useLoan();
+  const { createLoan } = useLoan();
   const [loading, setLoading] = useState(false);
 
   const printRef = useRef(); // Reference for the print area
@@ -64,7 +75,7 @@ function SummaryForm({ prevStep, formData, onSubmit, closeModal }) {
     fetchStaffId();
   }, [getStaffProfile]);
 
-  // onSubmit function to handle form submission
+  //
   onSubmit = async (e) => {
     e.preventDefault();
 
@@ -73,19 +84,58 @@ function SummaryForm({ prevStep, formData, onSubmit, closeModal }) {
       staff_id: staff.id,
     };
 
-    console.log(newLoan);
-
     try {
       setLoading(true);
-      // console.log(newLoan, staff);
-      await createLoan(newLoan);
+
+      const response = await createLoan(newLoan);
+
+      if (response?.success) {
+        setSuccess("Loan created successfully.");
+        console.log("Success Message:", response.success);
+        setFormData({});
+      } else {
+        setError(
+          response?.error || "An error occurred while creating the loan."
+        );
+      }
     } catch (error) {
-      console.error("Error submitting form", error);
+      console.error("Error submitting form:", error);
+      setError(error?.message || "An unexpected error occurred.");
     } finally {
       setLoading(false);
     }
+
     closeModal();
   };
+
+  // onSubmit function to handle form submission
+  // onSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const newLoan = {
+  //     ...formData,
+  //     staff_id: staff.id,
+  //   };
+
+  //   try {
+  //     setLoading(true);
+  //     // console.log(newLoan, staff);
+  //     const response = await createLoan(newLoan);
+
+  //     if (response.ok) {
+  //       setSuccess("Loan created successfully.");
+  //       console.log(response?.msg);
+  //       setFormData("");
+  //     }
+  //     //
+  //   } catch (error) {
+  //     console.error("Error submitting form", error);
+  //     setError(error?.msg);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  //   closeModal();
+  // };
 
   return (
     <>
@@ -96,17 +146,22 @@ function SummaryForm({ prevStep, formData, onSubmit, closeModal }) {
           <div>
             {" "}
             {/* Wrap content in the ref */}
-            <button onClick={printSummary} className={styles.printButton}>
-              Print
-            </button>
             <form onSubmit={onSubmit} className={styles.form}>
               <button onClick={closeModal} className={styles.closeBtn}>
                 X
               </button>
 
+              <Link onClick={printSummary} className={styles.printButton}>
+                Print
+              </Link>
+
               <div ref={printRef}>
                 <h4>Loan Application Summary</h4>
-                {error && <p>{error.message}</p>}
+                {error && (
+                  <Alert variant="warning" className="warning">
+                    {error.message}
+                  </Alert>
+                )}
                 <div>
                   <div className={styles.summaryStyle}>
                     <p>Customer Information</p>
