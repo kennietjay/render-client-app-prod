@@ -70,7 +70,8 @@ const ReviewLoanTable = ({
     myLoans,
     "applied",
     "processing",
-    "processed"
+    "processed",
+    ""
   );
 
   // Pagination
