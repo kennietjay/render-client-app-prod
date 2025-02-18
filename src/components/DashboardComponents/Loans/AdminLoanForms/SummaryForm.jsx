@@ -21,8 +21,10 @@ function SummaryForm({
 }) {
   const [staff, setStaff] = useState(null);
   const { getStaffProfile } = useStaff();
-  const { createLoan } = useLoan();
+  const { createLoan, getLoans } = useLoan();
   const [loading, setLoading] = useState(false);
+
+  console.log(formData);
 
   const printRef = useRef(); // Reference for the print area
 
@@ -93,6 +95,9 @@ function SummaryForm({
         setSuccess("Loan created successfully.");
         console.log("Success Message:", response.success);
         setFormData({});
+
+        // ✅ Ensure Loan List Updates After Creation
+        await getLoans();
       } else {
         setError(
           response?.error || "An error occurred while creating the loan."

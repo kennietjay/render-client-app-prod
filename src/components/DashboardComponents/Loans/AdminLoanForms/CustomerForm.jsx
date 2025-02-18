@@ -69,7 +69,7 @@ function CustomerForm({
       if (response) {
         setSearchUser(response);
       }
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       setError(error);
       console.error("Error fetching user user:", error.message);
