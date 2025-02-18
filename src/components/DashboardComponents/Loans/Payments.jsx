@@ -196,7 +196,7 @@ function LoanPayments() {
       const response = await recordPayment(newPayment, paymentData?.loan_id);
 
       // ✅ Log response for debugging
-      console.log("Payment API Response:", response);
+      // console.log("Payment API Response:", response);
 
       // ✅ Fix: Check for `msg` field instead
       if (response?.msg?.toLowerCase().includes("success")) {
