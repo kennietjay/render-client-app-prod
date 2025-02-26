@@ -29,11 +29,11 @@ const LoanList = ({ loans }) => {
   const filteredLoans = filterLoansByStatus(
     loans,
     "approved",
-    "rejected",
-    "closed",
-    "canceled",
     "paying",
     "processed"
+    // "rejected",
+    // "closed",
+    // "canceled",
   );
 
   // Pagination state

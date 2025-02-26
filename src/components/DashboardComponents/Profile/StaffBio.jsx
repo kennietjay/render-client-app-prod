@@ -5,6 +5,10 @@ import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 import { formatDates } from "../../../../utils/formatDateOfBirth";
 import { useStaff } from "../../../context/StaffContext";
+import {
+  handleDateInput,
+  convertToDBFormat,
+} from "../../../../utils/dateUtils";
 
 function StaffBio({ profile }) {
   const { updateStaff, getStaffProfile } = useStaff();
@@ -39,9 +43,21 @@ function StaffBio({ profile }) {
   }, [success, error]);
 
   //
+  // ✅ Handle Input Change (Prevent Date Format Issues)
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setBioFormData((prevData) => ({ ...prevData, [name]: value }));
+
+    if (name === "date_of_birth") {
+      setBioFormData((prev) => ({
+        ...prev,
+        date_of_birth: value, // Keep input as DD-MM-YYYY
+      }));
+    } else {
+      setBioFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleModeChange = (newMode) => {
@@ -56,11 +72,11 @@ function StaffBio({ profile }) {
         last_name: staff.user?.last_name || "",
         middle_name: staff.user?.middle_name || "",
         phone: staff.user?.phone || "",
-        other_phone: staff.user?.other_phone || "",
+        second_phone: staff.user?.second_phone || "",
         email: staff.user?.email || "",
         date_of_birth: staff.user?.date_of_birth
           ? formatDates(new Date(staff.user?.date_of_birth), "yyyy-MM-dd")
-          : "", // Format date to 'YYYY-MM-DD'
+          : "", // Ensure valid date format
         gender: staff.user?.gender || "",
       });
     }
@@ -70,11 +86,22 @@ function StaffBio({ profile }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formattedDOB = convertToDBFormat(bioFormData.date_of_birth);
+    if (!formattedDOB) {
+      setError("Invalid date format. Use DD-MM-YYYY.");
+      return;
+    }
+
+    const updatedBioData = {
+      ...bioFormData,
+      date_of_birth: formattedDOB,
+    };
+
     setLoading(true);
-    if (staff) {
-      try {
+    try {
+      if (staff) {
         // // Update the data and directly set it in bioFormData
-        const updatedBio = await updateStaff(staff.id, bioFormData);
+        const updatedBio = await updateStaff(staff.id, updatedBioData);
 
         // // Set bioFormData directly with the updated values
         setBioFormData({
@@ -92,18 +119,20 @@ function StaffBio({ profile }) {
 
         if (response) {
           setSuccess("Profile updated successfully!");
+          setMode("view");
         } else {
           setError("Failed to update staff.");
         }
-      } catch (error) {
-        setError("Failed to update staff.");
-        console.log(error);
+      } else {
+        setError("Profile ID is not available.");
+        console.log("Profile ID is not available.");
       }
-    } else {
-      setError("Profile ID is not available.");
-      console.log("Profile ID is not available.");
+    } catch (error) {
+      setError("Failed to update staff.");
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-    setMode("view");
   };
 
   return (
@@ -223,6 +252,8 @@ function StaffBio({ profile }) {
               handleSubmit={handleSubmit}
               bioFormData={bioFormData}
               loading={loading}
+              setError={setError}
+              setBioFormData={setBioFormData}
             />
           )}
         </div>

@@ -46,8 +46,8 @@ export default Reports;
 
 //
 function PaymentStatement({ closeModal }) {
-  const { paymentByLoanId } = useTransaction();
-  const [searchId, setSearchId] = useState({ loan_id: "" });
+  const { getPaymentsByLoanId } = useTransaction();
+  const [loanId, setLoanId] = useState({ loan_id: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [payments, setPayments] = useState([]);
@@ -86,10 +86,9 @@ function PaymentStatement({ closeModal }) {
   // ✅ Handle input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    // console.log(`Typing: ${name} = ${value}`); // ✅ Debug log
 
-    console.log(`Typing: ${name} = ${value}`); // ✅ Debug log
-
-    setSearchId((prevState) => ({
+    setLoanId((prevState) => ({
       ...prevState,
       [name]: value, // ✅ Ensure state updates properly
     }));
@@ -101,31 +100,31 @@ function PaymentStatement({ closeModal }) {
     setError(null);
     setPayments([]); // ✅ Clear previous results
 
-    console.log("Fetching payments for Loan ID:", searchId.loan_id); // ✅ Debug log
+    console.log("Fetching payments for Loan ID:", loanId); // ✅ Debug log
 
-    if (!searchId.loan_id.trim()) {
+    if (!loanId) {
       setError("Please enter a valid Loan ID.");
       setLoading(false);
       return;
     }
 
     try {
-      // ✅ Pass only the `loan_id` string, not the entire object
-      const response = await paymentByLoanId(searchId.loan_id);
+      const response = await getPaymentsByLoanId(loanId);
 
-      console.log("Received Payments:", response); // ✅ Debugging log
+      console.log("✅ Received Payments:", response.data); // ✅ Debugging log
 
       if (!response || response.length === 0) {
+        console.warn("⚠ No payments found for Loan ID:", loanId);
         setError("No payments found for this Loan ID.");
       } else {
         setPayments(response); // ✅ Set received data
       }
     } catch (error) {
-      console.error("Error fetching payments:", error);
+      console.error("🚨 Error fetching payments:", error);
       setError(error.message || "Failed to fetch payments. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   console.log(payments);
@@ -144,7 +143,7 @@ function PaymentStatement({ closeModal }) {
         <input
           type="text"
           name="loan_id"
-          value={searchId.loan_id || ""}
+          value={loanId.loan_id || ""}
           onChange={handleInputChange}
           placeholder="Enter Loan ID"
         />
@@ -164,18 +163,18 @@ function PaymentStatement({ closeModal }) {
 //  ✅ Modal Components
 function Others({ closeModal }) {
   const { getPaymentsByLoanOrCustomerId } = useTransaction();
-  const [searchId, setSearchId] = useState("");
+  const [loanId, setLoanId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [payments, setPayments] = useState([]);
 
   // ✅ Handle input change
   const handleInputChange = (e) => {
-    setSearchId(e.target.value);
+    setLoanId(e.target.value);
   };
 
   const fetchPayments = async () => {
-    if (!searchId.trim()) {
+    if (!loanId.trim()) {
       setError("Please enter a Loan ID or Customer ID.");
       return;
     }
@@ -185,7 +184,7 @@ function Others({ closeModal }) {
     setPayments([]); // Clear previous results
 
     try {
-      const response = await getPaymentsByLoanOrCustomerId(searchId);
+      const response = await getPaymentsByLoanOrCustomerId(loanId);
 
       console.log("Received Payments:", response); // ✅ Debugging log
 
@@ -203,7 +202,7 @@ function Others({ closeModal }) {
     setLoading(false);
   };
 
-  // const response = await getPaymentsByLoanOrCustomerId(searchId);
+  // const response = await getPaymentsByLoanOrCustomerId(loanId);
   return (
     <div className={styles.reportBackground}>
       <h3>Payment Statements</h3>
@@ -214,7 +213,7 @@ function Others({ closeModal }) {
           Enter Loan/Customer ID
           <input
             type="text"
-            value={searchId}
+            value={loanId}
             onChange={handleInputChange}
             placeholder="Enter Loan ID or Customer ID"
           />

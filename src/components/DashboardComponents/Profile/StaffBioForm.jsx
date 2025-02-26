@@ -1,12 +1,15 @@
 import React from "react";
 import styles from "../../AccountComponents/ProfileStyles/ProfileHome.module.css"; // CSS module
+import { handleDateInput } from "../../../../utils/dateUtils";
 
 function BioForm({
   handleChange,
   handleSubmit,
   handleModeChange,
   bioFormData,
+  setBioFormData,
   loading,
+  setError,
 }) {
   return (
     <div>
@@ -19,7 +22,7 @@ function BioForm({
                 type="text"
                 id="last_name"
                 name="last_name"
-                value={bioFormData.last_name}
+                value={bioFormData.last_name || ""}
                 onChange={handleChange}
               />
             </div>
@@ -31,7 +34,7 @@ function BioForm({
                 type="text"
                 id="first_name"
                 name="first_name"
-                value={bioFormData.first_name}
+                value={bioFormData.first_name || ""}
                 onChange={handleChange}
               />
             </div>
@@ -41,7 +44,7 @@ function BioForm({
                 type="text"
                 id="middle_name"
                 name="middle_name"
-                value={bioFormData.middle_name}
+                value={bioFormData.middle_name || ""}
                 onChange={handleChange}
               />
             </div>
@@ -54,8 +57,9 @@ function BioForm({
                 type="text"
                 id="date_of_birth"
                 name="date_of_birth"
-                value={bioFormData.date_of_birth}
+                value={bioFormData?.date_of_birth || ""}
                 onChange={handleChange}
+                onBlur={(e) => handleDateInput(e, setError, setBioFormData)}
               />
             </div>
             <div className={`${styles.inputControl}`}>
@@ -64,7 +68,7 @@ function BioForm({
                 type="text"
                 id="gender"
                 name="gender"
-                value={bioFormData.gender}
+                value={bioFormData.gender || ""}
                 onChange={handleChange}
               />
             </div>
@@ -77,7 +81,7 @@ function BioForm({
                 type="email"
                 id="email"
                 name="email"
-                value={bioFormData.email}
+                value={bioFormData.email || ""}
                 onChange={handleChange}
               />
             </div>
@@ -90,7 +94,7 @@ function BioForm({
                 type="text"
                 id="phone"
                 name="phone"
-                value={bioFormData.phone}
+                value={bioFormData.phone || ""}
                 onChange={handleChange}
               />
             </div>
@@ -100,7 +104,7 @@ function BioForm({
                 type="text"
                 id="second_phone"
                 name="second_phone"
-                value={bioFormData.second_phone}
+                value={bioFormData.second_phone || ""}
                 onChange={handleChange}
               />
             </div>

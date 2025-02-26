@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../Overview/Overview.module.css";
 import { useTransaction } from "../../../context/TransactionContext";
 
 const DualLineChart = ({ loans }) => {
-  const { payments } = useTransaction();
+  // const { payments, getPayments } = useTransaction();
+  const { payments, getPayments } = useTransaction(); // Ensure you have a function to fetch payments
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const year = 2025;
 
@@ -21,6 +23,18 @@ const DualLineChart = ({ loans }) => {
     "Nov",
     "Dec",
   ];
+
+  // ✅ Fetch payments when the component mounts
+  useEffect(() => {
+    if (!payments || payments.length === 0) {
+      getPayments().then(() => setIsDataLoaded(true));
+    } else {
+      setIsDataLoaded(true);
+    }
+  }, [payments, getPayments]);
+
+  // ✅ Don't render chart until payments data is available
+  if (!isDataLoaded) return <p>Loading Chart...</p>;
 
   // Calculate totals for the specified year
   const loansGiven = calculateMonthlyLoanTotals(loans, year);

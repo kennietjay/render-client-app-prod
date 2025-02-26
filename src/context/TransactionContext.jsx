@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useState } from "react";
 // import api from "api";
 import api from "../../utils/api"; // ✅ Import global API interceptor
+import { useEffect } from "react";
 
 const TransactionContext = createContext();
 
@@ -33,8 +34,15 @@ function TransactionProvider({ children }) {
     }
   }, []);
 
-  //
-  const paymentByLoanId = useCallback(async (loanId) => {
+  // //
+  const getPaymentsByLoanId = useCallback(async (loanId) => {
+    if (!loanId) {
+      console.error("❌ Loan ID is missing");
+      return;
+    }
+
+    console.log(`🔍 Fetching payments for Loan ID: ${loanId}`);
+
     setLoading(true);
     try {
       const response = await api.get(
@@ -44,21 +52,33 @@ function TransactionProvider({ children }) {
         }
       );
 
-      // console.log(response.data.loan);
+      console.log("✅ API Response:", response?.data);
 
-      // setLoan(response?.data?.loan || null);
-      return response?.data?.loan;
-    } catch (err) {
-      console.error("Error fetching loan by ID:", err.message);
-      return null;
+      const payments = response?.data || []; // 🔹 Extract transactions as payments
+
+      if (payments.length) {
+        setPayments(payments);
+        return payments;
+      } else {
+        console.warn("⚠ No payments returned from API");
+        setPayments([]);
+        return [];
+      }
+    } catch (error) {
+      console.error(
+        "🚨 API Error:",
+        error.response?.data?.message || error.message
+      );
+      return error.response?.data?.message || "Failed to fetch payments.";
     } finally {
       setLoading(false);
     }
   }, []);
 
+  //
   return (
     <TransactionContext.Provider
-      value={{ getPayments, payments, paymentByLoanId, loading }}
+      value={{ getPayments, payments, getPaymentsByLoanId, loading }}
     >
       {children}
     </TransactionContext.Provider>

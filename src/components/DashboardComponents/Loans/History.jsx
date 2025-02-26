@@ -143,7 +143,7 @@ const LoanTable = ({ loanData, setSuccess, setError }) => {
               loan.submission_date
             );
 
-            const { formattedDate: approvalDate, formattedDate: approvalTime } =
+            const { formattedDate: approvalDate, formattedTime: approvalTime } =
               formatDateAndTime(loan.approval_date);
 
             //

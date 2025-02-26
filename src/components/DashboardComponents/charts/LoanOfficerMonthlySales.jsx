@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../Overview/Overview.module.css";
 
 const LoanOfficerMonthlySales = ({ data, colors, labels, size = 200 }) => {
+  useEffect(() => {}, [data, labels]);
+
   // Calculate the total value of the data
   const total = data?.reduce((sum, value) => sum + value, 0);
 

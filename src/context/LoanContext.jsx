@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+} from "react";
 // import api from "api";
 import api from "../../utils/api"; // ✅ Import global API interceptor
 
@@ -416,6 +422,11 @@ function LoanProvider({ children }) {
       )
     );
   };
+
+  //
+  useEffect(() => {
+    getLoans(); // ✅ Fetch loans when the provider mounts
+  }, [getLoans]);
 
   return (
     <LoanContext.Provider
