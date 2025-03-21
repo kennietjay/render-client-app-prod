@@ -1,6 +1,7 @@
 // import api from "api";
 import React, { createContext, useCallback, useContext, useState } from "react";
 import api from "../../utils/api"; // ✅ Import global API interceptor
+import { getHeaders } from "./getHeader";
 
 // const BASE_URL = "http://192.168.12.109:8000";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
@@ -8,8 +9,6 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 // const BASE_URL = "https://render-server-app.onrender.com";
 
 const EmployerContext = createContext();
-
-const getAuthToken = () => localStorage.getItem("accessToken");
 
 function EmployerProvider({ children }) {
   const [loading, setLoading] = useState(false);
@@ -28,13 +27,10 @@ function EmployerProvider({ children }) {
   const getEmployer = useCallback(async (customerId) => {
     setLoading(true);
     try {
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       const response = await api.get(
         `${BASE_URL}/customer/${customerId}/employer`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: getHeaders(),
         }
       );
       setEmployer(response.data);
@@ -49,13 +45,12 @@ function EmployerProvider({ children }) {
   //
   const updateEmployer = async (data) => {
     try {
-      const token = getAuthToken();
       const { customerId, ...updatedData } = data;
       const response = await api.put(
         `${BASE_URL}/customer/${customerId}/employer`,
         updatedData,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: getHeaders(),
         }
       );
       return response.data;

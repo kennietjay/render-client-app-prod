@@ -23,6 +23,14 @@ const convertToDBFormat = (date) => {
   return `${year}-${month}-${day}`;
 };
 
+const getTodayDate = () => {
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const yyyy = today.getFullYear();
+  return `${dd}-${mm}-${yyyy}`;
+};
+
 function SignConsent({
   prevStep,
   nextStep,
@@ -38,6 +46,13 @@ function SignConsent({
   useEffect(() => {
     setConsentData(formData);
   }, [formData]);
+
+  useEffect(() => {
+    setConsentData((prev) => ({
+      ...prev,
+      submission_date: getTodayDate(),
+    }));
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, type, value } = e.target;
@@ -166,8 +181,8 @@ function SignConsent({
               name="submission_date"
               placeholder="dd-mm-yyyy"
               value={consentData.submission_date}
-              onChange={handleInputChange} // ✅ Allow typing
-              onBlur={handleDateBlur} // ✅ Validate on blur
+              onChange={handleInputChange}
+              onBlur={handleDateBlur}
             />
           </div>
         </div>

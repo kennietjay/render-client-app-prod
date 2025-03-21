@@ -4,6 +4,9 @@ import styles from "./LoanApproval.module.css";
 import LoadingSpinner from "../../LoadingSpinner";
 import { Alert } from "react-bootstrap";
 
+import { useAuth } from "../../../context/AuthContext";
+import { useStaff } from "../../../context/StaffContext";
+
 function LoanApproval({
   reviewedLoan,
   handleApproval,
@@ -15,6 +18,8 @@ function LoanApproval({
 }) {
   const [loading, setLoading] = useState(false);
   const { firstReview, secondReview, getLoans } = useLoan();
+  const { user } = useAuth();
+  const { hasRole } = useStaff();
   const {
     customer_id,
     status = "applied",
@@ -82,6 +87,8 @@ function LoanApproval({
         setReviewSuccess("First review completed successfully.");
         setShowFirstReviewForm(false);
         setIsFirstReviewComplete(true); // Immediately update the button's disabled state
+      } else {
+        setReviewError(response.error?.data?.message);
       }
 
       // Update the parent state with the new loan data
@@ -93,9 +100,9 @@ function LoanApproval({
 
       await refreshLoan(); // Refresh loan data
     } catch (error) {
-      setReviewError("Error completing first review:");
+      setReviewError("Error completing first review:", error);
       console.error("Error completing first review:", error);
-      alert("Failed to complete first review. Please try again.");
+      // alert("Failed to complete first review. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -155,17 +162,32 @@ function LoanApproval({
                   <strong>First Review Status:</strong>{" "}
                   {first_review || "Pending"}
                 </div>
-                <button
-                  disabled={!isFirstReviewClickable}
-                  className={`${styles.reviewButton} ${
-                    isFirstReviewClickable
-                      ? styles.activeButton
-                      : styles.disabledButton
-                  }`}
-                  onClick={() => setShowFirstReviewForm(true)}
-                >
-                  First Review
-                </button>
+
+                <>
+                  {hasRole(user, [
+                    "system admin",
+                    "admin finance",
+                    "manager",
+                  ]) && (
+                    <button
+                      disabled={!isFirstReviewClickable}
+                      className={`${styles.reviewButton} ${
+                        isFirstReviewClickable
+                          ? styles.activeButton
+                          : styles.disabledButton
+                      }`}
+                      onClick={() => setShowFirstReviewForm(true)}
+                    >
+                      First Review
+                    </button>
+                  )}
+
+                  {/*  */}
+                  {!hasRole(user, ["system admin"]) && (
+                    <p>You do not have access to this section.</p>
+                  )}
+                </>
+
                 {showFirstReviewForm && (
                   <form
                     onSubmit={handleFirstReviewSubmit}
@@ -208,17 +230,27 @@ function LoanApproval({
                   <strong>Second Review Status:</strong>{" "}
                   {second_review || "Pending"}
                 </div>
-                <button
-                  disabled={!isSecondReviewClickable}
-                  className={`${styles.reviewButton} ${
-                    isSecondReviewClickable
-                      ? styles.activeButton
-                      : styles.disabledButton
-                  }`}
-                  onClick={() => setShowSecondReviewForm(true)}
-                >
-                  Second Review
-                </button>
+
+                <>
+                  {hasRole(user, ["system admin", "manager"]) && (
+                    <button
+                      disabled={!isSecondReviewClickable}
+                      className={`${styles.reviewButton} ${
+                        isSecondReviewClickable
+                          ? styles.activeButton
+                          : styles.disabledButton
+                      }`}
+                      onClick={() => setShowSecondReviewForm(true)}
+                    >
+                      Second Review
+                    </button>
+                  )}
+
+                  {/*  */}
+                  {!hasRole(user, ["system admin"]) && (
+                    <p>You do not have access to this section.</p>
+                  )}
+                </>
                 {showSecondReviewForm && (
                   <form
                     onSubmit={handleSecondReviewSubmit}

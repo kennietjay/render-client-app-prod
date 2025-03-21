@@ -2,16 +2,17 @@ import React, { createContext, useContext, useState } from "react";
 // import api from "api";
 import { useCallback } from "react";
 import api from "../../utils/api"; // ✅ Import global API interceptor
+import { getHeaders } from "./getHeader";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const TransferContext = createContext();
 
 // Check token validity based on expiration
-const getAuthToken = () => localStorage.getItem("accessToken");
-const getHeaders = () => ({
-  Authorization: `Bearer ${getAuthToken()}`,
-});
+// const getAuthToken = () => localStorage.getItem("accessToken");
+// const getHeaders = () => ({
+//   Authorization: `Bearer ${getAuthToken()}`,
+// });
 
 export const TransferProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);

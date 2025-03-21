@@ -2,13 +2,12 @@
 import React, { createContext, useCallback, useContext, useState } from "react";
 import api from "../../utils/api"; // ✅ Import global API interceptor
 // const BASE_URL = "http://192.168.12.109:8000";
+import { getHeaders } from "./getHeader";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 // const BASE_URL = "https://render-server-app.onrender.com";
 
 const BankContext = createContext();
-
-const getAuthToken = () => localStorage.getItem("accessToken");
 
 function BankProvider({ children }) {
   const [loading, setLoading] = useState(false);
@@ -24,13 +23,10 @@ function BankProvider({ children }) {
   const getBank = useCallback(async (customerId) => {
     setLoading(true);
     try {
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       const response = await api.get(
         `${BASE_URL}/customer/${customerId}/bank`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: getHeaders(),
         }
       );
 
@@ -48,14 +44,11 @@ function BankProvider({ children }) {
   const updateBank = async (customer_id, updatedData) => {
     setLoading(true);
     try {
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       const response = await api.put(
         `${BASE_URL}/customer/${customer_id}/bank`,
         updatedData,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: getHeaders(),
         }
       );
       setBank(response.data);

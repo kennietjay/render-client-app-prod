@@ -10,6 +10,7 @@ import React, {
 import api from "../../utils/api"; // ✅ Import global API interceptor
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { getHeaders } from "./getHeader";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -19,6 +20,7 @@ const AuthContext = createContext();
 
 // Check token validity based on expiration
 const checkTokenValidity = (token) => {
+  if (!token) return;
   try {
     const decoded = jwtDecode(token);
     return decoded.exp * 1000 > Date.now();
@@ -27,6 +29,7 @@ const checkTokenValidity = (token) => {
   }
 };
 
+//
 const AuthProvider = ({ children }) => {
   const inactivityTimer = useRef(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -45,13 +48,9 @@ const AuthProvider = ({ children }) => {
 
       // Make sign-out request
       const response = await api.post(
-        `${BASE_URL}`,
+        `${BASE_URL}/user/signout`,
         { refreshToken },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
+        { headers: getHeaders() }
       );
 
       // Clear local storage and reset authentication state
@@ -63,7 +62,11 @@ const AuthProvider = ({ children }) => {
 
       return { success: response.data?.msg };
     } catch (error) {
-      return { error: error.response?.data?.msg || "Sign-out failed" };
+      if (error.response?.status === 401) {
+        console.warn("⚠️ Signout failed: already unauthorized.");
+      } else {
+        console.error("Error signing out:", error);
+      }
     }
   }, [navigate]);
 
@@ -124,7 +127,6 @@ const AuthProvider = ({ children }) => {
     autoLogoutOnTokenExpiration,
   ]);
 
-  // Sign-in function
   const signinUser = async (credentials) => {
     setLoading(true);
     try {
@@ -166,7 +168,7 @@ const AuthProvider = ({ children }) => {
       }
 
       const response = await api.get(`${BASE_URL}/user/profile`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: getHeaders(),
       });
 
       setUser(response.data);
@@ -241,11 +243,10 @@ const AuthProvider = ({ children }) => {
   // Update password from profile (for logged-in users)
   const changePassword = async (newPasswordData) => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
       const response = await api.post(
         `${BASE_URL}/user/change-password`,
         { newPassword: newPasswordData.password },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
+        { headers: getHeaders() }
       );
 
       await getAllUsers();
@@ -264,25 +265,30 @@ const AuthProvider = ({ children }) => {
   // Get all users
   const getAllUsers = useCallback(async () => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
-      const response = await api.get(`${BASE_URL}/user/all`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+      const response = await api.get("/user/all", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       });
+      setAllUser(response.data);
 
-      setAllUser(response?.data);
-      return response?.data;
+      return response?.data; // 👈 This must be here
     } catch (error) {
-      console.error("Get all users error:", error.response?.data || error);
-      throw new Error(error.response?.data?.msg || "Failed to fetch users");
+      console.error("Error fetching users:", error);
+      if (error.response?.status === 403) {
+        alert("You do not have permission to access this resource.");
+      } else {
+        alert("Failed to fetch users. Please try again later.");
+      }
     }
   }, []);
 
   // Get a user by ID
   const getUserById = useCallback(async (userId) => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
+      // const accessToken = localStorage.getItem("accessToken");
       const response = await api.get(`${BASE_URL}/user/${userId}/profile`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: getHeaders(),
       });
 
       return response.data;
@@ -295,11 +301,11 @@ const AuthProvider = ({ children }) => {
   // Update user details
   const updateUser = async (userId, userData) => {
     try {
-      const token = localStorage.getItem("accessToken");
+      // const token = localStorage.getItem("accessToken");
       const url = `${BASE_URL}/user/${userId}/update-user`;
 
       const response = await api.put(url, userData, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: getHeaders(),
       });
 
       // console.log("Update User Response:", response.data);
@@ -320,9 +326,9 @@ const AuthProvider = ({ children }) => {
   // Delete a user by ID
   const deleteUser = async (userId) => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
+      // const accessToken = localStorage.getItem("accessToken");
       const response = await api.delete(`${BASE_URL}/user/${userId}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: getHeaders(),
       });
       return { success: response.data.msg };
     } catch (error) {
@@ -334,9 +340,9 @@ const AuthProvider = ({ children }) => {
   //   // Get a user by ID
   const getUserByEmailOrPhone = useCallback(async (identifier) => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
+      // const accessToken = localStorage.getItem("accessToken");
       const response = await api.get(`${BASE_URL}/user/search/${identifier}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: getHeaders(),
       });
 
       return response.data;

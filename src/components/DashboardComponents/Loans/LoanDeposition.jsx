@@ -4,6 +4,8 @@ import { capitalizeWords } from "../../../../utils/capitalizeWords";
 import LoanPagination from "./Pagination";
 import Modal from "../../../components/Modal";
 import Approval from "./Approval";
+import { useAuth } from "../../../context/AuthContext";
+import { useStaff } from "../../../context/StaffContext";
 
 //
 function filterLoansByStatus(loans, ...statuses) {
@@ -11,11 +13,25 @@ function filterLoansByStatus(loans, ...statuses) {
 }
 
 const LoanDeposition = ({ loanData }) => {
+  const { hasRole } = useStaff();
+  const { user } = useAuth();
   //
   return (
     <div className={styles.deposition}>
       <h3 className={styles.header}>Mange Loan Deposition</h3>
-      {loanData ? <LoanList loans={loanData} /> : <p>No data available.</p>}
+      <>
+        {hasRole(user, ["system admin", "admin finance", "manager"]) &&
+        loanData ? (
+          <LoanList loans={loanData} />
+        ) : (
+          <p>No data available.</p>
+        )}
+
+        {/*  */}
+        {!hasRole(user, ["system admin"]) && (
+          <p>You do not have access to this section.</p>
+        )}
+      </>
     </div>
   );
 };

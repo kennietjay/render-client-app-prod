@@ -18,11 +18,15 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 || error.response?.status === 403) {
+    if (error.response?.status === 401) {
       // alert("Session expired. Please log in again.");
       localStorage.removeItem("accessToken");
       //   window.location.href = "/signin";
+    } else if (error.response?.status === 403) {
+      console.warn("🚫 Forbidden: User does not have permission.");
+      // don't log them out
     }
+
     return Promise.reject(error);
   }
 );

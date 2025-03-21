@@ -629,6 +629,9 @@ function Aside({
   // isCustomerSubmenuOpen,
   // selectedCustomer,
 }) {
+  const { hasRole } = useStaff();
+  const { user } = useAuth();
+
   return (
     <aside
       className={`${styles.sidebar} ${
@@ -648,7 +651,6 @@ function Aside({
                 <span>Overview</span>
               </Link>
             </li>
-
             {/* Loans Menu with Submenu */}
             <li className={activeSection === "loans" ? styles.active : ""}>
               <Link
@@ -700,20 +702,23 @@ function Aside({
                       <span>Pay Loan</span>
                     </Link>
                   </li>
-                  <li
-                    className={
-                      activeSection === "manage-loans" ? styles.active : ""
-                    }
-                  >
-                    <Link
-                      to="#manage-loans"
-                      className={styles.navSubLink}
-                      onClick={() => handleMenuClick("manage-loans")}
+
+                  {hasRole(user, ["system admin", "manager"]) && (
+                    <li
+                      className={
+                        activeSection === "manage-loans" ? styles.active : ""
+                      }
                     >
-                      <i className="fa-solid fa-check-to-slot"></i>
-                      <span>Manage Loans</span>
-                    </Link>
-                  </li>
+                      <Link
+                        to="#manage-loans"
+                        className={styles.navSubLink}
+                        onClick={() => handleMenuClick("manage-loans")}
+                      >
+                        <i className="fa-solid fa-check-to-slot"></i>
+                        <span>Manage Loans</span>
+                      </Link>
+                    </li>
+                  )}
                   <li
                     className={
                       activeSection === "loan-history" ? styles.active : ""
@@ -731,7 +736,6 @@ function Aside({
                 </ul>
               )}
             </li>
-
             <li className={activeSection === "customers" ? styles.active : ""}>
               <Link
                 to="#customers"
@@ -743,7 +747,6 @@ function Aside({
                 <span>Customers </span>
               </Link>
             </li>
-
             <li className={activeSection === "transfers" ? styles.active : ""}>
               <Link
                 to="#transfers"
@@ -754,7 +757,6 @@ function Aside({
                 <span>Money Transfer</span>
               </Link>
             </li>
-
             <li className={activeSection === "accounts" ? styles.active : ""}>
               <Link
                 to="#accounts"
@@ -765,7 +767,6 @@ function Aside({
                 <span>Profile</span>
               </Link>
             </li>
-
             <li className={activeSection === "reports" ? styles.active : ""}>
               <Link
                 to="#reports"
@@ -776,28 +777,30 @@ function Aside({
                 <span>Reports</span>
               </Link>
             </li>
-
-            <li className={activeSection === "staff" ? styles.active : ""}>
-              <Link
-                to="#staff"
-                onClick={() => handleMenuClick("staff")}
-                className={styles.navLink}
-              >
-                <i className="fa-solid fa-users-line"></i>
-                <span>Staff</span>
-              </Link>
-            </li>
-
-            <li className={activeSection === "admin" ? styles.active : ""}>
-              <Link
-                to="#admin"
-                onClick={() => handleMenuClick("admin")}
-                className={styles.navLink}
-              >
-                <i className="fa-solid fa-user-gear"></i>
-                <span>Admin</span>
-              </Link>
-            </li>
+            {hasRole(user, ["system admin", "manager"]) && (
+              <li className={activeSection === "staff" ? styles.active : ""}>
+                <Link
+                  to="#staff"
+                  onClick={() => handleMenuClick("staff")}
+                  className={styles.navLink}
+                >
+                  <i className="fa-solid fa-users-line"></i>
+                  <span>Staff</span>
+                </Link>
+              </li>
+            )}
+            {hasRole(user, ["system admin", "manager"]) && (
+              <li className={activeSection === "admin" ? styles.active : ""}>
+                <Link
+                  to="#admin"
+                  onClick={() => handleMenuClick("admin")}
+                  className={styles.navLink}
+                >
+                  <i className="fa-solid fa-user-gear"></i>
+                  <span>Admin</span>
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
       </div>

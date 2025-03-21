@@ -2,15 +2,16 @@ import React, { createContext, useCallback, useContext, useState } from "react";
 // import api from "api";
 import api from "../../utils/api"; // ✅ Import global API interceptor
 import { useEffect } from "react";
+import { getHeaders } from "./getHeader";
 
 const TransactionContext = createContext();
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
-const getAuthToken = () => localStorage.getItem("accessToken");
-const getHeaders = () => ({
-  Authorization: `Bearer ${getAuthToken()}`,
-});
+// const getAuthToken = () => localStorage.getItem("accessToken");
+// const getHeaders = () => ({
+//   Authorization: `Bearer ${getAuthToken()}`,
+// });
 
 function TransactionProvider({ children }) {
   const [loading, setLoading] = useState(false);

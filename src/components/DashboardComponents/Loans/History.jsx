@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 import { useLoan } from "../../../context/LoanContext";
 import { capitalizeWords } from "../../../../utils/capitalizeWords";
+import { useStaff } from "../../../context/StaffContext";
+import { useAuth } from "../../../context/AuthContext";
 
 function History(props) {
   const { loans } = useLoan();
@@ -265,6 +267,9 @@ const LoanTable = ({ loanData, setSuccess, setError }) => {
 
 //
 function ManageLoan({ loan, isModalOpen, closeModal, openEditModal }) {
+  const { hasRole } = useStaff();
+  const { user } = useAuth();
+
   const { formattedDate: approvalDate } = formatDateAndTime(
     loan?.approval_date
   );
@@ -419,7 +424,9 @@ function ManageLoan({ loan, isModalOpen, closeModal, openEditModal }) {
                 </div>
               </div>
             </div>
-            <button onClick={() => openEditModal(loan)}>Edit Loan</button>
+            {hasRole(user, ["system admin", "manager"]) && (
+              <button onClick={() => openEditModal(loan)}>Edit Loan</button>
+            )}
           </div>
         ) : (
           <p>No loan selected.</p>

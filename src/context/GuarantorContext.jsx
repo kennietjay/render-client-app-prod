@@ -1,15 +1,14 @@
 // import api from "api";
 import React, { createContext, useCallback, useContext, useState } from "react";
 import api from "../../utils/api"; // ✅ Import global API interceptor
+import { getHeaders } from "./getHeader";
 
 // const BASE_URL = "http://192.168.12.109:8000";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
-// const BASE_URL = "https://render-server-app.onrender.com";
-
 const GuarantorContext = createContext();
 
-const getAuthToken = () => localStorage.getItem("accessToken");
+// const getAuthToken = () => localStorage.getItem("accessToken");
 
 function GuarantorProvider({ children }) {
   const [loading, setLoading] = useState(false);
@@ -23,18 +22,13 @@ function GuarantorProvider({ children }) {
 
   // Create a new guarantor
   const createGuarantor = async (newGuarantor, customerId) => {
-    const token = getAuthToken();
-    if (!token) throw new Error("No access token found");
-
     setLoading(true);
     try {
       const response = await api.post(
         `${BASE_URL}/customer/${customerId}/guarantors/create`,
         newGuarantor,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: getHeaders() }
       );
-
-      return response.data;
     } catch (error) {
       return error.data;
     } finally {
@@ -46,15 +40,12 @@ function GuarantorProvider({ children }) {
   const getGuarantors = useCallback(async (customerId) => {
     setLoading(true);
     try {
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       if (!customerId) throw new Error("Customer ID is required.");
 
       const response = await api.get(
         `${BASE_URL}/customer/${customerId}/guarantors/all`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: getHeaders(),
         }
       );
       setGuarantors(response.data);
@@ -70,13 +61,10 @@ function GuarantorProvider({ children }) {
   const getOneGuarantor = useCallback(async (customerId, guarantorId) => {
     setLoading(true);
     try {
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       const response = await api.get(
         `${BASE_URL}/customer/${customerId}/guarantor/${guarantorId}`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: getHeaders(),
         }
       );
       return response.data; // Return the guarantor data
@@ -100,14 +88,11 @@ function GuarantorProvider({ children }) {
   ) => {
     setLoading(true);
     try {
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       const response = await api.put(
         `${BASE_URL}/customer/${customerId}/guarantors/${guarantorId}`,
         guarantorFormData,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: getHeaders(),
         }
       );
 

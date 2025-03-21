@@ -2,11 +2,11 @@
 import React, { createContext, useCallback, useContext, useState } from "react";
 import api from "../../utils/api"; // ✅ Import global API interceptor
 // Dynamically set BASE_URL based on the environment
+import { getHeaders } from "./getHeader";
+
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const AddressContext = createContext();
-
-const getAuthToken = () => localStorage.getItem("accessToken");
 
 function AddressProvider({ children }) {
   const [loading, setLoading] = useState(false);
@@ -27,14 +27,11 @@ function AddressProvider({ children }) {
   const createAddress = async (customerId, newAddressData) => {
     setLoading(true);
     try {
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       const response = await api.post(
         `${BASE_URL}/customer/${customerId}/address/create`,
         newAddressData,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: getHeaders(),
         }
       );
 
@@ -53,13 +50,10 @@ function AddressProvider({ children }) {
     setLoading(true);
 
     try {
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       const response = await api.get(
         `${BASE_URL}/customer/${customerId}/address`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: getHeaders(),
         }
       );
 
@@ -78,14 +72,11 @@ function AddressProvider({ children }) {
   const updateAddress = async (updatedAddress) => {
     setLoading(true);
     try {
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       const response = await api.put(
         `${BASE_URL}/customer/${updatedAddress.customerId}/address`,
         updatedAddress, // Only the form data is sent in the body
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: getHeaders(),
         }
       );
 

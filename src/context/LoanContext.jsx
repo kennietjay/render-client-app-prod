@@ -7,15 +7,11 @@ import React, {
 } from "react";
 // import api from "api";
 import api from "../../utils/api"; // ✅ Import global API interceptor
+import { getHeaders } from "./getHeader";
 
 const LoanContext = createContext();
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-
-const getAuthToken = () => localStorage.getItem("accessToken");
-const getHeaders = () => ({
-  Authorization: `Bearer ${getAuthToken()}`,
-});
 
 function LoanProvider({ children }) {
   const [loans, setLoans] = useState([]);
@@ -64,6 +60,13 @@ function LoanProvider({ children }) {
   const getLoans = useCallback(async ({ query = "", status = "all" } = {}) => {
     setLoading(true);
     try {
+      const token = localStorage.getItem("accessToken");
+
+      if (!token) {
+        console.warn("⛔ No token found. Skipping loan fetch.");
+        return;
+      }
+
       const response = await api.get(`${BASE_URL}/loans/all`, {
         params: { query, status }, // Pass query parameters
         headers: getHeaders(),
@@ -232,7 +235,11 @@ function LoanProvider({ children }) {
       return { success: response.data };
     } catch (err) {
       console.error("Loan API Error:", err);
-      throw err;
+
+      if (err.response.status === 403) {
+        console.warn("🚫 Forbidden: User does not have permission.");
+      }
+      throw err.msg;
     }
   };
 

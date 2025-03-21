@@ -5,9 +5,11 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
-import axios from "axios";
+// import api from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { getHeaders } from "./getHeader";
+import api from "../../utils/api"; // ✅ Import global API interceptor
 
 const StaffContext = createContext();
 
@@ -47,18 +49,12 @@ export const StaffProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  // Helper function to get authorization headers
-  const getAuthHeaders = () => {
-    const token = localStorage.getItem("accessToken");
-    return token ? { Authorization: `Bearer ${token}` } : {};
-  };
-
   // Create a new staff member
   const createStaff = useCallback(async (staffData) => {
     try {
       setLoading(true);
-      const response = await axios.post(`${BASE_URL}/staff/create`, staffData, {
-        headers: getAuthHeaders(),
+      const response = await api.post(`${BASE_URL}/staff/create`, staffData, {
+        headers: getHeaders(),
       });
       return response.data;
     } catch (error) {
@@ -73,9 +69,12 @@ export const StaffProvider = ({ children }) => {
   const getAllStaff = useCallback(async () => {
     try {
       console.log("Fetching all staff...");
-      const response = await axios.get(`${BASE_URL}/staff/all`, {
-        headers: getAuthHeaders(),
+
+      //
+      const response = await api.get(`${BASE_URL}/staff/all`, {
+        headers: getHeaders(),
       });
+
       // console.log("Response Data:", response.data);
       setStaffData(response.data);
     } catch (error) {
@@ -87,10 +86,10 @@ export const StaffProvider = ({ children }) => {
   // Assign a role to a staff member
   const assignRole = useCallback(async (staffId, roleId) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${BASE_URL}/staff/assign-role`,
         { staff_id: staffId, role_id: roleId },
-        { headers: getAuthHeaders() }
+        { headers: getHeaders() }
       );
       return response?.data;
     } catch (error) {
@@ -102,10 +101,10 @@ export const StaffProvider = ({ children }) => {
   // Update a staff member's role
   const updateRole = useCallback(async (staffId, roleId) => {
     try {
-      const response = await axios.put(
+      const response = await api.put(
         `${BASE_URL}/staff/${staffId}/change-role`,
         { roleId },
-        { headers: getAuthHeaders() }
+        { headers: getHeaders() }
       );
       return response?.data;
     } catch (error) {
@@ -123,7 +122,7 @@ export const StaffProvider = ({ children }) => {
     }
 
     try {
-      const response = await axios.put(
+      const response = await api.put(
         `${BASE_URL}/staff/${staffId}/update-staff`,
         staffData,
         {
@@ -143,9 +142,9 @@ export const StaffProvider = ({ children }) => {
   // Revoke a role from a staff member
   const revokeRole = useCallback(async (staffId, roleId) => {
     try {
-      const response = await axios.delete(`${BASE_URL}/staff/revoke-role`, {
+      const response = await api.delete(`${BASE_URL}/staff/revoke-role`, {
         data: { staff_id: staffId, role_id: roleId },
-        headers: getAuthHeaders(),
+        headers: getHeaders(),
       });
       return response?.data;
     } catch (error) {
@@ -157,10 +156,10 @@ export const StaffProvider = ({ children }) => {
   // Assign permissions to a staff member
   const assignPermissions = useCallback(async (staffId, permissions) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${BASE_URL}/staff/${staffId}/assign-permissions`,
         { permissions },
-        { headers: getAuthHeaders() }
+        { headers: getHeaders() }
       );
       return response?.data;
     } catch (error) {
@@ -172,10 +171,10 @@ export const StaffProvider = ({ children }) => {
   // Update permissions for a staff member
   const updatePermissions = useCallback(async (staffId, permissions) => {
     try {
-      const response = await axios.put(
+      const response = await api.put(
         `${BASE_URL}/staff/${staffId}/update-permissions`,
         { permissions },
-        { headers: getAuthHeaders() }
+        { headers: getHeaders() }
       );
       return response?.data;
     } catch (error) {
@@ -187,10 +186,10 @@ export const StaffProvider = ({ children }) => {
   //Manage permissions for a staff member
   const managePermissions = useCallback(async (staffId, permissions) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${BASE_URL}/staff/${staffId}/manage-permissions`,
         { permissions },
-        { headers: getAuthHeaders() }
+        { headers: getHeaders() }
       );
       return response?.data;
     } catch (error) {
@@ -202,10 +201,10 @@ export const StaffProvider = ({ children }) => {
   // Fetch permissions
   const getStaffPermissions = useCallback(async (staffId) => {
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `${BASE_URL}/staff/${staffId}/staff-permissions`,
         {
-          headers: getAuthHeaders(),
+          headers: getHeaders(),
         }
       );
 
@@ -224,7 +223,7 @@ export const StaffProvider = ({ children }) => {
       setLoading(true);
       try {
         // console.log("Formatted Form Data: ", import.meta.env.VITE_BACKEND_URL);
-        const response = await axios.post(
+        const response = await api.post(
           `${BASE_URL}/staff/signin`,
           credentials
         );
@@ -257,10 +256,10 @@ export const StaffProvider = ({ children }) => {
     try {
       const refreshToken = localStorage.getItem("refreshToken");
       if (refreshToken) {
-        await axios.post(
+        await api.post(
           `${BASE_URL}/staff/signout`,
           { refreshToken },
-          { headers: getAuthHeaders() }
+          { headers: getHeaders() }
         );
       }
 
@@ -281,8 +280,8 @@ export const StaffProvider = ({ children }) => {
   const getAllStaffAndDetails = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${BASE_URL}/staff/all-details`, {
-        headers: getAuthHeaders(),
+      const response = await api.get(`${BASE_URL}/staff/all-details`, {
+        headers: getHeaders(),
       });
       setStaffDetailedList(response.data);
     } catch (error) {
@@ -296,8 +295,8 @@ export const StaffProvider = ({ children }) => {
   // Fetch staff details by ID
   const getStaffById = useCallback(async (staffId) => {
     try {
-      const response = await axios.get(`${BASE_URL}/staff/${staffId}`, {
-        headers: getAuthHeaders(),
+      const response = await api.get(`${BASE_URL}/staff/${staffId}`, {
+        headers: getHeaders(),
       });
 
       setStaffData(response.data);
@@ -313,8 +312,8 @@ export const StaffProvider = ({ children }) => {
     try {
       console.log("Sending request to /profile...");
 
-      const response = await axios.get(`${BASE_URL}/staff/profile`, {
-        headers: getAuthHeaders(),
+      const response = await api.get(`${BASE_URL}/staff/profile`, {
+        headers: getHeaders(),
       });
       setStaffProfile(response?.data);
       return response.data;
@@ -330,7 +329,7 @@ export const StaffProvider = ({ children }) => {
   // Forgot password for staff
   const forgotPassword = useCallback(async (email) => {
     try {
-      const response = await axios.post(`${BASE_URL}/staff/forgot-password`, {
+      const response = await api.post(`${BASE_URL}/staff/forgot-password`, {
         email,
       });
       return response.data;
@@ -343,7 +342,7 @@ export const StaffProvider = ({ children }) => {
   // Reset password for staff
   const resetPassword = useCallback(async (token, password) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${BASE_URL}/staff/reset-password/${token}`,
         {
           password,
@@ -360,10 +359,10 @@ export const StaffProvider = ({ children }) => {
   const refreshToken = useCallback(async () => {
     try {
       const refreshToken = localStorage.getItem("refreshToken");
-      const response = await axios.post(
+      const response = await api.post(
         `${BASE_URL}/staff/refresh-token`,
         { refreshToken },
-        { headers: getAuthHeaders() }
+        { headers: getHeaders() }
       );
       const { accessToken } = response.data;
       localStorage.setItem("accessToken", accessToken);
@@ -377,11 +376,11 @@ export const StaffProvider = ({ children }) => {
   // Activate a staff member
   const activateStaff = useCallback(async (staffId) => {
     try {
-      const response = await axios.patch(
+      const response = await api.patch(
         `${BASE_URL}/staff/${staffId}/activate`,
         {},
         {
-          headers: getAuthHeaders(),
+          headers: getHeaders(),
         }
       );
       return response.data;
@@ -394,11 +393,11 @@ export const StaffProvider = ({ children }) => {
   // Deactivate a staff member
   const deactivateStaff = useCallback(async (staffId) => {
     try {
-      const response = await axios.patch(
+      const response = await api.patch(
         `${BASE_URL}/staff/${staffId}/deactivate`,
         {},
         {
-          headers: getAuthHeaders(),
+          headers: getHeaders(),
         }
       );
       return response.data;
@@ -411,8 +410,8 @@ export const StaffProvider = ({ children }) => {
   // Fetch roles
   const getRoles = useCallback(async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/staff/roles`, {
-        headers: getAuthHeaders(),
+      const response = await api.get(`${BASE_URL}/staff/roles`, {
+        headers: getHeaders(),
       });
       setAllRoles(response.data);
     } catch (error) {
@@ -424,8 +423,8 @@ export const StaffProvider = ({ children }) => {
   // Fetch permissions
   const getPermissions = useCallback(async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/staff/permissions`, {
-        headers: getAuthHeaders(),
+      const response = await api.get(`${BASE_URL}/staff/permissions`, {
+        headers: getHeaders(),
       });
       setAllPermissions(response.data);
     } catch (error) {
@@ -437,8 +436,8 @@ export const StaffProvider = ({ children }) => {
   // Delete a staff member
   const deleteStaff = useCallback(async (staffId) => {
     try {
-      const response = await axios.delete(`${BASE_URL}/staff/${staffId}`, {
-        headers: getAuthHeaders(),
+      const response = await api.delete(`${BASE_URL}/staff/${staffId}`, {
+        headers: getHeaders(),
       });
       return response.data;
     } catch (error) {
@@ -446,6 +445,13 @@ export const StaffProvider = ({ children }) => {
       throw error;
     }
   }, []);
+
+  // utils/roleCheck.js
+  const hasRole = (user, roles = []) => {
+    if (!user?.roles || !Array.isArray(user.roles)) return false;
+
+    return user.roles.some((role) => roles.includes(role.name));
+  };
 
   return (
     <StaffContext.Provider
@@ -479,6 +485,7 @@ export const StaffProvider = ({ children }) => {
 
         getRoles,
         getPermissions,
+        hasRole,
 
         signInStaff,
         signOutStaff,
@@ -553,7 +560,7 @@ export const useStaff = () => {
 //   }, []);
 
 //   // Helper function to get authorization headers
-//   const getAuthHeaders = () => {
+//   const getHeaders = () => {
 //     const token = localStorage.getItem("accessToken");
 //     return token ? { Authorization: `Bearer ${token}` } : {};
 //   };

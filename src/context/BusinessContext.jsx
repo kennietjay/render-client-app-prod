@@ -1,6 +1,7 @@
 // import api from "api";
 import React, { createContext, useCallback, useContext, useState } from "react";
 import api from "../../utils/api"; // ✅ Import global API interceptor
+import { getHeaders } from "./getHeader";
 
 // const BASE_URL = "http://192.168.12.109:8000";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
@@ -8,8 +9,6 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 // const BASE_URL = "https://render-server-app.onrender.com";
 
 const BusinessContext = createContext();
-
-const getAuthToken = () => localStorage.getItem("accessToken");
 
 function BusinessProvider({ children }) {
   const [loading, setLoading] = useState(false);
@@ -24,14 +23,11 @@ function BusinessProvider({ children }) {
   const createBusiness = async (customerId, newBusinesses) => {
     setLoading(true);
     try {
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       const response = await api.post(
         `${BASE_URL}/customer/${customerId}/businesses/create`,
         newBusinesses,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: getHeaders(),
         }
       );
 
@@ -49,13 +45,10 @@ function BusinessProvider({ children }) {
   const getBusinesses = useCallback(async (customerId) => {
     setLoading(true);
     try {
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       const response = await api.get(
         `${BASE_URL}/customer/${customerId}/businesses`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: getHeaders(),
         }
       );
 
@@ -72,13 +65,10 @@ function BusinessProvider({ children }) {
   const getBusiness = useCallback(async (customerId, businessId) => {
     setLoading(true);
     try {
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       const response = await api.get(
         `${BASE_URL}/customer/${customerId}/businesses/:${businessId}`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: getHeaders(),
         }
       );
       setBusinesses(response.data);
@@ -95,14 +85,11 @@ function BusinessProvider({ children }) {
     async (customerId, businessId, updatedData) => {
       setLoading(true);
       try {
-        const token = getAuthToken();
-        if (!token) throw new Error("No access token found");
-
         const response = await api.put(
           `${BASE_URL}/customer/${customerId}/businesses/${businessId}`,
           updatedData,
           {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: getHeaders(),
           }
         );
         // Refresh the businesses list

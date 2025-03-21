@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useCallback } from "react";
 // import api from "api";
 import { useAuth } from "./AuthContext";
 import api from "../../utils/api"; // ✅ Import global API interceptor
+import { getHeaders } from "./getHeader";
 
 // const BASE_URL = "http://192.168.12.109:8000";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
@@ -9,8 +10,6 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 // const BASE_URL = "https://render-server-app.onrender.com";
 
 const CustomerContext = createContext();
-
-const getAuthToken = () => localStorage.getItem("accessToken");
 
 const CustomerProvider = ({ children }) => {
   const { user } = useAuth();
@@ -31,11 +30,8 @@ const CustomerProvider = ({ children }) => {
 
     setLoading(true);
     try {
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       const response = await api.get(`${BASE_URL}/customer/${user.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: getHeaders(),
       });
 
       setCustomer(response?.data);
@@ -58,15 +54,11 @@ const CustomerProvider = ({ children }) => {
     try {
       setLoading(true);
 
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       const response = await api.get(`${BASE_URL}/customer/all`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: getHeaders(),
       });
 
       // console.log(response);
-
       setCustomers(response?.data);
       setError(null); // Clear error if successful
       return response?.data;
@@ -86,14 +78,11 @@ const CustomerProvider = ({ children }) => {
   const updateCustomer = async (customerId, updatedData) => {
     setLoading(true);
     try {
-      const token = getAuthToken();
-      if (!token) throw new Error("No access token found");
-
       const response = await api.put(
         `${BASE_URL}/customer/${customerId}`,
         updatedData,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: getHeaders(),
         }
       );
       setCustomer(response.data);
