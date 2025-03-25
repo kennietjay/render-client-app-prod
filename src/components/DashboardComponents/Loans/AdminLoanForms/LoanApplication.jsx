@@ -24,7 +24,7 @@ function LoanApplication({
     customer: {
       customer_id: "",
       last_name: "",
-      middle_name: "T",
+      middle_name: "",
       first_name: "",
       gender: "",
       date_of_birth: "",
