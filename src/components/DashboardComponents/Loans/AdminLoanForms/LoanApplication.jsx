@@ -17,7 +17,6 @@ function LoanApplication({
   closeModal,
   error,
   setError,
-  success,
   setSuccess,
 }) {
   const [step, setStep] = useState(1);
