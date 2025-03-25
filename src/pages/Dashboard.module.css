@@ -20,7 +20,7 @@
   padding: 1.6rem 0;
   justify-content: space-between;
   z-index: 10;
-  border-top: 1rem solid #ff8e3d;
+  /* border-top: 1rem solid #ff8e3d; */
 }
 
 .notificationContainer {
