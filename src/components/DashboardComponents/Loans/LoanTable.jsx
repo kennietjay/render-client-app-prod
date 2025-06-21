@@ -231,8 +231,8 @@ const LoanTable = ({
 
                     {/* Display the latest payment balance_after */}
                     <td className={styles.tableCell}>
-                      {balance_after
-                        ? `NLe ${balance_after?.toLocaleString()}`
+                      {loan?.balance
+                        ? `NLe ${loan?.balance?.toLocaleString()}`
                         : "NLe 0"}
                     </td>
 
