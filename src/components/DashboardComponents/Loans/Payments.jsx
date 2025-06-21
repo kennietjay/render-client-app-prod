@@ -227,79 +227,6 @@ function LoanPayments() {
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!paymentData?.amount || !paymentData?.payment_method) {
-  //     alert("Please fill in all the required fields.");
-  //     return;
-  //   }
-
-  //   if (
-  //     (loanDetails?.status === "applied" ||
-  //       loanDetails?.status === "processing") &&
-  //     !loanDetails?.approval_date
-  //   ) {
-  //     setError("Loan has not been approved or processed.");
-  //     return;
-  //   }
-
-  //   if (loanDetails?.status === "processed" && !loanDetails?.approval_date) {
-  //     setError("Loan is not approved.");
-  //     return;
-  //   }
-
-  //   if (loanDetails?.status === "paid" && loanDetails.balance_after === 0) {
-  //     setError("No further payment to process, this loan is fully paid.");
-  //     return;
-  //   }
-
-  //   if (["canceled", "closed", "rejected"].includes(loanDetails?.status)) {
-  //     setError(`Cannot process payment, this loan is ${loanDetails?.status}.`);
-  //     return;
-  //   }
-
-  //   setLoading(true);
-
-  //   const newPayment = {
-  //     ...paymentData,
-  //     customer_id: loanDetails?.customer_id,
-  //   };
-
-  //   try {
-  //     const response = await recordPayment(newPayment, paymentData?.loan_id);
-
-  //     // ✅ Fix: Check if response contains an actual success flag
-  //     if (response?.success) {
-  //       setSuccess("Payment recorded successfully!");
-
-  //       // ✅ Re-fetch loan details after successful payment
-  //       await getPayments();
-
-  //       // ✅ Reset Form Fields
-  //       setPaymentData({
-  //         loan_id: paymentData?.loan_id,
-  //         amount: "",
-  //         payment_method: "",
-  //         transaction_id: generateTransactionId(),
-  //         remarks: "",
-  //         staff_id: paymentData?.staff_id,
-  //       });
-
-  //       // ✅ Trigger Data Refresh
-  //       setFetchTrigger((prev) => !prev);
-  //     } else {
-  //       setError(response?.message || "Failed to process payment.");
-  //     }
-
-  //     //
-  //   } catch (error) {
-  //     setError(error?.message || "An error occurred while processing payment.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   //Calculate outstanding balance
   const outstandingBalance = calculateOutstandingBalance(loanDetails, payments);
 
@@ -381,7 +308,7 @@ function LoanPayments() {
                   </p>
                   <p>
                     <strong>Outstanding Balance:</strong> NLe{" "}
-                    {outstandingBalance}
+                    {loanDetails?.balance}
                   </p>
                   <p>
                     <strong>Last Payment:</strong> NLe{" "}
