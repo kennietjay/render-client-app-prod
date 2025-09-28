@@ -1,391 +1,846 @@
-import React, { useEffect, useState } from "react";
-import styles from "./Staff.module.css";
-import { Alert } from "react-bootstrap";
-import { useStaff } from "../../../context/StaffContext";
-import LoadingSpinner from "../../LoadingSpinner";
+// import React, { useEffect, useState } from "react";
+// import styles from "./Staff.module.css";
+// import { Alert } from "react-bootstrap";
+// import { useStaff } from "../../../context/StaffContext";
+// import LoadingSpinner from "../../LoadingSpinner";
 
-function AddStaff({ closeActionModal }) {
-  const { createStaff } = useStaff();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
-  const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
-    middle_name: "",
-    gender: "",
-    date_of_birth: "",
-    email: "",
-    phone: "",
-    role_id: "",
-    department: "",
-    employment_date: "",
-    password: "",
-    confirm_password: "",
-  });
+// function AddStaff({ closeActionModal }) {
+//   const { createStaff } = useStaff();
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState(null);
+//   const [success, setSuccess] = useState(null);
+//   const [formData, setFormData] = useState({
+//     first_name: "",
+//     last_name: "",
+//     middle_name: "",
+//     gender: "Male",
+//     date_of_birth: "",
+//     email: "",
+//     phone: "",
+//     role_id: "",
+//     department: "",
+//     employment_date: "",
+//     password: "",
+//     confirm_password: "",
+//   });
 
-  // Automatically dismiss alerts after 30 seconds
-  useEffect(() => {
-    if (success || error) {
-      const timer = setTimeout(() => {
-        setSuccess(null);
+//   // Email Validation Configuration
+//   const recognizedEmailDomains = [
+//     "gmail.com",
+//     "yahoo.com",
+//     "ymail.com",
+//     "outlook.com",
+//     "hotmail.com",
+//     "live.com",
+//     "icloud.com",
+//     "me.com",
+//     "mac.com",
+//     "aol.com",
+//     "protonmail.com",
+//     "zoho.com",
+//     "mail.com",
+//     "gmx.com",
+//     "gmx.net",
+//   ];
 
-        setError(null);
-      }, 3000); // 30 seconds
-      return () => clearTimeout(timer); // Cleanup timeout on component unmount or alert change
-    }
-  }, [success, error]);
+//   // Automatically dismiss alerts after 3 seconds
+//   useEffect(() => {
+//     if (success || error) {
+//       const timer = setTimeout(() => {
+//         setSuccess(null);
+//         setError(null);
+//       }, 10000);
+//       return () => clearTimeout(timer);
+//     }
+//   }, [success, error]);
 
-  // Helper function to validate date
-  const isValidDate = (date) => !isNaN(Date.parse(date));
+//   // Validation Functions
+//   const isValidDate = (dateString) => {
+//     if (!dateString) return false;
+//     const date = new Date(dateString);
+//     return date instanceof Date && !isNaN(date);
+//   };
 
-  // Function to capitalize names
-  const capitalizeName = (name) => {
-    return name
-      .toLowerCase()
-      .split("-")
-      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-      .join("-");
-  };
+//   const isValidEmailFormat = (email) => {
+//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//     return emailRegex.test(email);
+//   };
 
-  // Format phone number for Sierra Leone
-  const formatPhoneNumber = (phone) => {
-    let cleanedPhone = phone.replace(/\D/g, "");
+//   const isRecognizedEmailDomain = (email) => {
+//     const domain = email.split("@")[1];
+//     return recognizedEmailDomains.includes(domain) || domain?.endsWith(".org");
+//   };
 
-    if (cleanedPhone.length === 9 && cleanedPhone.startsWith("0")) {
-      cleanedPhone = cleanedPhone.slice(1);
-    }
+//   const isFutureDate = (dateString) => {
+//     return new Date(dateString) > new Date();
+//   };
 
-    if (/^\d{8}$/.test(cleanedPhone)) {
-      return `+232-${cleanedPhone.slice(0, 2)}-${cleanedPhone.slice(2)}`;
-    }
+//   // Function to capitalize names
+//   const capitalizeName = (name) => {
+//     if (!name) return "";
+//     return name
+//       .toLowerCase()
+//       .split("-")
+//       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+//       .join("-");
+//   };
 
-    if (/^232\d{8}$/.test(cleanedPhone)) {
-      return `+232-${cleanedPhone.slice(3, 5)}-${cleanedPhone.slice(5)}`;
-    }
+//   // Format phone number for Sierra Leone
+//   const formatPhoneNumber = (phone) => {
+//     let cleanedPhone = phone.replace(/\D/g, "");
 
-    return null;
-  };
+//     if (cleanedPhone.length === 9 && cleanedPhone.startsWith("0")) {
+//       cleanedPhone = cleanedPhone.slice(1);
+//     }
 
-  // Handle input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+//     if (/^\d{8}$/.test(cleanedPhone)) {
+//       return `+232-${cleanedPhone.slice(0, 2)}-${cleanedPhone.slice(2)}`;
+//     }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+//     if (/^232\d{8}$/.test(cleanedPhone)) {
+//       return `+232-${cleanedPhone.slice(3, 5)}-${cleanedPhone.slice(5)}`;
+//     }
 
-    // Validation checks
-    if (
-      !formData.first_name ||
-      !formData.last_name ||
-      !formData.email ||
-      !formData.phone ||
-      !formData.password ||
-      !formData.confirm_password ||
-      !formData.date_of_birth
-    ) {
-      setError("All fields are required.");
-      return;
-    }
+//     return null;
+//   };
 
-    if (formData.password !== formData.confirm_password) {
-      setError("Passwords do not match.");
-      return;
-    }
+//   // Format date for backend (ISO format)
+//   const formatDateForBackend = (dateString) => {
+//     if (!dateString) return "";
+//     return new Date(dateString).toISOString();
+//   };
 
-    if (!isValidDate(formData.date_of_birth)) {
-      setError("Please enter a valid date of birth.");
-      return;
-    }
+//   // Handle input changes
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData({ ...formData, [name]: value });
+//   };
 
-    if (!isValidEmailFormat(formData.email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
+//   const handleSubmit = async (event) => {
+//     event.preventDefault();
+//     setLoading(true);
+//     setError(null);
+//     setSuccess(null);
 
-    if (!isRecognizedEmailDomain(formData.email)) {
-      setError(
-        "Please use an email from recognized domains like Gmail, Yahoo, or .org domains."
-      );
-      return;
-    }
+//     try {
+//       // Validation checks
+//       if (
+//         !formData.first_name ||
+//         !formData.last_name ||
+//         !formData.email ||
+//         !formData.phone ||
+//         !formData.password ||
+//         !formData.confirm_password ||
+//         !formData.date_of_birth ||
+//         !formData.employment_date ||
+//         !formData.role_id ||
+//         !formData.department
+//       ) {
+//         throw new Error("All fields are required.");
+//       }
 
-    const formattedPhone = formatPhoneNumber(formData.phone);
-    if (!formattedPhone) {
-      setError("Please enter a valid Sierra Leone phone number.");
-      return;
-    }
+//       if (formData.password !== formData.confirm_password) {
+//         throw new Error("Passwords do not match.");
+//       }
 
-    // Create final data object
-    const finalFormData = {
-      ...formData,
-      phone: formattedPhone,
-      first_name: capitalizeName(formData.first_name),
-      last_name: capitalizeName(formData.last_name),
-      middle_name: capitalizeName(formData.middle_name),
-      email: formData.email.toLowerCase(),
-      department: formData.department, // Use formData directly
-      employment_date: formData.employment_date, // Use formData directly
-    };
+//       if (formData.password.length < 6) {
+//         throw new Error("Password must be at least 6 characters long.");
+//       }
 
-    const newUser = {
-      ...finalFormData,
-      role_id: parseInt(formData.role_id, 10),
-    };
+//       if (!isValidDate(formData.date_of_birth)) {
+//         throw new Error("Please enter a valid date of birth.");
+//       }
 
-    console.log("New User:", newUser);
+//       if (isFutureDate(formData.date_of_birth)) {
+//         throw new Error("Date of birth cannot be in the future.");
+//       }
 
-    // Submit to backend
-    setLoading(true);
-    try {
-      const response = await createStaff(newUser);
-      setSuccess("Staff created successfully!");
-      setFormData({
-        first_name: "",
-        last_name: "",
-        middle_name: "",
-        gender: "Male",
-        date_of_birth: "",
-        email: "",
-        phone: "",
-        role_id: "",
-        department: "",
-        employment_date: "",
-        password: "",
-        confirm_password: "",
-      });
-    } catch (error) {
-      console.error("Error creating staff:", error);
-      setError(error.response?.data?.msg || "Failed to create staff.");
-    } finally {
-      setLoading(false);
-    }
-  };
+//       if (!isValidDate(formData.employment_date)) {
+//         throw new Error("Please enter a valid employment date.");
+//       }
 
-  return (
-    <>
-      {loading ? (
-        <LoadingSpinner size={60} color="#FF5722" message="Loading data..." />
-      ) : (
-        <div>
-          <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.closeBtn}>
-              <i onClick={closeActionModal} className="fa-solid fa-xmark"></i>
-            </div>
-            {success && (
-              <Alert variant="success" className="warning">
-                {success}
-              </Alert>
-            )}
+//       if (isFutureDate(formData.employment_date)) {
+//         throw new Error("Employment date cannot be in the future.");
+//       }
 
-            {error && (
-              <Alert variant="warning" className="warning">
-                {error}
-              </Alert>
-            )}
-            <h4 className={styles.title}>Add a Staff</h4>
+//       if (!isValidEmailFormat(formData.email)) {
+//         throw new Error("Please enter a valid email address.");
+//       }
 
-            <div className={styles.formGroup}>
-              {/* First Name */}
-              <div className={styles.inputControl}>
-                <label htmlFor="first_name">First Name:</label>
-                <input
-                  type="text"
-                  name="first_name"
-                  value={formData.first_name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+//       if (!isRecognizedEmailDomain(formData.email)) {
+//         throw new Error(
+//           "Please use an email from recognized domains like Gmail, Yahoo, or .org domains."
+//         );
+//       }
 
-              {/* Middle Name */}
-              <div className={styles.inputControl}>
-                <label htmlFor="middle_name">Middle Name:</label>
-                <input
-                  type="text"
-                  name="middle_name"
-                  value={formData.middle_name}
-                  onChange={handleChange}
-                />
-              </div>
+//       const formattedPhone = formatPhoneNumber(formData.phone);
+//       if (!formattedPhone) {
+//         throw new Error(
+//           "Please enter a valid Sierra Leone phone number (e.g., 076123456 or 23276123456)."
+//         );
+//       }
 
-              {/* Last Name */}
-              <div className={styles.inputControl}>
-                <label htmlFor="last_name">Last Name:</label>
-                <input
-                  type="text"
-                  name="last_name"
-                  value={formData.last_name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+//       // Create final data object with properly formatted dates
+//       const finalFormData = {
+//         ...formData,
+//         phone: formattedPhone,
+//         first_name: capitalizeName(formData.first_name),
+//         last_name: capitalizeName(formData.last_name),
+//         middle_name: capitalizeName(formData.middle_name),
+//         email: formData.email.toLowerCase(),
+//         department: formData.department,
+//         // Format dates for backend
+//         date_of_birth: formatDateForBackend(formData.date_of_birth),
+//         employment_date: formatDateForBackend(formData.employment_date),
+//       };
 
-              {/* Gender */}
-              <div className={styles.inputControl}>
-                <label htmlFor="gender">Gender:</label>
-                <select
-                  name="gender"
-                  value={formData.gender}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
-              </div>
+//       const newUser = {
+//         ...finalFormData,
+//         role_id: parseInt(formData.role_id, 10),
+//       };
 
-              {/* Date of Birth */}
-              <div className={styles.inputControl}>
-                <label htmlFor="date_of_birth">Date of Birth:</label>
-                <input
-                  type="date"
-                  name="date_of_birth"
-                  value={formData.date_of_birth}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+//       console.log("Submitting user data:", newUser);
 
-              {/* Email */}
-              <div className={styles.inputControl}>
-                <label htmlFor="email">Email:</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+//       // Submit to backend
+//       // const response = await createStaff(newUser);
 
-              {/* Phone Number */}
-              <div className={styles.inputControl}>
-                <label htmlFor="phone">Phone Number:</label>
-                <input
-                  type="text"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+//       // console.log("Staff created successfully:", response);
 
-              {/* Role */}
-              <div className={styles.inputControl}>
-                <label htmlFor="role_id">Role:</label>
-                <select
-                  name="role_id"
-                  value={formData.role_id}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select Role</option>
-                  <option value="2">Basic</option>
-                  <option value="4">Cashier</option>
-                  <option value="5">Loan Officer</option>
-                  <option value="6">Manager</option>
-                  <option value="7">Finance Admin</option>
-                  <option value="8">Auditor</option>
-                  <option value="9">System Admin</option>
-                </select>
-              </div>
+//       setSuccess("Staff created successfully!");
 
-              {/* Department */}
-              <div className={styles.inputControl}>
-                <label htmlFor="department">Department:</label>
-                <input
-                  type="text"
-                  name="department"
-                  value={formData.department}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+//       // Reset form
+//       setFormData({
+//         first_name: "",
+//         last_name: "",
+//         middle_name: "",
+//         gender: "Male",
+//         date_of_birth: "",
+//         email: "",
+//         phone: "",
+//         role_id: "",
+//         department: "",
+//         employment_date: "",
+//         password: "",
+//         confirm_password: "",
+//       });
+//     } catch (error) {
+//       console.error("Error creating staff:", error);
+//       setError(
+//         error.response?.data?.msg || error.message || "Failed to create staff."
+//       );
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-              {/* Employment Date */}
-              <div className={styles.inputControl}>
-                <label htmlFor="employment_date">Employment Date:</label>
-                <input
-                  type="date"
-                  name="employment_date"
-                  value={formData.employment_date}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+//   // Get today's date for max date restrictions
+//   const today = new Date().toISOString().split("T")[0];
 
-              {/* Password */}
-              <div className={styles.inputControl}>
-                <label htmlFor="password">Password:</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+//   return (
+//     <>
+//       {loading ? (
+//         <LoadingSpinner size={60} color="#FF5722" message="Creating staff..." />
+//       ) : (
+//         <div>
+//           <form className={styles.form} onSubmit={handleSubmit}>
+//             <div className={styles.closeBtn}>
+//               <i onClick={closeActionModal} className="fa-solid fa-xmark"></i>
+//             </div>
 
-              {/* Confirm Password */}
-              <div className={styles.inputControl}>
-                <label htmlFor="confirm_password">Confirm Password:</label>
-                <input
-                  type="password"
-                  name="confirm_password"
-                  value={formData.confirm_password}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
+//             {/* Success and Error Alerts */}
+//             {success && (
+//               <Alert variant="success" className="warning">
+//                 {success}
+//               </Alert>
+//             )}
 
-            {/* Submit Button */}
-            <div className={styles.buttonContainer}>
-              <button
-                type="submit"
-                className={styles.submitButton}
-                disabled={loading}
-              >
-                {loading ? "Processing..." : "Submit"}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-    </>
-  );
-}
+//             {error && (
+//               <Alert variant="danger" className="warning">
+//                 {error}
+//               </Alert>
+//             )}
 
-export default AddStaff;
+//             <h4 className={styles.title}>Add a Staff</h4>
 
-// Email Validation
-const recognizedEmailDomains = [
-  "gmail.com",
-  "yahoo.com",
-  "ymail.com",
-  "outlook.com",
-  "hotmail.com",
-  "live.com",
-  "icloud.com",
-  "me.com",
-  "mac.com",
-  "aol.com",
-  "protonmail.com",
-  "zoho.com",
-  "mail.com",
-  "gmx.com",
-  "gmx.net",
-];
+//             <div className={styles.formGroup}>
+//               {/* First Name */}
+//               <div className={styles.inputControl}>
+//                 <label htmlFor="first_name">First Name:</label>
+//                 <input
+//                   type="text"
+//                   name="first_name"
+//                   value={formData.first_name}
+//                   onChange={handleChange}
+//                   required
+//                   disabled={loading}
+//                 />
+//               </div>
 
-const isValidEmailFormat = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
+//               {/* Middle Name */}
+//               <div className={styles.inputControl}>
+//                 <label htmlFor="middle_name">Middle Name:</label>
+//                 <input
+//                   type="text"
+//                   name="middle_name"
+//                   value={formData.middle_name}
+//                   onChange={handleChange}
+//                   disabled={loading}
+//                 />
+//               </div>
 
-const isRecognizedEmailDomain = (email) => {
-  const domain = email.split("@")[1];
-  return recognizedEmailDomains.includes(domain) || domain.endsWith(".org");
-};
+//               {/* Last Name */}
+//               <div className={styles.inputControl}>
+//                 <label htmlFor="last_name">Last Name:</label>
+//                 <input
+//                   type="text"
+//                   name="last_name"
+//                   value={formData.last_name}
+//                   onChange={handleChange}
+//                   required
+//                   disabled={loading}
+//                 />
+//               </div>
+
+//               {/* Gender */}
+//               <div className={styles.inputControl}>
+//                 <label htmlFor="gender">Gender:</label>
+//                 <select
+//                   name="gender"
+//                   value={formData.gender}
+//                   onChange={handleChange}
+//                   required
+//                   disabled={loading}
+//                 >
+//                   <option value="Male">Male</option>
+//                   <option value="Female">Female</option>
+//                 </select>
+//               </div>
+
+//               {/* Date of Birth */}
+//               <div className={styles.inputControl}>
+//                 <label htmlFor="date_of_birth">Date of Birth:</label>
+//                 <input
+//                   type="date"
+//                   name="date_of_birth"
+//                   value={formData.date_of_birth}
+//                   onChange={handleChange}
+//                   max={today}
+//                   required
+//                   disabled={loading}
+//                 />
+//               </div>
+
+//               {/* Email */}
+//               <div className={styles.inputControl}>
+//                 <label htmlFor="email">Email:</label>
+//                 <input
+//                   type="email"
+//                   name="email"
+//                   value={formData.email}
+//                   onChange={handleChange}
+//                   required
+//                   disabled={loading}
+//                 />
+//               </div>
+
+//               {/* Phone Number */}
+//               <div className={styles.inputControl}>
+//                 <label htmlFor="phone">Phone Number:</label>
+//                 <input
+//                   type="text"
+//                   name="phone"
+//                   value={formData.phone}
+//                   onChange={handleChange}
+//                   placeholder="076123456 or 23276123456"
+//                   required
+//                   disabled={loading}
+//                 />
+//               </div>
+
+//               {/* Role */}
+//               <div className={styles.inputControl}>
+//                 <label htmlFor="role_id">Role:</label>
+//                 <select
+//                   name="role_id"
+//                   value={formData.role_id}
+//                   onChange={handleChange}
+//                   required
+//                   disabled={loading}
+//                 >
+//                   <option value="">Select Role</option>
+//                   <option value="2">Basic</option>
+//                   <option value="4">Cashier</option>
+//                   <option value="5">Loan Officer</option>
+//                   <option value="6">Manager</option>
+//                   <option value="7">Finance Admin</option>
+//                   <option value="8">Auditor</option>
+//                   <option value="9">System Admin</option>
+//                 </select>
+//               </div>
+
+//               {/* Department */}
+//               <div className={styles.inputControl}>
+//                 <label htmlFor="department">Department:</label>
+//                 <input
+//                   type="text"
+//                   name="department"
+//                   value={formData.department}
+//                   onChange={handleChange}
+//                   required
+//                   disabled={loading}
+//                 />
+//               </div>
+
+//               {/* Employment Date */}
+//               <div className={styles.inputControl}>
+//                 <label htmlFor="employment_date">Employment Date:</label>
+//                 <input
+//                   type="date"
+//                   name="employment_date"
+//                   value={formData.employment_date}
+//                   onChange={handleChange}
+//                   max={today}
+//                   required
+//                   disabled={loading}
+//                 />
+//               </div>
+
+//               {/* Password */}
+//               <div className={styles.inputControl}>
+//                 <label htmlFor="password">Password:</label>
+//                 <input
+//                   type="password"
+//                   name="password"
+//                   value={formData.password}
+//                   onChange={handleChange}
+//                   minLength="6"
+//                   required
+//                   disabled={loading}
+//                 />
+//               </div>
+
+//               {/* Confirm Password */}
+//               <div className={styles.inputControl}>
+//                 <label htmlFor="confirm_password">Confirm Password:</label>
+//                 <input
+//                   type="password"
+//                   name="confirm_password"
+//                   value={formData.confirm_password}
+//                   onChange={handleChange}
+//                   minLength="6"
+//                   required
+//                   disabled={loading}
+//                 />
+//               </div>
+//             </div>
+
+//             {/* Submit Button */}
+//             <div className={styles.buttonContainer}>
+//               <button
+//                 type="submit"
+//                 className={styles.submitButton}
+//                 disabled={loading}
+//               >
+//                 {loading ? "Processing..." : "Submit"}
+//               </button>
+//             </div>
+//           </form>
+//         </div>
+//       )}
+//     </>
+//   );
+// }
+
+// export default AddStaff;
+
+// // import React, { useEffect, useState } from "react";
+// // import styles from "./Staff.module.css";
+// // import { Alert } from "react-bootstrap";
+// // import { useStaff } from "../../../context/StaffContext";
+// // import LoadingSpinner from "../../LoadingSpinner";
+
+// // function AddStaff({ closeActionModal }) {
+// //   const { createStaff } = useStaff();
+// //   const [loading, setLoading] = useState(false);
+// //   const [error, setError] = useState(null);
+// //   const [success, setSuccess] = useState(null);
+// //   const [formData, setFormData] = useState({
+// //     first_name: "",
+// //     last_name: "",
+// //     middle_name: "",
+// //     gender: "",
+// //     date_of_birth: "",
+// //     email: "",
+// //     phone: "",
+// //     role_id: "",
+// //     department: "",
+// //     employment_date: "",
+// //     password: "",
+// //     confirm_password: "",
+// //   });
+
+// //   // Automatically dismiss alerts after 30 seconds
+// //   useEffect(() => {
+// //     if (success || error) {
+// //       const timer = setTimeout(() => {
+// //         setSuccess(null);
+
+// //         setError(null);
+// //       }, 3000); // 30 seconds
+// //       return () => clearTimeout(timer); // Cleanup timeout on component unmount or alert change
+// //     }
+// //   }, [success, error]);
+
+// //   // Helper function to validate date
+// //   const isValidDate = (date) => !isNaN(Date.parse(date));
+
+// //   // Function to capitalize names
+// //   const capitalizeName = (name) => {
+// //     return name
+// //       .toLowerCase()
+// //       .split("-")
+// //       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+// //       .join("-");
+// //   };
+
+// //   // Format phone number for Sierra Leone
+// //   const formatPhoneNumber = (phone) => {
+// //     let cleanedPhone = phone.replace(/\D/g, "");
+
+// //     if (cleanedPhone.length === 9 && cleanedPhone.startsWith("0")) {
+// //       cleanedPhone = cleanedPhone.slice(1);
+// //     }
+
+// //     if (/^\d{8}$/.test(cleanedPhone)) {
+// //       return `+232-${cleanedPhone.slice(0, 2)}-${cleanedPhone.slice(2)}`;
+// //     }
+
+// //     if (/^232\d{8}$/.test(cleanedPhone)) {
+// //       return `+232-${cleanedPhone.slice(3, 5)}-${cleanedPhone.slice(5)}`;
+// //     }
+
+// //     return null;
+// //   };
+
+// //   // Handle input changes
+// //   const handleChange = (e) => {
+// //     const { name, value } = e.target;
+// //     setFormData({ ...formData, [name]: value });
+// //   };
+
+// //   const handleSubmit = async (event) => {
+// //     event.preventDefault();
+
+// //     // Validation checks
+// //     if (
+// //       !formData.first_name ||
+// //       !formData.last_name ||
+// //       !formData.email ||
+// //       !formData.phone ||
+// //       !formData.password ||
+// //       !formData.confirm_password ||
+// //       !formData.date_of_birth
+// //     ) {
+// //       setError("All fields are required.");
+// //       return;
+// //     }
+
+// //     if (formData.password !== formData.confirm_password) {
+// //       setError("Passwords do not match.");
+// //       return;
+// //     }
+
+// //     if (!isValidDate(formData.date_of_birth)) {
+// //       setError("Please enter a valid date of birth.");
+// //       return;
+// //     }
+
+// //     if (!isValidEmailFormat(formData.email)) {
+// //       setError("Please enter a valid email address.");
+// //       return;
+// //     }
+
+// //     if (!isRecognizedEmailDomain(formData.email)) {
+// //       setError(
+// //         "Please use an email from recognized domains like Gmail, Yahoo, or .org domains."
+// //       );
+// //       return;
+// //     }
+
+// //     const formattedPhone = formatPhoneNumber(formData.phone);
+// //     if (!formattedPhone) {
+// //       setError("Please enter a valid Sierra Leone phone number.");
+// //       return;
+// //     }
+
+// //     // Create final data object
+// //     const finalFormData = {
+// //       ...formData,
+// //       phone: formattedPhone,
+// //       first_name: capitalizeName(formData.first_name),
+// //       last_name: capitalizeName(formData.last_name),
+// //       middle_name: capitalizeName(formData.middle_name),
+// //       email: formData.email.toLowerCase(),
+// //       department: formData.department, // Use formData directly
+// //       employment_date: formData.employment_date, // Use formData directly
+// //     };
+
+// //     const newUser = {
+// //       ...finalFormData,
+// //       role_id: parseInt(formData.role_id, 10),
+// //     };
+
+// //     console.log("New User:", newUser);
+
+// //     // Submit to backend
+// //     setLoading(true);
+// //     try {
+// //       const response = await createStaff(newUser);
+// //       setSuccess("Staff created successfully!");
+// //       setFormData({
+// //         first_name: "",
+// //         last_name: "",
+// //         middle_name: "",
+// //         gender: "Male",
+// //         date_of_birth: "",
+// //         email: "",
+// //         phone: "",
+// //         role_id: "",
+// //         department: "",
+// //         employment_date: "",
+// //         password: "",
+// //         confirm_password: "",
+// //       });
+// //     } catch (error) {
+// //       console.error("Error creating staff:", error);
+// //       setError(error.response?.data?.msg || "Failed to create staff.");
+// //     } finally {
+// //       setLoading(false);
+// //     }
+// //   };
+
+// //   return (
+// //     <>
+// //       {loading ? (
+// //         <LoadingSpinner size={60} color="#FF5722" message="Loading data..." />
+// //       ) : (
+// //         <div>
+// //           <form className={styles.form} onSubmit={handleSubmit}>
+// //             <div className={styles.closeBtn}>
+// //               <i onClick={closeActionModal} className="fa-solid fa-xmark"></i>
+// //             </div>
+// //             {success && (
+// //               <Alert variant="success" className="warning">
+// //                 {success}
+// //               </Alert>
+// //             )}
+
+// //             {error && (
+// //               <Alert variant="warning" className="warning">
+// //                 {error}
+// //               </Alert>
+// //             )}
+// //             <h4 className={styles.title}>Add a Staff</h4>
+
+// //             <div className={styles.formGroup}>
+// //               {/* First Name */}
+// //               <div className={styles.inputControl}>
+// //                 <label htmlFor="first_name">First Name:</label>
+// //                 <input
+// //                   type="text"
+// //                   name="first_name"
+// //                   value={formData.first_name}
+// //                   onChange={handleChange}
+// //                   required
+// //                 />
+// //               </div>
+
+// //               {/* Middle Name */}
+// //               <div className={styles.inputControl}>
+// //                 <label htmlFor="middle_name">Middle Name:</label>
+// //                 <input
+// //                   type="text"
+// //                   name="middle_name"
+// //                   value={formData.middle_name}
+// //                   onChange={handleChange}
+// //                 />
+// //               </div>
+
+// //               {/* Last Name */}
+// //               <div className={styles.inputControl}>
+// //                 <label htmlFor="last_name">Last Name:</label>
+// //                 <input
+// //                   type="text"
+// //                   name="last_name"
+// //                   value={formData.last_name}
+// //                   onChange={handleChange}
+// //                   required
+// //                 />
+// //               </div>
+
+// //               {/* Gender */}
+// //               <div className={styles.inputControl}>
+// //                 <label htmlFor="gender">Gender:</label>
+// //                 <select
+// //                   name="gender"
+// //                   value={formData.gender}
+// //                   onChange={handleChange}
+// //                   required
+// //                 >
+// //                   <option value="Male">Male</option>
+// //                   <option value="Female">Female</option>
+// //                 </select>
+// //               </div>
+
+// //               {/* Date of Birth */}
+// //               <div className={styles.inputControl}>
+// //                 <label htmlFor="date_of_birth">Date of Birth:</label>
+// //                 <input
+// //                   type="date"
+// //                   name="date_of_birth"
+// //                   value={formData.date_of_birth}
+// //                   onChange={handleChange}
+// //                   required
+// //                 />
+// //               </div>
+
+// //               {/* Email */}
+// //               <div className={styles.inputControl}>
+// //                 <label htmlFor="email">Email:</label>
+// //                 <input
+// //                   type="email"
+// //                   name="email"
+// //                   value={formData.email}
+// //                   onChange={handleChange}
+// //                   required
+// //                 />
+// //               </div>
+
+// //               {/* Phone Number */}
+// //               <div className={styles.inputControl}>
+// //                 <label htmlFor="phone">Phone Number:</label>
+// //                 <input
+// //                   type="text"
+// //                   name="phone"
+// //                   value={formData.phone}
+// //                   onChange={handleChange}
+// //                   required
+// //                 />
+// //               </div>
+
+// //               {/* Role */}
+// //               <div className={styles.inputControl}>
+// //                 <label htmlFor="role_id">Role:</label>
+// //                 <select
+// //                   name="role_id"
+// //                   value={formData.role_id}
+// //                   onChange={handleChange}
+// //                   required
+// //                 >
+// //                   <option value="">Select Role</option>
+// //                   <option value="2">Basic</option>
+// //                   <option value="4">Cashier</option>
+// //                   <option value="5">Loan Officer</option>
+// //                   <option value="6">Manager</option>
+// //                   <option value="7">Finance Admin</option>
+// //                   <option value="8">Auditor</option>
+// //                   <option value="9">System Admin</option>
+// //                 </select>
+// //               </div>
+
+// //               {/* Department */}
+// //               <div className={styles.inputControl}>
+// //                 <label htmlFor="department">Department:</label>
+// //                 <input
+// //                   type="text"
+// //                   name="department"
+// //                   value={formData.department}
+// //                   onChange={handleChange}
+// //                   required
+// //                 />
+// //               </div>
+
+// //               {/* Employment Date */}
+// //               <div className={styles.inputControl}>
+// //                 <label htmlFor="employment_date">Employment Date:</label>
+// //                 <input
+// //                   type="date"
+// //                   name="employment_date"
+// //                   value={formData.employment_date}
+// //                   onChange={handleChange}
+// //                   required
+// //                 />
+// //               </div>
+
+// //               {/* Password */}
+// //               <div className={styles.inputControl}>
+// //                 <label htmlFor="password">Password:</label>
+// //                 <input
+// //                   type="password"
+// //                   name="password"
+// //                   value={formData.password}
+// //                   onChange={handleChange}
+// //                   required
+// //                 />
+// //               </div>
+
+// //               {/* Confirm Password */}
+// //               <div className={styles.inputControl}>
+// //                 <label htmlFor="confirm_password">Confirm Password:</label>
+// //                 <input
+// //                   type="password"
+// //                   name="confirm_password"
+// //                   value={formData.confirm_password}
+// //                   onChange={handleChange}
+// //                   required
+// //                 />
+// //               </div>
+// //             </div>
+
+// //             {/* Submit Button */}
+// //             <div className={styles.buttonContainer}>
+// //               <button
+// //                 type="submit"
+// //                 className={styles.submitButton}
+// //                 disabled={loading}
+// //               >
+// //                 {loading ? "Processing..." : "Submit"}
+// //               </button>
+// //             </div>
+// //           </form>
+// //         </div>
+// //       )}
+// //     </>
+// //   );
+// // }
+
+// // export default AddStaff;
+
+// // // Email Validation
+// // const recognizedEmailDomains = [
+// //   "gmail.com",
+// //   "yahoo.com",
+// //   "ymail.com",
+// //   "outlook.com",
+// //   "hotmail.com",
+// //   "live.com",
+// //   "icloud.com",
+// //   "me.com",
+// //   "mac.com",
+// //   "aol.com",
+// //   "protonmail.com",
+// //   "zoho.com",
+// //   "mail.com",
+// //   "gmx.com",
+// //   "gmx.net",
+// // ];
+
+// // const isValidEmailFormat = (email) => {
+// //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// //   return emailRegex.test(email);
+// // };
+
+// // const isRecognizedEmailDomain = (email) => {
+// //   const domain = email.split("@")[1];
+// //   return recognizedEmailDomains.includes(domain) || domain.endsWith(".org");
+// // };

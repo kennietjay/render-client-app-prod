@@ -8,27 +8,70 @@
   padding: 2.4rem;
   border-radius: 1rem;
   position: relative;
+  margin: 2rem 0;
 }
 
 .reports {
   margin-top: 2.2rem;
+  list-style: none;
+  padding: 0;
+}
+
+.reports li {
+  margin: 1rem 0;
+}
+
+.reports a {
+  color: var(--color-primary);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.reports a:hover {
+  text-decoration: underline;
 }
 
 .closeBtns {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 1rem;
+  right: 1rem;
   background-color: transparent;
-  border: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
 }
+
 .closeBtns:hover {
-  border: 0.1rem solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.printBtn {
+  position: absolute;
+  bottom: 0rem;
+  right: 3rem;
+  margin-bottom: 1rem;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 0.2rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.printInstruction {
+  padding: 2rem 0;
+}
+
+.printBtn:hover {
+  background-color: var(--color-primary-dark);
 }
 
 .searchLoan {
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .searchLoan input {
@@ -36,4 +79,71 @@
   padding: 0.6rem 1rem;
   border-radius: 0.8rem;
   border: 0.1rem solid var(--color-primary);
+}
+
+.searchButton {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.8rem;
+  cursor: pointer;
+}
+
+.searchButton:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.error {
+  color: #d32f2f;
+  background-color: #ffebee;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d32f2f;
+}
+
+.searchSection {
+  margin-bottom: 1rem;
+}
+
+.searchSection label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.searchSection input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.paymentResults {
+  margin-top: 1rem;
+}
+
+.paymentResults ul {
+  list-style: none;
+  padding: 0;
+}
+
+.paymentResults li {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.paymentResults li:last-child {
+  border-bottom: none;
+}
+
+/* Print area styling */
+.printArea {
+  display: block;
+}
+
+/* Print utility classes */
+.no-print {
+  display: block;
 }

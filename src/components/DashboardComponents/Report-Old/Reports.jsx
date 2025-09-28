@@ -3,13 +3,15 @@ import styles from "./Reports.module.css";
 import Modal from "../../Modal";
 import { useTransaction } from "../../../context/TransactionContext";
 import { Link } from "react-router-dom";
-import html2pdf from "html2pdf.js";
 import Statements from "./Statements";
 
 function Reports() {
   const [selectedReport, setSelectedReport] = useState(null);
 
+  // Open the correct modal
   const openModal = (report) => setSelectedReport(report);
+
+  // Close the modal
   const closeModal = () => setSelectedReport(null);
 
   return (
@@ -19,6 +21,9 @@ function Reports() {
         <li>
           <Link onClick={() => openModal("statement")}>Payment Statements</Link>
         </li>
+        {/* <li>
+          <Link onClick={() => openModal("loan")}>Loan Summary</Link>
+        </li> */}
         <li>
           <Link onClick={() => openModal("others")}>Others</Link>
         </li>
@@ -27,6 +32,7 @@ function Reports() {
       {selectedReport && (
         <Modal isOpen={!!selectedReport} onClose={closeModal}>
           {selectedReport === "others" && <Others closeModal={closeModal} />}
+          {/* {selectedReport === "loan" && <LoanSummary closeModal={closeModal} />} */}
           {selectedReport === "statement" && (
             <PaymentStatement closeModal={closeModal} />
           )}
@@ -36,57 +42,67 @@ function Reports() {
   );
 }
 
+export default Reports;
+
 //
 function PaymentStatement({ closeModal }) {
   const { getPaymentsByLoanId } = useTransaction();
-  const [loanId, setLoanId] = useState("");
+  const [loanId, setLoanId] = useState({ loan_id: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [payments, setPayments] = useState([]);
 
-  const printRef = useRef();
+  //
+  const printRef = useRef(); // Reference for the print area
 
-  const printStatement = () => {
-    const element = printRef.current;
+  function printStatement() {
+    const printContent = printRef.current.innerHTML;
+    // Create a hidden iframe
+    const iframe = document.createElement("iframe");
+    iframe.style.position = "absolute";
+    iframe.style.width = "0";
+    iframe.style.height = "0";
+    iframe.style.border = "none";
 
-    // Clone the element to avoid modifying the original
-    const printElement = element.cloneNode(true);
+    // Append the iframe to the body
+    document.body.appendChild(iframe);
 
-    // Remove any excess padding/margin that might cause overflow
-    printElement.style.padding = "0";
-    printElement.style.margin = "0";
-    printElement.style.width = "100%";
+    // Write the print content to the iframe
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+    iframeDoc.write(printContent);
+    iframeDoc.close();
 
-    const opt = {
-      margin: [2, 5, 2, 5], // Smaller margins: [top, right, bottom, left]
-      filename: "loan-statement.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-      },
-      jsPDF: {
-        unit: "mm",
-        format: "a4",
-        orientation: "portrait",
-      },
-      pagebreak: { mode: ["avoid-all", "css", "legacy"] }, // Prevent unnecessary page breaks
-    };
+    // Print the iframe content
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
 
-    html2pdf().set(opt).from(printElement).save();
-  };
+    // Remove the iframe after printing
+    setTimeout(() => {
+      document.body.removeChild(iframe);
+    }, 100); // Small delay to ensure printing is done
+  }
 
+  //
+  // ✅ Handle input change
   const handleInputChange = (e) => {
-    setLoanId(e.target.value);
+    const { name, value } = e.target;
+    // console.log(`Typing: ${name} = ${value}`); // ✅ Debug log
+
+    setLoanId((prevState) => ({
+      ...prevState,
+      [name]: value, // ✅ Ensure state updates properly
+    }));
   };
 
+  //
   const fetchPayments = async () => {
     setLoading(true);
     setError(null);
-    setPayments([]);
+    setPayments([]); // ✅ Clear previous results
 
-    if (!loanId.trim()) {
+    console.log("Fetching payments for Loan ID:", loanId); // ✅ Debug log
+
+    if (!loanId) {
       setError("Please enter a valid Loan ID.");
       setLoading(false);
       return;
@@ -95,70 +111,56 @@ function PaymentStatement({ closeModal }) {
     try {
       const response = await getPaymentsByLoanId(loanId);
 
+      console.log("✅ Received Payments:", response.data); // ✅ Debugging log
+
       if (!response || response.length === 0) {
+        console.warn("⚠ No payments found for Loan ID:", loanId);
         setError("No payments found for this Loan ID.");
       } else {
-        setPayments(response);
+        setPayments(response); // ✅ Set received data
       }
     } catch (error) {
-      console.error("Error fetching payments:", error);
+      console.error("🚨 Error fetching payments:", error);
       setError(error.message || "Failed to fetch payments. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
+  console.log(payments);
+
   return (
     <div className={styles.reportBackground}>
       <h3>Payment Statement</h3>
-      <button onClick={closeModal} className={`${styles.closeBtns} no-print`}>
+      <button onClick={closeModal} className={styles.closeBtns}>
         x
       </button>
-      <button
-        className={`${styles.printBtn} no-print`}
-        onClick={printStatement}
-      >
+      <button className={styles.printBtn} onClick={printStatement}>
         Print
       </button>
 
-      <div className={`${styles.searchLoan} no-print`}>
+      <div className={styles.searchLoan}>
         <input
           type="text"
           name="loan_id"
-          value={loanId}
+          value={loanId.loan_id || ""}
           onChange={handleInputChange}
           placeholder="Enter Loan ID"
-          className="no-print"
         />
-        <button
-          onClick={fetchPayments}
-          className={`${styles.searchButton} no-print`}
-        >
+        <button onClick={fetchPayments} className={styles.searchButton}>
           Search
         </button>
       </div>
 
-      {loading && <p className="no-print">Loading payments...</p>}
-      {error && <p className={`${styles.error} no-print`}>{error}</p>}
-
-      {/* Only show this message when not printing */}
-      <div className={styles.printInstruction}>
-        {!loading && !error && payments.length === 0 && (
-          <p className="no-print">
-            Enter a Loan ID and click Search to view statements
-          </p>
-        )}
-      </div>
-
-      <div ref={printRef} className={styles.printArea}>
-        {payments.length > 0 && (
-          <Statements payments={payments} loanId={loanId} />
-        )}
+      {/* Wrap the statement inside the printRef */}
+      <div ref={printRef}>
+        <Statements />
       </div>
     </div>
   );
 }
 
+//  ✅ Modal Components
 function Others({ closeModal }) {
   const { getPaymentsByLoanOrCustomerId } = useTransaction();
   const [loanId, setLoanId] = useState("");
@@ -166,6 +168,7 @@ function Others({ closeModal }) {
   const [error, setError] = useState(null);
   const [payments, setPayments] = useState([]);
 
+  // ✅ Handle input change
   const handleInputChange = (e) => {
     setLoanId(e.target.value);
   };
@@ -178,15 +181,18 @@ function Others({ closeModal }) {
 
     setLoading(true);
     setError(null);
-    setPayments([]);
+    setPayments([]); // Clear previous results
 
     try {
       const response = await getPaymentsByLoanOrCustomerId(loanId);
 
+      console.log("Received Payments:", response); // ✅ Debugging log
+
+      // ✅ Ensure response has data
       if (!response || response?.length === 0) {
         setError("No payments found for this ID.");
       } else {
-        setPayments(response);
+        setPayments(response); // ✅ Correct way to set data
       }
     } catch (error) {
       console.error("Error fetching payments:", error);
@@ -196,11 +202,13 @@ function Others({ closeModal }) {
     setLoading(false);
   };
 
+  // const response = await getPaymentsByLoanOrCustomerId(loanId);
   return (
     <div className={styles.reportBackground}>
       <h3>Payment Statements</h3>
 
-      <div className={styles.searchSection}>
+      {/* Search Input */}
+      <div>
         <label>
           Enter Loan/Customer ID
           <input
@@ -215,9 +223,13 @@ function Others({ closeModal }) {
         </button>
       </div>
 
+      {/* Error Message */}
       {error && <p className={styles.error}>{error}</p>}
+
+      {/* Loading State */}
       {loading && <p>Loading payments...</p>}
 
+      {/* Results Display */}
       {!loading && payments.length > 0 && (
         <div className={styles.paymentResults}>
           <h4>Payment Records</h4>
@@ -234,6 +246,7 @@ function Others({ closeModal }) {
         </div>
       )}
 
+      {/* Close Modal Button */}
       <button onClick={closeModal} className={styles.closeBtns}>
         x
       </button>
@@ -241,6 +254,7 @@ function Others({ closeModal }) {
   );
 }
 
+//
 function LoanSummary({ closeModal }) {
   return (
     <div className={styles.reportBackground}>
@@ -251,5 +265,3 @@ function LoanSummary({ closeModal }) {
     </div>
   );
 }
-
-export default Reports;

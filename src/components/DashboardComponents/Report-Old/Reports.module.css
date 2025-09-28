@@ -1,0 +1,39 @@
+.reportPage {
+  background-color: #fff;
+  padding: 2.4rem;
+}
+
+.reportBackground {
+  background-color: #fff;
+  padding: 2.4rem;
+  border-radius: 1rem;
+  position: relative;
+}
+
+.reports {
+  margin-top: 2.2rem;
+}
+
+.closeBtns {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: transparent;
+  border: transparent;
+}
+.closeBtns:hover {
+  border: 0.1rem solid var(--color-primary);
+}
+
+.searchLoan {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.searchLoan input {
+  box-sizing: border-box;
+  padding: 0.6rem 1rem;
+  border-radius: 0.8rem;
+  border: 0.1rem solid var(--color-primary);
+}

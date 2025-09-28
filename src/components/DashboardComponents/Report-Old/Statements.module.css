@@ -1,0 +1,114 @@
+/* Statement Style */
+.reportBackground {
+  background-color: #fff;
+  padding: 2.4rem;
+  border-radius: 1rem;
+  position: relative;
+}
+
+.statement {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 4.8rem auto 0;
+  padding: 2.4rem;
+  border: 0.1rem solid #f1f1f1;
+  border-radius: 0.8rem;
+}
+
+.statement h2 {
+  text-align: center;
+  color: #333;
+}
+
+.statement .section {
+  margin-bottom: 2rem;
+}
+
+.statement .section h3 {
+  color: #555;
+  border-bottom: 0.2rem solid #ddd;
+  padding-bottom: 0.5rem;
+}
+
+.statement table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.statement table th,
+.statement table td {
+  padding: 1rem;
+  border: 0.1rem solid #ddd;
+  text-align: left;
+}
+
+.statement table th {
+  background-color: #f1f1f1;
+}
+
+.statement .notes {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.printBtn {
+  display: block;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  position: absolute;
+  right: 1rem;
+  top: 4.4rem;
+}
+
+.printBtn:hover {
+  background-color: #0056b3;
+}
+
+/* Print-specific styles */
+@media print {
+  .statement {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 4.8rem auto 0;
+    padding: 2.4rem;
+    /* border: 0.1rem solid #ddd; */
+    border-radius: 0.8rem;
+  }
+
+  #print-area,
+  #print-area * {
+    visibility: visible; /* Show only the print area */
+  }
+
+  #print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Adjust table styles for printing */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  table th,
+  table td {
+    border: 1px solid #000;
+    padding: 8px;
+  }
+
+  /* Hide unnecessary elements */
+  button {
+    display: none;
+  }
+}
