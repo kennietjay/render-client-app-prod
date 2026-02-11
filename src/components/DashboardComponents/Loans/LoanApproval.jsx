@@ -166,7 +166,7 @@ function LoanApproval({
                 <>
                   {hasRole(user, [
                     "system admin",
-                    "admin finance",
+                    "finance admin",
                     "manager",
                   ]) && (
                     <button
